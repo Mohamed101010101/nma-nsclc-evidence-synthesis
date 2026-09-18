@@ -32,7 +32,9 @@ analysis_modules <- list(
   list(file = "scripts/analyses/02_treatment_rankings.R", name = "Treatment Hierarchy & P-Scores (outputs/tables/treatment_rankings.csv)"),
   list(file = "scripts/analyses/03_league_table.R",       name = "Dual-Model League Table (CSV Matrix)"),
   list(file = "scripts/analyses/04_inconsistency_tests.R",name = "Global Q Decomposition & Inconsistency Table"),
-  list(file = "scripts/analyses/05_league_table_html.R",  name = "Formatted Interactive HTML League Table")
+  list(file = "scripts/analyses/05_league_table_html.R",  name = "Formatted Interactive HTML League Table"),
+  list(file = "scripts/analyses/06_rob2_analysis.R",      name = "Cochrane Risk of Bias 2 (RoB 2) Statistical Synthesis"),
+  list(file = "scripts/analyses/07_cinema_evaluation.R",  name = "Confidence in Network Meta-Analysis (CINeMA) Evaluation")
 )
 
 for (idx in seq_along(analysis_modules)) {
@@ -48,7 +50,7 @@ for (idx in seq_along(analysis_modules)) {
 }
 
 # ------------------------------------------------------------------------------
-# PHASE 2: PUBLICATION GRAPHIC DESIGNS (FIGURES 1 TO 7)
+# PHASE 2: PUBLICATION GRAPHIC DESIGNS (FIGURES 1 TO 10)
 # ------------------------------------------------------------------------------
 cat("\n==============================================================================\n")
 cat(" >>> PHASE 2: PUBLICATION GRAPHIC DESIGNS (300 DPI) (scripts/designs/)        \n")
@@ -61,7 +63,10 @@ design_modules <- list(
   list(file = "scripts/designs/fig04_netsplit_inconsistency.R", name = "Figure 4: Node-Splitting Local Inconsistency Forest Plot"),
   list(file = "scripts/designs/fig05_netheat_plot.R",        name = "Figure 5: Net Heat Inconsistency Matrix Plot"),
   list(file = "scripts/designs/fig06_funnel_plot.R",         name = "Figure 6: Comparison-Adjusted Funnel Plot"),
-  list(file = "scripts/designs/fig07_league_table_matrix.R", name = "Figure 7: Publication League Table Graphic Matrix")
+  list(file = "scripts/designs/fig07_league_table_matrix.R", name = "Figure 7: Publication League Table Graphic Matrix"),
+  list(file = "scripts/designs/fig08_rob2_traffic_light.R",  name = "Figure 8: Cochrane RoB 2 Study-Level Traffic Light Matrix"),
+  list(file = "scripts/designs/fig09_rob2_summary_bar.R",    name = "Figure 9: Cochrane RoB 2 Domain Summary Bar Chart"),
+  list(file = "scripts/designs/fig10_cinema_traffic_light.R", name = "Figure 10: CINeMA Confidence Traffic Light Matrix")
 )
 
 for (idx in seq_along(design_modules)) {
@@ -79,9 +84,10 @@ for (idx in seq_along(design_modules)) {
 total_elapsed <- as.numeric(difftime(Sys.time(), start_time, units = "secs"))
 
 cat("\n==============================================================================\n")
-cat(sprintf(" [PIPELINE SUCCESS] All 5 analyses and 7 figure designs generated in %.2f seconds!\n", 
-            total_elapsed))
+cat(sprintf(" [PIPELINE SUCCESS] All %d analyses and %d figure designs generated in %.2f seconds!\n", 
+            length(analysis_modules), length(design_modules), total_elapsed))
 cat(" Outputs Directory Audit:\n")
-cat("  - Figures: outputs/figures/ (7 publication-grade 300 DPI figures, Fig 01 to 07)\n")
-cat("  - Tables:  outputs/tables/  (3 CSVs + 1 Formatted Interactive HTML Table)\n")
+cat(sprintf("  - Figures: outputs/figures/ (%d publication-grade 300 DPI figures, Fig 01 to %02d)\n",
+            length(design_modules), length(design_modules)))
+cat("  - Tables:  outputs/tables/  (5 CSVs + 2 Formatted Interactive HTML Tables)\n")
 cat("==============================================================================\n\n")

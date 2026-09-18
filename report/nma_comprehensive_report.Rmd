@@ -1,5 +1,5 @@
 ---
-title: "Frequentist Network Meta-Analysis in Oncology: From 5 Lines of Code to Top-Tier Publication"
+title: "Frequentist Network Meta-Analysis in Oncology: A Comprehensive Evidence Synthesis"
 subtitle: "First-Line Systemic Therapies for Advanced Non-Small Cell Lung Cancer (NSCLC) - Overall Survival"
 author: "Elite Biostatistics & Evidence Synthesis Portfolio"
 date: "`r Sys.Date()`"
@@ -47,8 +47,8 @@ td { padding: 10px 14px; border: 1px solid #e2e8f0; text-align: center; }
 # Executive Summary & Methodological Rationale
 
 <div class="summary-box">
-<h3 style="margin-top: 0; color: #1e40af;">Why Start with Frequentist Graph-Theoretical NMA?</h3>
-Within <strong>5 lines of executable R code</strong>, an investigator can build a complete evidence network, execute direct and indirect treatment comparisons simultaneously, and generate a publication-grade League Table. This analytical architecture allows researchers and clinical oncologists to master the foundational principles of <em>indirect comparison geometry</em> and <em>transitivity</em> before grappling with the computational burdens, convergence diagnostics, and prior sensitivity of Bayesian Markov Chain Monte Carlo (MCMC) models.
+<h3 style="margin-top: 0; color: #1e40af;">Why Frequentist Graph-Theoretical NMA?</h3>
+Through this streamlined analytical pipeline, an investigator can build a complete evidence network, execute direct and indirect treatment comparisons simultaneously, and generate a publication-grade League Table. This analytical architecture allows researchers and clinical oncologists to master the foundational principles of <em>indirect comparison geometry</em> and <em>transitivity</em> before grappling with the computational burdens, convergence diagnostics, and prior sensitivity of Bayesian Markov Chain Monte Carlo (MCMC) models.
 </div>
 
 This report presents a comprehensive, publication-grade Network Meta-Analysis (NMA) adhering to the **PRISMA-NMA** reporting guidelines and formatted to meet the editorial standards of high-impact medical journals (*The Lancet*, *The New England Journal of Medicine*, *BMJ*, *JAMA Oncology*).

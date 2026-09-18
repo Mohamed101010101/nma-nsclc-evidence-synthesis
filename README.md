@@ -39,7 +39,7 @@
 ## 🌟 Executive Overview & Pedagogical Rationale
 
 > [!NOTE]
-> ### *"Why start here? Because within 5 lines of executable R code, an investigator can build a complete evidence network, execute indirect comparisons, and inspect a publication-grade League Table — grasping the core intuition of indirect evidence and transitivity before confronting the computational overhead and prior sensitivity of Bayesian MCMC modeling."*
+> ### *"With this streamlined and reproducible evidence synthesis architecture, an investigator can build a complete evidence network, execute indirect comparisons, and inspect a publication-grade League Table — grasping the core intuition of indirect evidence and transitivity before confronting the computational overhead and prior sensitivity of Bayesian MCMC modeling."*
 
 When multiple interventions compete for the same clinical indication, head-to-head randomized controlled trials (RCTs) are rarely available for every pair of therapies. **Network Meta-Analysis (NMA)** resolves this therapeutic dilemma by synthesizing **direct evidence** (head-to-head trials) and **indirect evidence** (via common comparator arms) into a unified, coherent comparative framework.
 

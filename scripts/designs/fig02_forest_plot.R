@@ -1,8 +1,8 @@
 # ==============================================================================
-# Script: 04_forest_plot.R
-# Purpose: Forest Plot of Active Treatment Regimens vs Reference Control (Chemo)
-# Output:  outputs/figures/02_forest_plot_random.png (300 DPI Publication Figure)
-# Package: netmeta (Frequentist Random-Effects Model)
+# Design Script: scripts/designs/fig02_forest_plot.R
+# Visual Target: Figure 2 - Reference Comparison Forest Plot vs Chemotherapy
+# Output File:   outputs/figures/02_forest_plot_random.png (300 DPI Publication Figure)
+# Framework:     netmeta (Frequentist Random-Effects Model)
 # ==============================================================================
 
 suppressPackageStartupMessages({
@@ -10,7 +10,7 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [ANALYSIS 2/7] FOREST PLOT: ACTIVE REGIMENS VS CHEMOTHERAPY\n")
+cat(" [DESIGN 2/7] FIGURE 2: REFERENCE FOREST PLOT VS CHEMO\n")
 cat("======================================================================\n")
 
 # 1. Load Clinical Trial Contrast Data
@@ -19,10 +19,8 @@ if (!file.exists(data_path)) {
   stop(sprintf("Data file not found at: %s. Please run scripts/02_generate_data.R first.", data_path))
 }
 dat <- read.csv(data_path, stringsAsFactors = FALSE)
-cat(sprintf(" - Loaded contrast dataset: %d comparisons across %d trials\n",
-            nrow(dat), length(unique(dat$studlab))))
 
-# 2. Fit Frequentist Graph-Theoretical Model
+# 2. Fit Model
 nma <- netmeta(
   TE = TE,
   seTE = seTE,
@@ -38,7 +36,7 @@ nma <- netmeta(
   details.chkmultiarm = FALSE
 )
 
-# 3. Compute Treatment Rankings for Hierarchical Forest Plot Ordering
+# 3. Hierarchy Ordering via Netrank
 rk <- netrank(nma, small.values = "good")
 
 # 4. Render Publication Forest Plot (300 DPI)
@@ -70,4 +68,4 @@ forest(
 
 dev.off()
 
-cat(sprintf(" [SUCCESS] Forest Plot saved cleanly: %s\n\n", output_fig))
+cat(sprintf(" [SUCCESS] Figure 2 rendered cleanly: %s\n\n", output_fig))

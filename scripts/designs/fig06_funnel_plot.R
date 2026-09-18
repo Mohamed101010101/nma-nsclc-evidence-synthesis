@@ -1,8 +1,8 @@
 # ==============================================================================
-# Script: 09_funnel_plot.R
-# Purpose: Comparison-Adjusted Funnel Plot (Small-Study Effects & Publication Bias)
-# Output:  outputs/figures/06_funnel_plot.png (300 DPI Publication Figure)
-# Package: netmeta (Chaimani & Salanti Funnel Methodology)
+# Design Script: scripts/designs/fig06_funnel_plot.R
+# Visual Target: Figure 6 - Comparison-Adjusted Funnel Plot (Small-Study Effects)
+# Output File:   outputs/figures/06_funnel_plot.png (300 DPI Publication Figure)
+# Framework:     netmeta (Chaimani & Salanti Methodology)
 # ==============================================================================
 
 suppressPackageStartupMessages({
@@ -10,7 +10,7 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [ANALYSIS 7/7] COMPARISON-ADJUSTED FUNNEL PLOT (SMALL-STUDY EFFECTS)\n")
+cat(" [DESIGN 6/7] FIGURE 6: COMPARISON-ADJUSTED FUNNEL PLOT\n")
 cat("======================================================================\n")
 
 # 1. Load Clinical Trial Contrast Data
@@ -19,10 +19,8 @@ if (!file.exists(data_path)) {
   stop(sprintf("Data file not found at: %s. Please run scripts/02_generate_data.R first.", data_path))
 }
 dat <- read.csv(data_path, stringsAsFactors = FALSE)
-cat(sprintf(" - Loaded contrast dataset: %d comparisons across %d trials\n",
-            nrow(dat), length(unique(dat$studlab))))
 
-# 2. Fit Frequentist Graph-Theoretical Model
+# 2. Fit Model
 nma <- netmeta(
   TE = TE,
   seTE = seTE,
@@ -38,7 +36,7 @@ nma <- netmeta(
   details.chkmultiarm = FALSE
 )
 
-# 3. Determine Ordering by Hierarchy (P-scores) for comparison centering
+# 3. Hierarchy Ordering for Comparison Centering
 rk <- netrank(nma, small.values = "good")
 trt_order <- names(sort(rk$ranking.random, decreasing = TRUE))
 
@@ -65,4 +63,4 @@ funnel(
 
 dev.off()
 
-cat(sprintf(" [SUCCESS] Funnel Plot saved cleanly: %s\n\n", output_fig))
+cat(sprintf(" [SUCCESS] Figure 6 rendered cleanly: %s\n\n", output_fig))

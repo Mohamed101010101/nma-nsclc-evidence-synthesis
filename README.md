@@ -262,17 +262,23 @@ c:/Users/Computech4/Desktop/R code/
 ├── data/
 │   └── nsclc_trial_contrasts.csv          # 24-trial contrast dataset (lnHR, seTE, multi-arm)
 ├── scripts/
+│   ├── analyses/                          # Statistical Analyses & Data Tables Engine
+│   │   ├── 01_fit_nma_model.R             # Model estimation, network parameters & tau2/I2
+│   │   ├── 02_treatment_rankings.R        # P-scores hierarchy & outputs/tables/treatment_rankings.csv
+│   │   ├── 03_league_table.R              # Pairwise comparisons CSV & publication formatted HTML table
+│   │   └── 04_inconsistency_tests.R       # Cochran's Q decomposition & inconsistency_statistics.csv
+│   ├── designs/                           # Dedicated Publication Figure Designs (300 DPI)
+│   │   ├── fig01_network_geometry.R       # Design: Figure 1 Network Geometry Plot
+│   │   ├── fig02_forest_plot.R            # Design: Figure 2 Reference Forest Plot vs Chemo
+│   │   ├── fig03_pscore_ranking.R         # Design: Figure 3 P-Score Ranking Bar Chart
+│   │   ├── fig04_netsplit_inconsistency.R # Design: Figure 4 Node-Splitting Forest Plot
+│   │   ├── fig05_netheat_plot.R           # Design: Figure 5 Net Heat Inconsistency Matrix
+│   │   ├── fig06_funnel_plot.R            # Design: Figure 6 Comparison-Adjusted Funnel Plot
+│   │   └── fig07_league_table_matrix.R    # Design: Figure 7 Publication League Table Graphic
 │   ├── 01_quickstart_5lines.R             # 5-line pedagogical quickstart script
 │   ├── 02_generate_data.R                 # Reproducible clinical data generator (exact additivity)
-│   ├── 03_network_geometry.R              # Standalone: Evidence Network Geometry (Figure 1)
-│   ├── 04_forest_plot.R                   # Standalone: Reference Forest Plot vs Chemo (Figure 2)
-│   ├── 05_treatment_rankings.R            # Standalone: P-Score Rankings & Hierarchy (Figure 3 + CSV)
-│   ├── 06_league_table.R                  # Standalone: Dual-Model League Table (Figure 7 + CSV + HTML)
-│   ├── 07_inconsistency_netsplit.R        # Standalone: Global Q Decomposition & Node-Splitting (Figure 4 + CSV)
-│   ├── 08_netheat_matrix.R                # Standalone: Net Heat Inconsistency Matrix (Figure 5)
-│   ├── 09_funnel_plot.R                   # Standalone: Comparison-Adjusted Funnel Plot (Figure 6)
-│   ├── run_all_pipeline.R                 # Master Orchestrator: Runs all modular scripts sequentially
-│   └── 03_nma_full_pipeline.R             # Monolithic pipeline (All-in-one execution engine)
+│   ├── run_all_pipeline.R                 # Master Orchestrator: Runs analyses/ then designs/
+│   └── 03_nma_full_pipeline.R             # Monolithic legacy pipeline (All-in-one script)
 ├── outputs/
 │   ├── figures/
 │   │   ├── 01_network_geometry.png        # 300 DPI Publication Network Geometry
@@ -304,20 +310,26 @@ install.packages(c("netmeta", "meta", "ggplot2", "readr", "knitr", "rmarkdown", 
 
 ### Execution Options
 
-#### Option A: Run Individual Standalone Modules
-Each script in `scripts/` is 100% self-contained and can be run independently in RStudio or via command line:
+#### Option A: Run Individual Analysis or Figure Design
+Every script in `scripts/analyses/` and `scripts/designs/` is 100% self-contained:
 ```bash
-# Generate specific publication figure and table:
-Rscript scripts/03_network_geometry.R          # Figure 1 (Network Geometry)
-Rscript scripts/04_forest_plot.R               # Figure 2 (Forest Plot)
-Rscript scripts/05_treatment_rankings.R        # Figure 3 & treatment_rankings.csv
-Rscript scripts/06_league_table.R              # Figure 7 & league_table CSV/HTML
-Rscript scripts/07_inconsistency_netsplit.R    # Figure 4 & inconsistency_statistics.csv
-Rscript scripts/08_netheat_matrix.R            # Figure 5 (Net Heat Plot)
-Rscript scripts/09_funnel_plot.R               # Figure 6 (Funnel Plot)
+# Run specific statistical analysis:
+Rscript scripts/analyses/01_fit_nma_model.R
+Rscript scripts/analyses/02_treatment_rankings.R
+Rscript scripts/analyses/03_league_table.R
+Rscript scripts/analyses/04_inconsistency_tests.R
+
+# Generate specific publication figure design (Figure 01 to 07):
+Rscript scripts/designs/fig01_network_geometry.R
+Rscript scripts/designs/fig02_forest_plot.R
+Rscript scripts/designs/fig03_pscore_ranking.R
+Rscript scripts/designs/fig04_netsplit_inconsistency.R
+Rscript scripts/designs/fig05_netheat_plot.R
+Rscript scripts/designs/fig06_funnel_plot.R
+Rscript scripts/designs/fig07_league_table_matrix.R
 ```
 
-#### Option B: Run All Modular Scripts Sequentially (Master Orchestrator)
+#### Option B: Run All Analyses & Designs Sequentially (Master Orchestrator)
 ```bash
 Rscript scripts/run_all_pipeline.R
 ```

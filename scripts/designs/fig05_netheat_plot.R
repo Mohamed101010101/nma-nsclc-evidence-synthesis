@@ -1,8 +1,8 @@
 # ==============================================================================
-# Script: 08_netheat_matrix.R
-# Purpose: Net Heat Plot (Matrix of Inconsistency & Direct Evidence Contribution)
-# Output:  outputs/figures/05_netheat_plot.png (300 DPI Publication Figure)
-# Package: netmeta & ggplot2 (Krahn Design-by-Treatment Interaction Model)
+# Design Script: scripts/designs/fig05_netheat_plot.R
+# Visual Target: Figure 5 - Net Heat Plot (Inconsistency Matrix & Evidence Contribution)
+# Output File:   outputs/figures/05_netheat_plot.png (300 DPI Publication Figure)
+# Framework:     netmeta & ggplot2 (Krahn Design-by-Treatment Interaction Model)
 # ==============================================================================
 
 suppressPackageStartupMessages({
@@ -12,7 +12,7 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [ANALYSIS 6/7] NET HEAT MATRIX: INCONSISTENCY & HAT MATRIX WEIGHTS\n")
+cat(" [DESIGN 5/7] FIGURE 5: NET HEAT INCONSISTENCY MATRIX PLOT\n")
 cat("======================================================================\n")
 
 # 1. Load Clinical Trial Contrast Data
@@ -21,10 +21,8 @@ if (!file.exists(data_path)) {
   stop(sprintf("Data file not found at: %s. Please run scripts/02_generate_data.R first.", data_path))
 }
 dat <- read.csv(data_path, stringsAsFactors = FALSE)
-cat(sprintf(" - Loaded contrast dataset: %d comparisons across %d trials\n",
-            nrow(dat), length(unique(dat$studlab))))
 
-# 2. Fit Frequentist Graph-Theoretical Model
+# 2. Fit Model
 nma <- netmeta(
   TE = TE,
   seTE = seTE,
@@ -40,8 +38,8 @@ nma <- netmeta(
   details.chkmultiarm = FALSE
 )
 
-# 3. Extract Krahn Design-by-Treatment Decomposition and Hat Matrix
-cat(" - Computing Krahn decomposition and Hat matrix weights ...\n")
+# 3. Extract Krahn Decomposition and Hat Matrix
+cat(" - Computing Krahn design decomposition and Hat matrix weights ...\n")
 tau_w <- netmeta:::tau.within(nma)
 nmak <- netmeta:::nma_krahn(nma, tau.preset = tau_w)
 decomp <- netmeta:::decomp.design(nma, tau.preset = tau_w)
@@ -73,7 +71,7 @@ if (length(wi_idx) > 0) {
   Hp_mat <- Hp_mat[, -wi_idx]
 }
 
-# 4. Format Publication-Grade Comparison Labels with Multi-Arm Annotations
+# 4. Multi-Arm Design Labeling
 clean_comp_label <- function(comp, design_str, narms) {
   c_clean <- gsub(":", " vs ", comp)
   if (narms > 2) {
@@ -193,4 +191,4 @@ p_netheat <- ggplot(netheat_df) +
 
 ggsave(output_fig, plot = p_netheat, width = 11.5, height = 10.5, dpi = 300)
 
-cat(sprintf(" [SUCCESS] Net Heat plot saved cleanly: %s\n\n", output_fig))
+cat(sprintf(" [SUCCESS] Figure 5 rendered cleanly: %s\n\n", output_fig))

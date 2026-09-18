@@ -1,10 +1,8 @@
 # ==============================================================================
-# Script: 06_league_table.R
-# Purpose: Full Pairwise Comparisons League Table (CSV, HTML, & Visual Matrix)
-# Outputs: outputs/tables/league_table_random_common.csv
-#          outputs/tables/league_table_formatted.html
-#          outputs/figures/07_league_table_figure.png (300 DPI Publication Figure)
-# Package: netmeta & ggplot2
+# Design Script: scripts/designs/fig07_league_table_matrix.R
+# Visual Target: Figure 7 - Dual-Model League Table Matrix Figure
+# Output File:   outputs/figures/07_league_table_figure.png (300 DPI Publication Figure)
+# Framework:     ggplot2 & netmeta
 # ==============================================================================
 
 suppressPackageStartupMessages({
@@ -13,7 +11,7 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [ANALYSIS 4/7] LEAGUE TABLE: DUAL-MODEL ALL-PAIRWISE COMPARISONS\n")
+cat(" [DESIGN 7/7] FIGURE 7: PUBLICATION LEAGUE TABLE MATRIX FIGURE\n")
 cat("======================================================================\n")
 
 # 1. Load Clinical Trial Contrast Data
@@ -22,10 +20,8 @@ if (!file.exists(data_path)) {
   stop(sprintf("Data file not found at: %s. Please run scripts/02_generate_data.R first.", data_path))
 }
 dat <- read.csv(data_path, stringsAsFactors = FALSE)
-cat(sprintf(" - Loaded contrast dataset: %d comparisons across %d trials\n",
-            nrow(dat), length(unique(dat$studlab))))
 
-# 2. Fit Frequentist Graph-Theoretical Model
+# 2. Fit Model
 nma <- netmeta(
   TE = TE,
   seTE = seTE,
@@ -46,64 +42,8 @@ rk <- netrank(nma, small.values = "good")
 pscores_rand <- rk$ranking.random
 trt_order <- names(sort(pscores_rand, decreasing = TRUE))
 
-# 4. Construct Dual-Model League Table
-# Lower triangle: Random-effects model HR [95% CI]
-# Upper triangle: Common-effects model HR [95% CI]
+# 4. Construct Matrix Coordinates & Styling
 lg <- netleague(nma, digits = 2, seq = trt_order)
-
-dir.create("outputs/tables", recursive = TRUE, showWarnings = FALSE)
-output_csv <- "outputs/tables/league_table_random_common.csv"
-write.csv(lg$random, output_csv)
-cat(sprintf(" - Exported raw league matrix CSV to: %s\n", output_csv))
-
-# 5. Export Publication-Formatted HTML League Table
-output_html <- "outputs/tables/league_table_formatted.html"
-html_table <- paste0(
-  "<div style='font-family: Arial, sans-serif; margin: 20px 0;'>\n",
-  "<h3 style='color: #1a365d; text-align: center;'>Table: League Table of Pairwise Treatment Comparisons (Hazard Ratios [95% CI])</h3>\n",
-  "<p style='text-align: center; color: #4a5568; font-size: 0.9em;'>Treatments ordered by hierarchy (P-scores) from top-left (best) to bottom-right (worst).<br>",
-  "<b>Lower Triangle:</b> Random-Effects Model | <b>Upper Triangle:</b> Common-Effects Model | <b>Bold:</b> Significant (p < 0.05)</p>\n",
-  "<table style='border-collapse: collapse; margin: 0 auto; width: 95%; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden;'>\n",
-  "  <thead>\n    <tr style='background-color: #2b6cb0; color: white; text-align: center; font-weight: bold;'>\n",
-  "      <th style='padding: 12px; border: 1px solid #cbd5e0;'>Treatment</th>\n",
-  paste0(sprintf("      <th style='padding: 12px; border: 1px solid #cbd5e0;'>%s</th>\n", trt_order), collapse = ""),
-  "    </tr>\n  </thead>\n  <tbody>\n"
-)
-
-mat <- lg$random
-for (i in 1:nrow(mat)) {
-  row_html <- sprintf("    <tr style='background-color: %s; text-align: center;'>\n", ifelse(i %% 2 == 0, "#f7fafc", "#ffffff"))
-  row_html <- paste0(row_html, sprintf("      <td style='padding: 10px; font-weight: bold; background-color: #edf2f7; border: 1px solid #cbd5e0;'>%s</td>\n", rownames(mat)[i]))
-  for (j in 1:ncol(mat)) {
-    val <- mat[i, j]
-    is_diag <- (i == j)
-    cell_style <- if (is_diag) {
-      "padding: 10px; font-weight: bold; background-color: #bee3f8; color: #2b6cb0; border: 1px solid #cbd5e0;"
-    } else {
-      "padding: 10px; border: 1px solid #cbd5e0; font-size: 0.95em;"
-    }
-    row_html <- paste0(row_html, sprintf("      <td style='%s'>%s</td>\n", cell_style, val))
-  }
-  row_html <- paste0(row_html, "    </tr>\n")
-  html_table <- paste0(html_table, row_html)
-}
-
-html_table <- paste0(
-  html_table,
-  "  </tbody>\n</table>\n",
-  "<p style='font-size: 0.85em; color: #718096; text-align: center; margin-top: 8px;'>",
-  "HR < 1 favors column-defining treatment in lower triangle, and row-defining treatment in upper triangle.",
-  "</p>\n</div>"
-)
-
-writeLines(html_table, output_html)
-cat(sprintf(" - Exported formatted HTML league table to: %s\n", output_html))
-
-# 6. Render Publication League Table Matrix Figure (300 DPI)
-dir.create("outputs/figures", recursive = TRUE, showWarnings = FALSE)
-output_fig <- "outputs/figures/07_league_table_figure.png"
-cat(sprintf("\n - Rendering Figure 7 to: %s ...\n", output_fig))
-
 n_trts <- length(trt_order)
 mat_rnd <- lg$random
 pval_rnd <- nma$pval.random[trt_order, trt_order]
@@ -277,6 +217,11 @@ p_league <- ggplot(cells_df) +
     plot.margin = margin(t = 20, r = 25, b = 20, l = 25)
   )
 
+# 5. Render Publication League Table Matrix Figure (300 DPI)
+dir.create("outputs/figures", recursive = TRUE, showWarnings = FALSE)
+output_fig <- "outputs/figures/07_league_table_figure.png"
+cat(sprintf(" - Rendering Figure 7 to: %s ...\n", output_fig))
+
 ggsave(output_fig, plot = p_league, width = 13.5, height = 13.5, dpi = 300)
 
-cat(sprintf(" [SUCCESS] League Table and Figure 7 saved cleanly: %s\n\n", output_fig))
+cat(sprintf(" [SUCCESS] Figure 7 rendered cleanly: %s\n\n", output_fig))

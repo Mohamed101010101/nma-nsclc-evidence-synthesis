@@ -1,8 +1,8 @@
 # ==============================================================================
-# Script: 03_network_geometry.R
-# Purpose: Synthesize and visualize evidence network topology (Network Geometry)
-# Output:  outputs/figures/01_network_geometry.png (300 DPI Publication Figure)
-# Package: netmeta (Frequentist Graph-Theoretical Framework)
+# Design Script: scripts/designs/fig01_network_geometry.R
+# Visual Target: Figure 1 - Evidence Network Geometry (Network Topology)
+# Output File:   outputs/figures/01_network_geometry.png (300 DPI Publication Figure)
+# Framework:     netmeta (Frequentist Graph-Theoretical Framework)
 # ==============================================================================
 
 suppressPackageStartupMessages({
@@ -10,7 +10,7 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [ANALYSIS 1/7] EVIDENCE NETWORK GEOMETRY VISUALIZATION\n")
+cat(" [DESIGN 1/7] FIGURE 1: EVIDENCE NETWORK GEOMETRY\n")
 cat("======================================================================\n")
 
 # 1. Load Clinical Trial Contrast Data
@@ -19,10 +19,8 @@ if (!file.exists(data_path)) {
   stop(sprintf("Data file not found at: %s. Please run scripts/02_generate_data.R first.", data_path))
 }
 dat <- read.csv(data_path, stringsAsFactors = FALSE)
-cat(sprintf(" - Loaded contrast dataset: %d comparisons across %d trials (%s patients)\n",
-            nrow(dat), length(unique(dat$studlab)), format(sum(dat$n_total[!duplicated(dat$studlab)]), big.mark = ",")))
 
-# 2. Fit Frequentist Graph-Theoretical Model
+# 2. Fit Model
 nma <- netmeta(
   TE = TE,
   seTE = seTE,
@@ -38,7 +36,7 @@ nma <- netmeta(
   details.chkmultiarm = FALSE
 )
 
-# 3. Node & Visual Palette Configuration
+# 3. Node & Palette Configuration
 colors_nodes <- c(
   "Chemo"     = "#718096", # Slate Grey (Standard Reference)
   "IO_Mono"   = "#3182CE", # Classic Blue (Active Monotherapy)
@@ -96,4 +94,4 @@ legend("bottom",
        xpd = TRUE)
 dev.off()
 
-cat(sprintf(" [SUCCESS] Network Geometry saved cleanly: %s\n\n", output_fig))
+cat(sprintf(" [SUCCESS] Figure 1 rendered cleanly: %s\n\n", output_fig))

@@ -175,7 +175,9 @@ $$Q = Q_{\text{het}} + Q_{\text{inc}} = \sum_{d=1}^D Q_{d}^{\text{within}} + Q^{
 ---
 
 ### Exhibit 4: Dual-Model League Table Matrix
-*Diagonal: Treatments ordered by P-score (best to worst). Lower triangle: Network Meta-Analysis estimates ($\text{HR} [95\% \text{CI}]$). Upper triangle: Direct pairwise head-to-head trial evidence (dots `.` signify indirect comparisons).*
+*Publication-grade matrix comparing all treatment regimens simultaneously. Lower triangle: Network Meta-Analysis Random-Effects estimates (Column vs Row, HR < 1.0 favors column treatment, green indicates $p < 0.05$). Upper triangle: Direct pairwise RCT meta-analysis estimates (Row vs Column). Diagonal: Treatments ordered by clinical hierarchy (P-scores).*
+
+![League Table Figure](outputs/figures/07_league_table_figure.png)
 
 | Treatment | IO_Chemo | TKI_Chemo | Dual_IO | IO_Mono | TKI | Chemo |
 |:---|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -229,7 +231,8 @@ c:/Users/Computech4/Desktop/R code/
 │   │   ├── 03_pscore_ranking.png          # 300 DPI Treatment Ranking Bar Chart
 │   │   ├── 04_netsplit_inconsistency.png  # 300 DPI Node-Splitting Forest Plot
 │   │   ├── 05_netheat_plot.png            # 300 DPI Net Heat Matrix Plot
-│   │   └── 06_funnel_plot.png             # 300 DPI Comparison-Adjusted Funnel Plot
+│   │   ├── 06_funnel_plot.png             # 300 DPI Comparison-Adjusted Funnel Plot
+│   │   └── 07_league_table_figure.png     # 300 DPI Publication League Table Matrix
 │   └── tables/
 │       ├── league_table_random_common.csv # Pairwise comparison matrix (CSV)
 │       ├── league_table_formatted.html    # Formatted publication League Table

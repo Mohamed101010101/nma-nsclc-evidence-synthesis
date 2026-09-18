@@ -183,14 +183,23 @@ knitr::kable(df_rank, col.names = c("Treatment Regimen", "Rank", "P-Score (Rando
 
 # Dual-Model League Table: Direct vs Network Synthesis
 
-In the League Table below:
-- **Diagonal:** Treatments ordered by P-score from top-left (best) to bottom-right (worst).
-- **Lower Triangle:** Network Meta-Analysis estimates ($\text{HR} [95\% \text{CI}]$) combining all direct and indirect paths.
-- **Upper Triangle:** Direct pairwise comparisons. Dots (`.`) indicate treatment pairs with **zero direct head-to-head clinical trials**, proving how network meta-analysis informs clinical decisions through indirect evidence.
+The **League Table** is the centerpiece of comparative effectiveness in Network Meta-Analysis, enabling comprehensive head-to-head evaluation across all treatment pairs simultaneously.
+
+```{r fig_league_table, echo=FALSE, out.width="100%", fig.align='center'}
+knitr::include_graphics("../outputs/figures/07_league_table_figure.png")
+```
+
+### Reading Guide & Clinical Interpretation
+- **Diagonal (Navy Badges):** Interventions ordered hierarchically from highest efficacy to lowest efficacy based on frequentist P-scores (from top-left `IO + Chemo` to bottom-right `Chemotherapy`).
+- **Lower Triangle (Green & Slate Tiles):** Network Meta-Analysis estimates from the Random-Effects model ($\text{Column} \text{ vs } \text{Row}$). A Hazard Ratio ($\text{HR}$) $< 1.0$ favors the higher-ranked column intervention over the row intervention.
+- **Emerald Green Highlighting (★):** Identifies pairs with statistically significant survival superiority ($p < 0.05$, where the 95% CI completely excludes 1.0).
+- **Upper Triangle (Soft Blue Tiles):** Direct head-to-head pairwise meta-analysis estimates ($\text{Row} \text{ vs } \text{Column}$) synthesized from available RCTs. Dashes (`—`) pinpoint treatment comparisons that have never been evaluated in a head-to-head clinical trial, demonstrating how NMA provides vital decision evidence through indirect network pathways.
+
+### Numerical League Matrix (Standard Format)
 
 ```{r table_league, echo=FALSE}
 lg_mat <- read.csv("../outputs/tables/league_table_random_common.csv", row.names = 1)
-knitr::kable(lg_mat, caption = "Table: Complete League Table Matrix")
+knitr::kable(lg_mat, caption = "Table: Complete Dual-Model League Table Matrix (Random vs Common Effects)")
 ```
 
 ---

@@ -16,8 +16,7 @@ start_time <- Sys.time()
 
 # 0. Ensure contrast dataset exists
 if (!file.exists("data/nsclc_trial_contrasts.csv")) {
-  cat("\n[STEP 0] Generating synthetic trial contrast data ...\n")
-  source("scripts/02_generate_data.R", local = new.env())
+  stop("Error: Contrast dataset 'data/nsclc_trial_contrasts.csv' not found. Please ensure the data file exists before running the pipeline.")
 }
 
 # ------------------------------------------------------------------------------

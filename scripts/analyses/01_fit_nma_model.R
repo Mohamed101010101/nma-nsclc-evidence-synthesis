@@ -15,11 +15,10 @@ cat("\n======================================================================\n"
 cat(" [ANALYSIS 1/5] MODEL ESTIMATION & CACHING (SINGLE SOURCE OF TRUTH)\n")
 cat("======================================================================\n")
 
-# 1. Load Clinical Trial Contrast Data (Auto-generate if missing)
+# 1. Load Clinical Trial Contrast Data
 data_path <- "data/nsclc_trial_contrasts.csv"
 if (!file.exists(data_path)) {
-  cat(" - Data file not found. Generating synthetic trial data ...\n")
-  source("scripts/02_generate_data.R", local = new.env())
+  stop(sprintf("Error: Contrast dataset not found at '%s'. Please ensure the data file exists before running the analysis.", data_path))
 }
 dat <- read.csv(data_path, stringsAsFactors = FALSE)
 

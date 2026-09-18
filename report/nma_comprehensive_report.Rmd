@@ -113,31 +113,6 @@ $$L_{ij} = \begin{cases} -w_{ij} & \text{if } i \neq j \\ \sum_{k \neq i} w_{ik}
 
 The Moore-Penrose pseudoinverse $L^+$ provides the combined treatment estimates and their standard errors across all closed loops simultaneously.
 
----
-
-# The 5-Line Pedagogical Quickstart
-
-The entire analysis can be initiated in 5 lines of R code:
-
-```{r quickstart, eval=TRUE}
-# Line 1: Load netmeta package
-library(netmeta)
-
-# Line 2: Read contrast dataset
-dat <- read.csv("../data/nsclc_trial_contrasts.csv")
-
-# Line 3: Fit NMA model
-nma <- netmeta(TE, seTE, treat1, treat2, studlab, data = dat, sm = "HR", ref = "Chemo")
-
-# Line 4: Generate Network Graph
-netgraph(nma, points = TRUE, col = "#2b6cb0", plastic = FALSE, thickness = "number.of.studies")
-
-# Line 5: View League Table (Random-Effects)
-knitr::kable(netleague(nma, digits = 2)$random, caption = "Pairwise League Table (Random-Effects)")
-```
-
----
-
 # Evidence Network Geometry
 
 The geometry plot displays the topology of the clinical evidence base. Node diameters reflect total patient enrollment, line thickness reflects the volume of direct trial comparisons, and shaded polygons indicate multi-arm studies.

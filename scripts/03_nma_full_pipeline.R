@@ -187,14 +187,14 @@ colors_nodes <- c(
 
 # --- FIGURE 1: Publication Network Geometry Plot ---
 cat("\n[RENDERING FIGURE 1: Network Geometry Graph (300 DPI)]\n")
-png("outputs/figures/01_network_geometry.png", width = 2800, height = 2400, res = 300)
-par(mar = c(2, 2, 3, 2))
+png("outputs/figures/01_network_geometry.png", width = 3000, height = 2600, res = 300)
+par(mar = c(4.6, 2.5, 3.8, 2.5))
 
-# Compute total sample size per node for scaled point size
+# Compute total sample size per node for scaled prominent point size
 pts_size <- sapply(nma$trts, function(t) {
   sum(dat$n_treat1[dat$treat1 == t], dat$n_treat2[dat$treat2 == t], na.rm = TRUE)
 })
-pts_cex <- 1.8 + (pts_size / max(pts_size)) * 2.2
+pts_cex <- 6.5 + (pts_size / max(pts_size)) * 4.5
 
 netgraph(
   nma,
@@ -204,22 +204,30 @@ netgraph(
   col = "#718096",
   plastic = FALSE,
   thickness = "number.of.studies",
-  lwd.max = 7,
-  lwd.min = 1.5,
-  cex = 1.2,
-  offset = 0.035,
+  lwd.max = 7.5,
+  lwd.min = 2,
+  cex = 1.3,
+  offset = 0.045,
   multiarm = TRUE,
-  col.multiarm = "#CBD5E0",
-  main = "Evidence Network Geometry: First-Line NSCLC Overall Survival",
-  sub = "Node diameter ~ patient enrollment | Line thickness ~ number of direct trials"
+  col.multiarm = "#E2E8F0",
+  main = "Evidence Network Geometry: First-Line NSCLC Overall Survival"
 )
-legend("bottomleft", 
-       legend = c("1 Trial", "3 Trials", "5+ Trials"), 
-       lwd = c(1.5, 4, 7), 
+mtext("Node diameter proportional to sample size | Line thickness proportional to trial count", 
+      side = 3, line = 0.5, cex = 1.0, col = "#4A5568")
+
+# Horizontal centered legend at bottom eliminates any node/label overlap
+legend("bottom", 
+       legend = c("1 Trial", "2-3 Trials", "5+ Trials"), 
+       lwd = c(2, 4.5, 7.5), 
        col = "#718096", 
-       bty = "n", 
-       title = "Direct Evidence Base", 
-       cex = 0.9)
+       horiz = TRUE,
+       bty = "o", 
+       box.col = "#CBD5E0",
+       bg = "#FFFFFFEE",
+       title = "Direct Evidence Base (Line Thickness)", 
+       cex = 0.95,
+       inset = c(0, -0.01),
+       xpd = TRUE)
 dev.off()
 
 # --- FIGURE 2: Publication Forest Plot vs Reference (Chemo) ---
@@ -281,12 +289,13 @@ ggsave("outputs/figures/03_pscore_ranking.png", plot = p_rank, width = 10, heigh
 
 # --- FIGURE 4: Local Inconsistency via Node-Splitting Forest Plot ---
 cat("[RENDERING FIGURE 4: Node-Splitting Forest Plot (300 DPI)]\n")
-png("outputs/figures/04_netsplit_inconsistency.png", width = 3400, height = 2800, res = 300)
+# Enlarged dimensions (4600px height) ensure all comparisons and axis values are fully visible
+png("outputs/figures/04_netsplit_inconsistency.png", width = 3400, height = 4600, res = 300)
 forest(
   ns,
   pooled = "random",
   fontsize = 9,
-  spacing = 1.1,
+  spacing = 1.05,
   digits = 2,
   smlab = "Hazard Ratio (95% CI)\nDirect vs Indirect vs Network"
 )
@@ -294,8 +303,17 @@ dev.off()
 
 # --- FIGURE 5: Net Heat Plot (Inconsistency Matrix) ---
 cat("[RENDERING FIGURE 5: Net Heat Plot (300 DPI)]\n")
-png("outputs/figures/05_netheat_plot.png", width = 2800, height = 2400, res = 300)
+# Patch netmeta:::va.image to expand right margin so the vertical color bar legend is never clipped
+my_va <- netmeta:::va.image
+body(my_va)[[16]] <- substitute(oldpar <- par(mar = c(1.5, 1.5 + sc, 2.5 + sc, 5.5)))
+unlockBinding("va.image", asNamespace("netmeta"))
+assign("va.image", my_va, envir = asNamespace("netmeta"))
+lockBinding("va.image", asNamespace("netmeta"))
+
+png("outputs/figures/05_netheat_plot.png", width = 3600, height = 3200, res = 300, pointsize = 11)
 netheat(nma, random = TRUE)
+mtext("Net Heat Plot: Matrix of Inconsistency and Contribution", 
+      side = 3, line = -1.5, cex = 1.3, font = 2, col = "#1A365D", outer = TRUE)
 dev.off()
 
 # --- FIGURE 6: Comparison-Adjusted Funnel Plot (Small-Study Effects) ---

@@ -30,8 +30,9 @@ cat("===========================================================================
 analysis_modules <- list(
   list(file = "scripts/analyses/01_fit_nma_model.R",      name = "Model Estimation & Heterogeneity Assessment"),
   list(file = "scripts/analyses/02_treatment_rankings.R", name = "Treatment Hierarchy & P-Scores (outputs/tables/treatment_rankings.csv)"),
-  list(file = "scripts/analyses/03_league_table.R",       name = "Dual-Model League Table (CSV & Formatted HTML)"),
-  list(file = "scripts/analyses/04_inconsistency_tests.R",name = "Global Q Decomposition & Inconsistency Table")
+  list(file = "scripts/analyses/03_league_table.R",       name = "Dual-Model League Table (CSV Matrix)"),
+  list(file = "scripts/analyses/04_inconsistency_tests.R",name = "Global Q Decomposition & Inconsistency Table"),
+  list(file = "scripts/analyses/05_league_table_html.R",  name = "Formatted Interactive HTML League Table")
 )
 
 for (idx in seq_along(analysis_modules)) {

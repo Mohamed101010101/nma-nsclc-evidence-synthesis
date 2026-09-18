@@ -265,8 +265,9 @@ c:/Users/Computech4/Desktop/R code/
 │   ├── analyses/                          # Statistical Analyses & Data Tables Engine
 │   │   ├── 01_fit_nma_model.R             # Model estimation, network parameters & tau2/I2
 │   │   ├── 02_treatment_rankings.R        # P-scores hierarchy & outputs/tables/treatment_rankings.csv
-│   │   ├── 03_league_table.R              # Pairwise comparisons CSV & publication formatted HTML table
-│   │   └── 04_inconsistency_tests.R       # Cochran's Q decomposition & inconsistency_statistics.csv
+│   │   ├── 03_league_table.R              # Pairwise comparisons CSV matrix export
+│   │   ├── 04_inconsistency_tests.R       # Cochran's Q decomposition & inconsistency_statistics.csv
+│   │   └── 05_league_table_html.R         # Formatted interactive HTML league table generator
 │   ├── designs/                           # Dedicated Publication Figure Designs (300 DPI)
 │   │   ├── fig01_network_geometry.R       # Design: Figure 1 Network Geometry Plot
 │   │   ├── fig02_forest_plot.R            # Design: Figure 2 Reference Forest Plot vs Chemo
@@ -317,6 +318,7 @@ Rscript scripts/analyses/01_fit_nma_model.R
 Rscript scripts/analyses/02_treatment_rankings.R
 Rscript scripts/analyses/03_league_table.R
 Rscript scripts/analyses/04_inconsistency_tests.R
+Rscript scripts/analyses/05_league_table_html.R
 
 # Generate specific publication figure design (Figure 01 to 07):
 Rscript scripts/designs/fig01_network_geometry.R

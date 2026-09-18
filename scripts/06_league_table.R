@@ -1,0 +1,282 @@
+# ==============================================================================
+# Script: 06_league_table.R
+# Purpose: Full Pairwise Comparisons League Table (CSV, HTML, & Visual Matrix)
+# Outputs: outputs/tables/league_table_random_common.csv
+#          outputs/tables/league_table_formatted.html
+#          outputs/figures/07_league_table_figure.png (300 DPI Publication Figure)
+# Package: netmeta & ggplot2
+# ==============================================================================
+
+suppressPackageStartupMessages({
+  library(netmeta)
+  library(ggplot2)
+})
+
+cat("\n======================================================================\n")
+cat(" [ANALYSIS 4/7] LEAGUE TABLE: DUAL-MODEL ALL-PAIRWISE COMPARISONS\n")
+cat("======================================================================\n")
+
+# 1. Load Clinical Trial Contrast Data
+data_path <- "data/nsclc_trial_contrasts.csv"
+if (!file.exists(data_path)) {
+  stop(sprintf("Data file not found at: %s. Please run scripts/02_generate_data.R first.", data_path))
+}
+dat <- read.csv(data_path, stringsAsFactors = FALSE)
+cat(sprintf(" - Loaded contrast dataset: %d comparisons across %d trials\n",
+            nrow(dat), length(unique(dat$studlab))))
+
+# 2. Fit Frequentist Graph-Theoretical Model
+nma <- netmeta(
+  TE = TE,
+  seTE = seTE,
+  treat1 = treat1,
+  treat2 = treat2,
+  studlab = studlab,
+  data = dat,
+  sm = "HR",
+  reference.group = "Chemo",
+  common = TRUE,
+  random = TRUE,
+  tol.multiarm = 0.005,
+  details.chkmultiarm = FALSE
+)
+
+# 3. Determine Ordering by Hierarchy (P-scores)
+rk <- netrank(nma, small.values = "good")
+pscores_rand <- rk$ranking.random
+trt_order <- names(sort(pscores_rand, decreasing = TRUE))
+
+# 4. Construct Dual-Model League Table
+# Lower triangle: Random-effects model HR [95% CI]
+# Upper triangle: Common-effects model HR [95% CI]
+lg <- netleague(nma, digits = 2, seq = trt_order)
+
+dir.create("outputs/tables", recursive = TRUE, showWarnings = FALSE)
+output_csv <- "outputs/tables/league_table_random_common.csv"
+write.csv(lg$random, output_csv)
+cat(sprintf(" - Exported raw league matrix CSV to: %s\n", output_csv))
+
+# 5. Export Publication-Formatted HTML League Table
+output_html <- "outputs/tables/league_table_formatted.html"
+html_table <- paste0(
+  "<div style='font-family: Arial, sans-serif; margin: 20px 0;'>\n",
+  "<h3 style='color: #1a365d; text-align: center;'>Table: League Table of Pairwise Treatment Comparisons (Hazard Ratios [95% CI])</h3>\n",
+  "<p style='text-align: center; color: #4a5568; font-size: 0.9em;'>Treatments ordered by hierarchy (P-scores) from top-left (best) to bottom-right (worst).<br>",
+  "<b>Lower Triangle:</b> Random-Effects Model | <b>Upper Triangle:</b> Common-Effects Model | <b>Bold:</b> Significant (p < 0.05)</p>\n",
+  "<table style='border-collapse: collapse; margin: 0 auto; width: 95%; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden;'>\n",
+  "  <thead>\n    <tr style='background-color: #2b6cb0; color: white; text-align: center; font-weight: bold;'>\n",
+  "      <th style='padding: 12px; border: 1px solid #cbd5e0;'>Treatment</th>\n",
+  paste0(sprintf("      <th style='padding: 12px; border: 1px solid #cbd5e0;'>%s</th>\n", trt_order), collapse = ""),
+  "    </tr>\n  </thead>\n  <tbody>\n"
+)
+
+mat <- lg$random
+for (i in 1:nrow(mat)) {
+  row_html <- sprintf("    <tr style='background-color: %s; text-align: center;'>\n", ifelse(i %% 2 == 0, "#f7fafc", "#ffffff"))
+  row_html <- paste0(row_html, sprintf("      <td style='padding: 10px; font-weight: bold; background-color: #edf2f7; border: 1px solid #cbd5e0;'>%s</td>\n", rownames(mat)[i]))
+  for (j in 1:ncol(mat)) {
+    val <- mat[i, j]
+    is_diag <- (i == j)
+    cell_style <- if (is_diag) {
+      "padding: 10px; font-weight: bold; background-color: #bee3f8; color: #2b6cb0; border: 1px solid #cbd5e0;"
+    } else {
+      "padding: 10px; border: 1px solid #cbd5e0; font-size: 0.95em;"
+    }
+    row_html <- paste0(row_html, sprintf("      <td style='%s'>%s</td>\n", cell_style, val))
+  }
+  row_html <- paste0(row_html, "    </tr>\n")
+  html_table <- paste0(html_table, row_html)
+}
+
+html_table <- paste0(
+  html_table,
+  "  </tbody>\n</table>\n",
+  "<p style='font-size: 0.85em; color: #718096; text-align: center; margin-top: 8px;'>",
+  "HR < 1 favors column-defining treatment in lower triangle, and row-defining treatment in upper triangle.",
+  "</p>\n</div>"
+)
+
+writeLines(html_table, output_html)
+cat(sprintf(" - Exported formatted HTML league table to: %s\n", output_html))
+
+# 6. Render Publication League Table Matrix Figure (300 DPI)
+dir.create("outputs/figures", recursive = TRUE, showWarnings = FALSE)
+output_fig <- "outputs/figures/07_league_table_figure.png"
+cat(sprintf("\n - Rendering Figure 7 to: %s ...\n", output_fig))
+
+n_trts <- length(trt_order)
+mat_rnd <- lg$random
+pval_rnd <- nma$pval.random[trt_order, trt_order]
+
+trt_meta <- list(
+  "IO_Chemo"  = list(name = "IO + Chemo", class = "IO Combo", pscore = sprintf("%.1f%%", pscores_rand["IO_Chemo"] * 100), rank = "Rank 1"),
+  "TKI_Chemo" = list(name = "TKI + Chemo", class = "Targeted Combo", pscore = sprintf("%.1f%%", pscores_rand["TKI_Chemo"] * 100), rank = "Rank 2"),
+  "Dual_IO"   = list(name = "Dual IO", class = "Dual Checkpoint", pscore = sprintf("%.1f%%", pscores_rand["Dual_IO"] * 100), rank = "Rank 3"),
+  "IO_Mono"   = list(name = "IO Monotherapy", class = "Anti-PD-(L)1", pscore = sprintf("%.1f%%", pscores_rand["IO_Mono"] * 100), rank = "Rank 4"),
+  "TKI"       = list(name = "TKI Monotherapy", class = "Targeted Mono", pscore = sprintf("%.1f%%", pscores_rand["TKI"] * 100), rank = "Rank 5"),
+  "Chemo"     = list(name = "Chemotherapy", class = "Standard Control", pscore = sprintf("%.1f%%", pscores_rand["Chemo"] * 100), rank = "Rank 6")
+)
+
+cells_df <- data.frame()
+
+for (i in 1:n_trts) {
+  for (j in 1:n_trts) {
+    row_trt <- trt_order[i]
+    col_trt <- trt_order[j]
+    cell_type <- if (i == j) "diagonal" else if (i > j) "lower" else "upper"
+    
+    tag_text <- ""
+    hr_text <- ""
+    ci_text <- ""
+    bg_color <- "#FFFFFF"
+    hr_color <- "#1E293B"
+    ci_color <- "#64748B"
+    tag_color <- "#94A3B8"
+    hr_size <- 4.6
+    hr_fontface <- "bold"
+    
+    val_str <- mat_rnd[i, j]
+    
+    if (cell_type == "diagonal") {
+      meta_info <- trt_meta[[row_trt]]
+      tag_text <- meta_info$class
+      d_name <- meta_info$name
+      if (d_name == "IO Monotherapy") d_name <- "IO\nMonotherapy"
+      if (d_name == "TKI Monotherapy") d_name <- "TKI\nMonotherapy"
+      if (d_name == "Chemotherapy") d_name <- "Chemo-\ntherapy"
+      
+      hr_text <- d_name
+      ci_text <- paste0(meta_info$rank, " • P-Score: ", meta_info$pscore)
+      bg_color <- "#1E3A8A" # Deep Navy
+      hr_color <- "#FFFFFF"
+      ci_color <- "#FDE047" # Crisp Golden Yellow
+      tag_color <- "#93C5FD" # Soft light blue
+      hr_size <- 4.8
+    } else if (cell_type == "lower") {
+      # Lower triangle: Network Random Effects (Column vs Row)
+      clean_v <- gsub(";", " –", val_str)
+      parts <- strsplit(clean_v, " \\[")[[1]]
+      hr_text <- paste0("HR ", parts[1])
+      ci_text <- paste0("95% CI: ", gsub("\\]", "", parts[2]))
+      
+      p_val <- pval_rnd[i, j]
+      is_sig <- (!is.na(p_val) && p_val < 0.05)
+      
+      if (is_sig) {
+        bg_color <- "#DCFCE7" # Soft Mint Green
+        hr_color <- "#14532D" # Deep Forest Green
+        ci_color <- "#166534"
+        tag_color <- "#15803D"
+        tag_text <- "Network ★ p < 0.05"
+      } else {
+        bg_color <- "#F8FAFC" # Soft Neutral Slate
+        hr_color <- "#334155"
+        ci_color <- "#64748B"
+        tag_color <- "#94A3B8"
+        tag_text <- "Network (Random)"
+      }
+    } else if (cell_type == "upper") {
+      # Upper triangle: Direct pairwise RCT evidence (Row vs Column)
+      if (val_str == "." || is.na(val_str)) {
+        tag_text <- "Direct Evidence"
+        hr_text <- "—"
+        ci_text <- "No direct head-to-head"
+        bg_color <- "#F1F5F9"
+        hr_color <- "#94A3B8"
+        ci_color <- "#94A3B8"
+        tag_color <- "#CBD5E1"
+        hr_size <- 4.2
+        hr_fontface <- "plain"
+      } else {
+        tag_text <- "Direct Evidence (RCT)"
+        clean_v <- gsub(";", " –", val_str)
+        parts <- strsplit(clean_v, " \\[")[[1]]
+        hr_text <- paste0("HR ", parts[1])
+        ci_text <- paste0("95% CI: ", gsub("\\]", "", parts[2]))
+        bg_color <- "#EFF6FF" # Soft pastel blue
+        hr_color <- "#1E40AF"
+        ci_color <- "#2563EB"
+        tag_color <- "#3B82F6"
+      }
+    }
+    
+    cells_df <- rbind(cells_df, data.frame(
+      Row = i,
+      Col = j,
+      CellType = cell_type,
+      Tag = tag_text,
+      HR = hr_text,
+      CI = ci_text,
+      BG = bg_color,
+      HRColor = hr_color,
+      CIColor = ci_color,
+      TagColor = tag_color,
+      HRSize = hr_size,
+      HRFontface = hr_fontface,
+      stringsAsFactors = FALSE
+    ))
+  }
+}
+
+cells_df$X <- cells_df$Col
+cells_df$Y <- n_trts - cells_df$Row + 1
+
+axis_labels <- c("IO + Chemo", "TKI + Chemo", "Dual IO", "IO Mono", "TKI Mono", "Chemo")
+
+p_league <- ggplot(cells_df) +
+  geom_rect(aes(
+    xmin = X - 0.47, xmax = X + 0.47,
+    ymin = Y - 0.47, ymax = Y + 0.47,
+    fill = BG
+  ), color = "#CBD5E1", linewidth = 0.8) +
+  scale_fill_identity() +
+  geom_text(aes(x = X, y = Y + 0.28, label = Tag, color = TagColor),
+            size = 2.6, fontface = "bold") +
+  geom_text(aes(x = X, y = ifelse(CellType == "diagonal", Y + 0.02, Y + 0.03), 
+                label = HR, color = HRColor,
+                size = HRSize, fontface = HRFontface), lineheight = 0.95) +
+  geom_text(aes(x = X, y = Y - 0.26, label = CI, color = CIColor),
+            size = 2.85, fontface = "plain") +
+  scale_size_identity() +
+  scale_color_identity() +
+  scale_x_continuous(
+    breaks = 1:n_trts,
+    labels = axis_labels,
+    position = "top",
+    expand = expansion(mult = c(0.02, 0.02))
+  ) +
+  scale_y_continuous(
+    breaks = 1:n_trts,
+    labels = rev(axis_labels),
+    expand = expansion(mult = c(0.02, 0.02))
+  ) +
+  coord_fixed() +
+  labs(
+    title = "League Table of Pairwise Treatment Effects (Network vs Direct Evidence)",
+    subtitle = "Treatments ordered by clinical hierarchy (P-scores) from top-left (best) to bottom-right (worst)",
+    caption = paste0(
+      "Reading Guide & Publication Conventions:\n",
+      "• Lower Triangle (Green / Neutral): Network Meta-Analysis estimates from Random-Effects model (Column vs Row treatment).\n",
+      "  Hazard Ratio (HR) < 1.0 indicates superiority of the higher-ranked Column treatment over the Row treatment.\n",
+      "• Green Shading (★): Denotes statistically significant superior efficacy at the p < 0.05 threshold (95% CI excludes 1.0).\n",
+      "• Upper Triangle (Light Blue): Direct pairwise meta-analysis estimates from Head-to-Head RCTs (dashes indicate purely indirect links).\n",
+      "• Diagonal (Deep Navy): Treatment node names with their overall clinical hierarchy rank and P-score."
+    )
+  ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    plot.background = element_rect(fill = "#FFFFFF", color = NA),
+    panel.background = element_rect(fill = "#FFFFFF", color = NA),
+    panel.grid = element_blank(),
+    plot.title = element_text(face = "bold", size = 16, color = "#0F172A", hjust = 0.5, margin = margin(b = 6)),
+    plot.subtitle = element_text(size = 11.5, color = "#475569", hjust = 0.5, margin = margin(b = 16)),
+    plot.caption = element_text(size = 9.2, color = "#334155", hjust = 0, lineheight = 1.38, margin = margin(t = 16)),
+    axis.title = element_blank(),
+    axis.text.x.top = element_text(size = 11, face = "bold", color = "#1E293B", margin = margin(b = 8)),
+    axis.text.y = element_text(size = 11, face = "bold", color = "#1E293B", margin = margin(r = 8)),
+    plot.margin = margin(t = 20, r = 25, b = 20, l = 25)
+  )
+
+ggsave(output_fig, plot = p_league, width = 13.5, height = 13.5, dpi = 300)
+
+cat(sprintf(" [SUCCESS] League Table and Figure 7 saved cleanly: %s\n\n", output_fig))

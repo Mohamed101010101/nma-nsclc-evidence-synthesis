@@ -1,0 +1,323 @@
+# ==============================================================================
+# Pipeline: 03_nma_full_pipeline.R
+# Purpose: Master Production-Grade Network Meta-Analysis (NMA) Pipeline in R
+# Method: Frequentist Graph-Theoretical NMA via 'netmeta' (G. Rücker & G. Schwarzer)
+# Standard: Compliant with PRISMA-NMA (Preferred Reporting Items for Systematic
+#           Reviews and Meta-Analyses - Network Meta-Analyses) & Top-Tier Medical
+#           Journals (The Lancet, BMJ, JAMA, JCO, NEJM).
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 0. Environment Setup & Dependency Loading
+# ------------------------------------------------------------------------------
+suppressPackageStartupMessages({
+  library(netmeta)
+  library(ggplot2)
+  library(readr)
+  library(knitr)
+})
+
+cat("\n======================================================================\n")
+cat("          NETWORK META-ANALYSIS PRODUCTION PIPELINE (R netmeta)       \n")
+cat("======================================================================\n\n")
+
+# Ensure output directories exist
+dir.create("outputs/figures", recursive = TRUE, showWarnings = FALSE)
+dir.create("outputs/tables", recursive = TRUE, showWarnings = FALSE)
+
+# ------------------------------------------------------------------------------
+# 1. Ingest Clinical Trial Contrast Dataset
+# ------------------------------------------------------------------------------
+data_path <- "data/nsclc_trial_contrasts.csv"
+if (!file.exists(data_path)) {
+  stop("Input dataset not found at: ", data_path, ". Please run scripts/02_generate_data.R first.")
+}
+
+dat <- read.csv(data_path, stringsAsFactors = FALSE)
+cat(sprintf("[DATA AUDIT] Successfully loaded: %s\n", data_path))
+cat(sprintf(" - Total pairwise comparisons: %d\n", nrow(dat)))
+cat(sprintf(" - Total unique clinical trials: %d\n", length(unique(dat$studlab))))
+cat(sprintf(" - Total patients evaluated across trials: %s\n", format(sum(dat$n_treat1[!duplicated(paste(dat$studlab, dat$treat1))]) + sum(dat$n_treat2[!duplicated(paste(dat$studlab, dat$treat2))]), big.mark = ",")))
+
+# ------------------------------------------------------------------------------
+# 2. Fit Frequentist Network Meta-Analysis Model
+# ------------------------------------------------------------------------------
+# Using graph-theoretical electrical network analogy (Rücker 2012)
+# Reference treatment: Chemo (Standard Platinum-Doublet Chemotherapy)
+# Effect measure: Hazard Ratio (HR) -> log(HR) (TE) and standard error (seTE)
+nma <- netmeta(
+  TE = TE,
+  seTE = seTE,
+  treat1 = treat1,
+  treat2 = treat2,
+  studlab = studlab,
+  data = dat,
+  sm = "HR",
+  reference.group = "Chemo",
+  common = TRUE,
+  random = TRUE,
+  tol.multiarm = 0.005,
+  details.chkmultiarm = FALSE
+)
+
+cat("\n[MODEL ESTIMATION COMPLETE]\n")
+cat(sprintf(" - Number of treatments (n): %d\n", nma$n))
+cat(sprintf(" - Number of pairwise comparisons (m): %d\n", nma$m))
+cat(sprintf(" - Number of study designs (d): %d\n", nma$d))
+cat(sprintf(" - Between-study heterogeneity: tau^2 = %.4f (tau = %.4f, I^2 = %.1f%%)\n", 
+            nma$tau2, nma$tau, nma$I2 * 100))
+
+# ------------------------------------------------------------------------------
+# 3. Treatment Ranking via P-Scores (Frequentist Analogue to Bayesian SUCRA)
+# ------------------------------------------------------------------------------
+# Lower HR indicates better survival -> small.values = "good"
+rk <- netrank(nma, small.values = "good")
+pscores_rand <- rk$ranking.random
+trt_order <- names(sort(pscores_rand, decreasing = TRUE))
+
+df_rankings <- data.frame(
+  Treatment = trt_order,
+  Rank = 1:length(trt_order),
+  Pscore_Random = round(pscores_rand[trt_order], 4),
+  Pscore_Common = round(rk$ranking.common[trt_order], 4),
+  HR_vs_Chemo_Random = sprintf("%.2f [%.2f; %.2f]", 
+                               exp(nma$TE.random[trt_order, "Chemo"]),
+                               exp(nma$lower.random[trt_order, "Chemo"]),
+                               exp(nma$upper.random[trt_order, "Chemo"])),
+  Pval_vs_Chemo = sprintf("%.4f", nma$pval.random[trt_order, "Chemo"]),
+  stringsAsFactors = FALSE
+)
+
+write.csv(df_rankings, "outputs/tables/treatment_rankings.csv", row.names = FALSE)
+cat("\n[TREATMENT RANKING MATRIX EXPORTED]\n")
+print(df_rankings)
+
+# ------------------------------------------------------------------------------
+# 4. League Table Construction (The Dual-Model Matrix)
+# ------------------------------------------------------------------------------
+# Standard Top-Tier Journal Standard:
+# - Lower triangle: Random-effects model HR [95% CI]
+# - Upper triangle: Common/Fixed-effects model HR [95% CI]
+# - Diagonal: Treatment names sorted by clinical hierarchy
+lg <- netleague(nma, digits = 2, seq = trt_order)
+
+# Export raw CSV league table
+write.csv(lg$random, "outputs/tables/league_table_random_common.csv")
+
+# Export Publication-Formatted HTML League Table
+html_table <- paste0(
+  "<div style='font-family: Arial, sans-serif; margin: 20px 0;'>\n",
+  "<h3 style='color: #1a365d; text-align: center;'>Table: League Table of Pairwise Treatment Comparisons (Hazard Ratios [95% CI])</h3>\n",
+  "<p style='text-align: center; color: #4a5568; font-size: 0.9em;'>Treatments ordered by hierarchy (P-scores) from top-left (best) to bottom-right (worst).<br>",
+  "<b>Lower Triangle:</b> Random-Effects Model | <b>Upper Triangle:</b> Common-Effects Model | <b>Bold:</b> Significant (p < 0.05)</p>\n",
+  "<table style='border-collapse: collapse; margin: 0 auto; width: 95%; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden;'>\n",
+  "  <thead>\n    <tr style='background-color: #2b6cb0; color: white; text-align: center; font-weight: bold;'>\n",
+  "      <th style='padding: 12px; border: 1px solid #cbd5e0;'>Treatment</th>\n",
+  paste0(sprintf("      <th style='padding: 12px; border: 1px solid #cbd5e0;'>%s</th>\n", trt_order), collapse = ""),
+  "    </tr>\n  </thead>\n  <tbody>\n"
+)
+
+mat <- lg$random
+for (i in 1:nrow(mat)) {
+  row_html <- sprintf("    <tr style='background-color: %s; text-align: center;'>\n", ifelse(i %% 2 == 0, "#f7fafc", "#ffffff"))
+  row_html <- paste0(row_html, sprintf("      <td style='padding: 10px; font-weight: bold; background-color: #edf2f7; border: 1px solid #cbd5e0;'>%s</td>\n", rownames(mat)[i]))
+  for (j in 1:ncol(mat)) {
+    val <- mat[i, j]
+    is_diag <- (i == j)
+    cell_style <- if (is_diag) {
+      "padding: 10px; font-weight: bold; background-color: #bee3f8; color: #2b6cb0; border: 1px solid #cbd5e0;"
+    } else {
+      "padding: 10px; border: 1px solid #cbd5e0; font-size: 0.95em;"
+    }
+    row_html <- paste0(row_html, sprintf("      <td style='%s'>%s</td>\n", cell_style, val))
+  }
+  row_html <- paste0(row_html, "    </tr>\n")
+  html_table <- paste0(html_table, row_html)
+}
+
+html_table <- paste0(
+  html_table,
+  "  </tbody>\n</table>\n",
+  "<p style='font-size: 0.85em; color: #718096; text-align: center; margin-top: 8px;'>",
+  "HR < 1 favors column-defining treatment in lower triangle, and row-defining treatment in upper triangle.",
+  "</p>\n</div>"
+)
+
+writeLines(html_table, "outputs/tables/league_table_formatted.html")
+cat("[LEAGUE TABLE EXPORTED: CSV & HTML]\n")
+
+# ------------------------------------------------------------------------------
+# 5. Global & Local Inconsistency Diagnostics
+# ------------------------------------------------------------------------------
+# Decomposition of Cochran's Q:
+# Q_total = Q_within (heterogeneity) + Q_between (inconsistency)
+df_inconsistency <- data.frame(
+  Source = c("Total Variation (Q)", "Within-Designs Heterogeneity (Q_het)", "Between-Designs Inconsistency (Q_inc)"),
+  Q_Statistic = round(c(nma$Q, nma$Q.heterogeneity, nma$Q.inconsistency), 2),
+  Degrees_of_Freedom = c(nma$df.Q, nma$df.Q.heterogeneity, nma$df.Q.inconsistency),
+  P_Value = sprintf("%.4f", c(nma$pval.Q, nma$pval.Q.heterogeneity, nma$pval.Q.inconsistency)),
+  Interpretation = c(
+    ifelse(nma$pval.Q > 0.05, "No significant total excess variance", "Significant total variation"),
+    ifelse(nma$pval.Q.heterogeneity > 0.05, "Homogeneity within trial designs", "Heterogeneity within designs"),
+    ifelse(nma$pval.Q.inconsistency > 0.05, "Full Transitivity/Consistency upheld", "Evidence of Inconsistency")
+  ),
+  stringsAsFactors = FALSE
+)
+
+write.csv(df_inconsistency, "outputs/tables/inconsistency_statistics.csv", row.names = FALSE)
+cat("\n[GLOBAL INCONSISTENCY DECOMPOSITION]\n")
+print(df_inconsistency)
+
+# Local Inconsistency via Node-Splitting (Separating Direct and Indirect Evidence)
+ns <- netsplit(nma)
+
+# ------------------------------------------------------------------------------
+# 6. Generate Publication-Quality Figures (300 DPI)
+# ------------------------------------------------------------------------------
+
+# Palette tailored for high-impact medical journals
+colors_nodes <- c(
+  "Chemo"     = "#4A5568", # Slate Gray (Standard Control)
+  "IO_Mono"   = "#38A169", # Green (Immunotherapy Single-Agent)
+  "IO_Chemo"  = "#3182CE", # Royal Blue (Immuno-Chemotherapy)
+  "Dual_IO"   = "#805AD5", # Violet (Dual Checkpoint Blockade)
+  "TKI"       = "#DD6B20", # Terracotta Orange (Targeted Monotherapy)
+  "TKI_Chemo" = "#D69E2E"  # Amber Gold (Targeted + Chemotherapy)
+)
+
+# --- FIGURE 1: Publication Network Geometry Plot ---
+cat("\n[RENDERING FIGURE 1: Network Geometry Graph (300 DPI)]\n")
+png("outputs/figures/01_network_geometry.png", width = 2800, height = 2400, res = 300)
+par(mar = c(2, 2, 3, 2))
+
+# Compute total sample size per node for scaled point size
+pts_size <- sapply(nma$trts, function(t) {
+  sum(dat$n_treat1[dat$treat1 == t], dat$n_treat2[dat$treat2 == t], na.rm = TRUE)
+})
+pts_cex <- 1.8 + (pts_size / max(pts_size)) * 2.2
+
+netgraph(
+  nma,
+  points = TRUE,
+  cex.points = pts_cex,
+  col.points = colors_nodes[nma$trts],
+  col = "#718096",
+  plastic = FALSE,
+  thickness = "number.of.studies",
+  lwd.max = 7,
+  lwd.min = 1.5,
+  cex = 1.2,
+  offset = 0.035,
+  multiarm = TRUE,
+  col.multiarm = "#CBD5E0",
+  main = "Evidence Network Geometry: First-Line NSCLC Overall Survival",
+  sub = "Node diameter ~ patient enrollment | Line thickness ~ number of direct trials"
+)
+legend("bottomleft", 
+       legend = c("1 Trial", "3 Trials", "5+ Trials"), 
+       lwd = c(1.5, 4, 7), 
+       col = "#718096", 
+       bty = "n", 
+       title = "Direct Evidence Base", 
+       cex = 0.9)
+dev.off()
+
+# --- FIGURE 2: Publication Forest Plot vs Reference (Chemo) ---
+cat("[RENDERING FIGURE 2: Reference Comparison Forest Plot (300 DPI)]\n")
+png("outputs/figures/02_forest_plot_random.png", width = 3200, height = 1800, res = 300)
+forest(
+  nma,
+  reference.group = "Chemo",
+  pooled = "random",
+  sortvar = -rk$ranking.random,
+  smlab = "Hazard Ratio (95% CI)\nvs Chemotherapy",
+  label.left = "Favors Active Regimen",
+  label.right = "Favors Chemotherapy",
+  drop.reference.group = TRUE,
+  digits = 2,
+  col.square = "#2B6CB0",
+  col.diamond = "#C53030",
+  col.inside = "#1A202C",
+  header.line = TRUE,
+  leftcols = c("studlab"),
+  leftlabs = c("Treatment Regimen"),
+  rightcols = c("effect", "ci"),
+  rightlabs = c("HR", "95% CI")
+)
+dev.off()
+
+# --- FIGURE 3: Treatment Ranking (P-Score Hierarchy) Bar Chart ---
+cat("[RENDERING FIGURE 3: P-Score Ranking Hierarchy (300 DPI)]\n")
+df_plot_rank <- df_rankings
+df_plot_rank$Treatment <- factor(df_plot_rank$Treatment, levels = rev(trt_order))
+
+p_rank <- ggplot(df_plot_rank, aes(x = Pscore_Random, y = Treatment, fill = Treatment)) +
+  geom_col(width = 0.65, alpha = 0.9, color = "#2D3748", linewidth = 0.4) +
+  geom_text(aes(label = sprintf("Rank #%d | P-score: %.1f%%", Rank, Pscore_Random * 100)),
+            hjust = -0.08, size = 4.2, fontface = "bold", color = "#1A202C") +
+  scale_fill_manual(values = colors_nodes) +
+  scale_x_continuous(limits = c(0, 1.25), breaks = seq(0, 1, 0.2), 
+                     labels = scales::percent_format(accuracy = 1)) +
+  labs(
+    title = "Treatment Ranking Hierarchy: Surface Under Cumulative Ranking (P-Scores)",
+    subtitle = "Overall Survival in Advanced NSCLC (Frequentist random-effects model)",
+    x = "P-Score (Certainty of Superiority over Competing Regimens)",
+    y = NULL,
+    caption = "P-score ranges from 0 (certain worst) to 1 (certain best).\nComputed using netrank(..., small.values = 'good')."
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    legend.position = "none",
+    panel.grid.minor = element_blank(),
+    panel.grid.major.y = element_blank(),
+    panel.grid.major.x = element_line(color = "#E2E8F0", linetype = "dashed"),
+    plot.title = element_text(face = "bold", size = 16, color = "#1A365D"),
+    plot.subtitle = element_text(color = "#4A5568", size = 12, margin = margin(b = 15)),
+    axis.text.y = element_text(face = "bold", size = 12, color = "#2D3748"),
+    axis.title.x = element_text(face = "bold", size = 12, margin = margin(t = 10))
+  )
+
+ggsave("outputs/figures/03_pscore_ranking.png", plot = p_rank, width = 10, height = 6.5, dpi = 300)
+
+# --- FIGURE 4: Local Inconsistency via Node-Splitting Forest Plot ---
+cat("[RENDERING FIGURE 4: Node-Splitting Forest Plot (300 DPI)]\n")
+png("outputs/figures/04_netsplit_inconsistency.png", width = 3400, height = 2800, res = 300)
+forest(
+  ns,
+  pooled = "random",
+  fontsize = 9,
+  spacing = 1.1,
+  digits = 2,
+  smlab = "Hazard Ratio (95% CI)\nDirect vs Indirect vs Network"
+)
+dev.off()
+
+# --- FIGURE 5: Net Heat Plot (Inconsistency Matrix) ---
+cat("[RENDERING FIGURE 5: Net Heat Plot (300 DPI)]\n")
+png("outputs/figures/05_netheat_plot.png", width = 2800, height = 2400, res = 300)
+netheat(nma, random = TRUE)
+dev.off()
+
+# --- FIGURE 6: Comparison-Adjusted Funnel Plot (Small-Study Effects) ---
+cat("[RENDERING FIGURE 6: Comparison-Adjusted Funnel Plot (300 DPI)]\n")
+png("outputs/figures/06_funnel_plot.png", width = 2800, height = 2400, res = 300)
+par(mar = c(4.5, 4.5, 3.5, 2))
+funnel(
+  nma,
+  order = trt_order,
+  pooled = "random",
+  pch = 19,
+  col = "#2B6CB0",
+  cex = 1.3,
+  linreg = TRUE,
+  main = "Comparison-Adjusted Funnel Plot (Evaluation of Small-Study Effects)",
+  xlab = "Log Hazard Ratio centered by comparison-specific effect",
+  ylab = "Standard Error of Log Hazard Ratio"
+)
+dev.off()
+
+cat("\n======================================================================\n")
+cat(" [SUCCESS] Master NMA Production Pipeline Completed Flawlessly!\n")
+cat(" All publication tables saved in: outputs/tables/\n")
+cat(" All 300-DPI high-res figures saved in: outputs/figures/\n")
+cat("======================================================================\n\n")

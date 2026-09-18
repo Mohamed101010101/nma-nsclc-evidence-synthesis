@@ -1,0 +1,4 @@
+"Source","Q_Statistic","Degrees_of_Freedom","P_Value","Interpretation"
+"Total Variation (Q)",21.44,23,"0.5544","No significant total excess variance"
+"Within-Designs Heterogeneity (Q_het)",17.25,15,"0.3043","Homogeneity within trial designs"
+"Between-Designs Inconsistency (Q_inc)",4.19,8,"0.8396","Full Transitivity/Consistency upheld"

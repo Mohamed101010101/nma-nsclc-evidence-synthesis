@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 
 <html>
 
@@ -2570,344 +2570,112 @@ Compliance Checklist (Hutton et al. 2015)</h1>
 <strong>PRISMA-NMA (Preferred Reporting Items for Systematic Reviews and
 Meta-Analyses - Network Meta-Analyses Extension)</strong> guideline
 (Hutton et al., <em>Annals of Internal Medicine</em>, 2015). Below is
-the comprehensive 32-item audit verification matrix:</p>
-<table>
+the verification checklist covering the reporting items implemented and evaluated in this analytical portfolio:</p>
+<table style="width:100%;">
 <colgroup>
-<col width="18%" />
-<col width="22%" />
-<col width="18%" />
-<col width="18%" />
-<col width="22%" />
+<col width="8%" />
+<col width="28%" />
+<col width="12%" />
+<col width="52%" />
 </colgroup>
 <thead>
 <tr class="header">
-<th align="left">Section / Topic</th>
-<th align="center">Item #</th>
-<th align="left">PRISMA-NMA Checklist Item Description</th>
-<th align="left">Verification in this Portfolio</th>
+<th align="left">Item</th>
+<th align="left">PRISMA-NMA Section</th>
 <th align="center">Status</th>
+<th align="left">Verification in this Portfolio</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left"><strong>TITLE</strong></td>
-<td align="center"><strong>1</strong></td>
-<td align="left">Identify the report as a systematic review
-incorporating a network meta-analysis.</td>
-<td align="left">Explicitly titled as Frequentist Network Meta-Analysis
-in Advanced NSCLC</td>
-<td align="center"><strong>Fully Met</strong></td>
+<td align="left"><strong>1</strong></td>
+<td align="left">Title</td>
+<td align="center"><span class="badge-custom" style="background-color: #059669; padding: 3px 8px; font-size: 0.8em;">Completed</span></td>
+<td align="left">Explicitly identifies network meta-analysis in advanced NSCLC</td>
 </tr>
 <tr class="even">
-<td align="left"><strong>ABSTRACT</strong></td>
-<td align="center"><strong>2 / S1</strong></td>
-<td align="left">Structured summary (Background, Objectives, Data
-Sources, Study Appraisal, Synthesis, Network Geometry, Findings,
-Rankings, Inconsistency, Certainty, Conclusions).</td>
-<td align="left">Executive Summary &amp; Methodological Highlights with
-P-scores and key HRs</td>
-<td align="center"><strong>Fully Met</strong></td>
+<td align="left"><strong>2</strong></td>
+<td align="left">Abstract</td>
+<td align="center"><span class="badge-custom" style="background-color: #059669; padding: 3px 8px; font-size: 0.8em;">Completed</span></td>
+<td align="left">Structured executive summary with P-scores and key HR estimates</td>
 </tr>
 <tr class="odd">
-<td align="left"><strong>INTRODUCTION</strong></td>
-<td align="center"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="center"></td>
+<td align="left"><strong>3</strong></td>
+<td align="left">Rationale</td>
+<td align="center"><span class="badge-custom" style="background-color: #059669; padding: 3px 8px; font-size: 0.8em;">Completed</span></td>
+<td align="left">Methodological rationale explaining why indirect comparisons are required</td>
 </tr>
 <tr class="even">
-<td align="left"><em>Rationale</em></td>
-<td align="center"><strong>3</strong></td>
-<td align="left">Describe the rationale for the review in the context of
-what is already known, including the need for indirect comparisons.</td>
-<td align="left">Methodological Rationale &amp; Why Frequentist
-Graph-Theoretical NMA</td>
-<td align="center"><strong>Fully Met</strong></td>
+<td align="left"><strong>4</strong></td>
+<td align="left">Objectives</td>
+<td align="center"><span class="badge-custom" style="background-color: #059669; padding: 3px 8px; font-size: 0.8em;">Completed</span></td>
+<td align="left">Clinical Scope: First-line advanced NSCLC, 6 regimens, OS primary endpoint</td>
 </tr>
 <tr class="odd">
-<td align="left"><em>Objectives</em></td>
-<td align="center"><strong>4</strong></td>
-<td align="left">Provide an explicit statement of questions being
-addressed with reference to PICOS.</td>
-<td align="left">Clinical Scope: First-line advanced NSCLC, 6 regimens,
-OS primary endpoint</td>
-<td align="center"><strong>Fully Met</strong></td>
+<td align="left"><strong>6</strong></td>
+<td align="left">Eligibility Criteria</td>
+<td align="center"><span class="badge-custom" style="background-color: #059669; padding: 3px 8px; font-size: 0.8em;">Completed</span></td>
+<td align="left">Phase II/III RCTs in advanced NSCLC without actionable driver mutations</td>
 </tr>
 <tr class="even">
-<td align="left"><strong>METHODS</strong></td>
-<td align="center"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="center"></td>
+<td align="left"><strong>8</strong></td>
+<td align="left">Geometry of Network</td>
+<td align="center"><span class="badge-custom" style="background-color: #059669; padding: 3px 8px; font-size: 0.8em;">Completed</span></td>
+<td align="left"><strong>Figure 1</strong> (Network geometry with weighted nodes and comparison edges)</td>
 </tr>
 <tr class="odd">
-<td align="left"><em>Protocol &amp; Registration</em></td>
-<td align="center"><strong>5</strong></td>
-<td align="left">Indicate if a review protocol exists, if and where it
-can be accessed.</td>
-<td align="left">Fully documented reproducible R pipeline
-(<code>scripts/run_all_pipeline.R</code>)</td>
-<td align="center"><strong>Fully Met</strong></td>
+<td align="left"><strong>12</strong></td>
+<td align="left">Synthesis of Results</td>
+<td align="center"><span class="badge-custom" style="background-color: #059669; padding: 3px 8px; font-size: 0.8em;">Completed</span></td>
+<td align="left">Graph-theoretical frequentist NMA (<code>netmeta</code> Laplacian pseudoinverse)</td>
 </tr>
 <tr class="even">
-<td align="left"><em>Eligibility Criteria</em></td>
-<td align="center"><strong>6</strong></td>
-<td align="left">Specify study characteristics (PICOS, study design,
-follow-up) used as criteria for eligibility.</td>
-<td align="left">Landmark Phase II/III RCTs in advanced NSCLC without
-actionable driver mutations</td>
-<td align="center"><strong>Fully Met</strong></td>
+<td align="left"><strong>14</strong></td>
+<td align="left">Exploration for Inconsistency</td>
+<td align="center"><span class="badge-custom" style="background-color: #059669; padding: 3px 8px; font-size: 0.8em;">Completed</span></td>
+<td align="left">Global <span class="math inline">\(Q_{\text{inc}}\)</span> test + Node-splitting (<strong>Figure 4</strong>) + Net Heat (<strong>Figure 5</strong>)</td>
 </tr>
 <tr class="odd">
-<td align="left"><em>Information Sources</em></td>
-<td align="center"><strong>7</strong></td>
-<td align="left">Describe all information sources (databases with dates
-of coverage, contact with study authors).</td>
-<td align="left">Comprehensive multi-database synthesis (MEDLINE,
-Embase, CENTRAL, ClinicalTrials.gov)</td>
-<td align="center"><strong>Fully Met</strong></td>
+<td align="left"><strong>15</strong></td>
+<td align="left">Risk of Bias within Studies</td>
+<td align="center"><span class="badge-custom" style="background-color: #059669; padding: 3px 8px; font-size: 0.8em;">Completed</span></td>
+<td align="left">Cochrane RoB 2 Traffic Light (<strong>Figure 8</strong>) + Summary Bar (<strong>Figure 9</strong>)</td>
 </tr>
 <tr class="even">
-<td align="left"><em>Search Strategy</em></td>
-<td align="center"><strong>8</strong></td>
-<td align="left">Present full electronic search strategy for at least
-one database, including any limits.</td>
-<td align="left">Targeted Phase II/III first-line systemic NSCLC
-randomized trials (2009–2023)</td>
-<td align="center"><strong>Fully Met</strong></td>
+<td align="left"><strong>16</strong></td>
+<td align="left">Risk of Bias Across Studies</td>
+<td align="center"><span class="badge-custom" style="background-color: #059669; padding: 3px 8px; font-size: 0.8em;">Completed</span></td>
+<td align="left">Comparison-adjusted funnel plot centered on hierarchy (<strong>Figure 6</strong>)</td>
 </tr>
 <tr class="odd">
-<td align="left"><em>Study Selection</em></td>
-<td align="center"><strong>9</strong></td>
-<td align="left">State the process for selecting studies (screening,
-eligibility, included in review).</td>
-<td align="left">Systematic screening yielding 24 landmark RCTs (15,753
-patients)</td>
-<td align="center"><strong>Fully Met</strong></td>
+<td align="left"><strong>21</strong></td>
+<td align="left">Results of Individual Studies</td>
+<td align="center"><span class="badge-custom" style="background-color: #059669; padding: 3px 8px; font-size: 0.8em;">Completed</span></td>
+<td align="left">Complete contrast dataset (<code>data/nsclc_trial_contrasts.csv</code>)</td>
 </tr>
 <tr class="even">
-<td align="left"><em>Data Collection</em></td>
-<td align="center"><strong>10</strong></td>
-<td align="left">Describe method of data extraction from reports and any
-processes for obtaining and confirming data.</td>
-<td align="left">Extraction of contrast HRs, 95% CIs, patient counts,
-covariance structure</td>
-<td align="center"><strong>Fully Met</strong></td>
+<td align="left"><strong>23</strong></td>
+<td align="left">Network Meta-Analysis Results</td>
+<td align="center"><span class="badge-custom" style="background-color: #059669; padding: 3px 8px; font-size: 0.8em;">Completed</span></td>
+<td align="left">Reference forest plot (<strong>Figure 2</strong>) + P-scores (<strong>Figure 3</strong>) + League Table (<strong>Figure 7</strong>)</td>
 </tr>
 <tr class="odd">
-<td align="left"><em>Data Items</em></td>
-<td align="center"><strong>11</strong></td>
-<td align="left">List and define all variables for which data were
-sought and any assumptions made.</td>
-<td align="left">Primary endpoint: Overall Survival Hazard Ratios (<span class="math inline">\(\text{HR}\)</span>) and 95% Confidence
-Intervals</td>
-<td align="center"><strong>Fully Met</strong></td>
+<td align="left"><strong>24</strong></td>
+<td align="left">Confidence in Cumulative Evidence</td>
+<td align="center"><span class="badge-custom" style="background-color: #059669; padding: 3px 8px; font-size: 0.8em;">Completed</span></td>
+<td align="left">Full CINeMA evaluation matrix (<strong>Figure 10</strong> + formatted HTML table)</td>
 </tr>
 <tr class="even">
-<td align="left"><em>Network Geometry</em></td>
-<td align="center"><strong>S1</strong></td>
-<td align="left">Describe methods used to explore the geometry of the
-treatment network and transitivity.</td>
-<td align="left">Graph-theoretical topology, node weighting, comparison
-thickness, multi-arm loops</td>
-<td align="center"><strong>Fully Met</strong></td>
+<td align="left"><strong>25</strong></td>
+<td align="left">Limitations</td>
+<td align="center"><span class="badge-custom" style="background-color: #059669; padding: 3px 8px; font-size: 0.8em;">Completed</span></td>
+<td align="left">Evaluated heterogeneity (<span class="math inline">\(\tau^2\)</span>), open-label designs, and transitivity</td>
 </tr>
 <tr class="odd">
-<td align="left"><em>Risk of Bias in Studies</em></td>
-<td align="center"><strong>12</strong></td>
-<td align="left">Describe methods used for assessing risk of bias of
-individual studies.</td>
-<td align="left">Cochrane Risk of Bias 2 (RoB 2) tool across D1 to D5
-and Overall</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="even">
-<td align="left"><em>Summary Measures</em></td>
-<td align="center"><strong>13</strong></td>
-<td align="left">State the principal summary measures (e.g., risk ratio,
-hazard ratio).</td>
-<td align="left">Natural log Hazard Ratio (<span class="math inline">\(\text{TE} = \ln(\text{HR})\)</span>) and standard
-error (<span class="math inline">\(\text{seTE}\)</span>)</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="odd">
-<td align="left"><em>Planned Synthesis</em></td>
-<td align="center"><strong>14</strong></td>
-<td align="left">Describe the methods of handling data and combining
-results of studies (model type, software).</td>
-<td align="left">Graph-theoretical Laplacian matrix pseudoinverse model
-via <code>netmeta</code> (Rücker 2012)</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="even">
-<td align="left"><em>Multi-Arm Handling</em></td>
-<td align="center"><strong>S2</strong></td>
-<td align="left">Describe methods used to account for correlation in
-multi-arm trials.</td>
-<td align="left">Additivity constraints &amp; positive-definite
-covariance matrix (<code>chkmultiarm</code>)</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="odd">
-<td align="left"><em>Inconsistency Assessment</em></td>
-<td align="center"><strong>S3</strong></td>
-<td align="left">Describe methods used to evaluate the presence of
-inconsistency in the network.</td>
-<td align="left">Global Cochran’s <span class="math inline">\(Q\)</span>
-decomposition, local node-splitting (<code>netsplit</code>), Net Heat
-plot</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="even">
-<td align="left"><em>Risk of Bias Across Studies</em></td>
-<td align="center"><strong>15</strong></td>
-<td align="left">Specify any assessment of risk of bias that may affect
-cumulative evidence (publication bias).</td>
-<td align="left">Comparison-adjusted funnel plot centered on clinical
-hierarchy</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="odd">
-<td align="left"><em>Additional Analyses</em></td>
-<td align="center"><strong>16</strong></td>
-<td align="left">Describe methods of additional analyses (ranking
-metrics, sensitivity analyses).</td>
-<td align="left">Frequentist P-scores (deterministic SUCRA equivalent)
-and dual-model League matrix</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="even">
-<td align="left"><strong>RESULTS</strong></td>
-<td align="center"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td align="left"><em>Study Selection</em></td>
-<td align="center"><strong>17</strong></td>
-<td align="left">Give numbers of studies screened, assessed for
-eligibility, and included in the review.</td>
-<td align="left">24 landmark Phase II/III RCTs synthesizing 15,753
-patients</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="even">
-<td align="left"><em>Study Characteristics</em></td>
-<td align="center"><strong>18</strong></td>
-<td align="left">For each study, present characteristics for which data
-were extracted.</td>
-<td align="left">Summary characteristics table &amp; contrast database
-(<code>data/nsclc_trial_contrasts.csv</code>)</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="odd">
-<td align="left"><em>Risk of Bias in Studies</em></td>
-<td align="center"><strong>19</strong></td>
-<td align="left">Present data on risk of bias of each study and domain
-summary.</td>
-<td align="left"><strong>Figure 8</strong> (RoB 2 Traffic Light Matrix)
-+ <strong>Figure 9</strong> (RoB 2 Summary Bar Chart)</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="even">
-<td align="left"><em>Individual Study Results</em></td>
-<td align="center"><strong>20</strong></td>
-<td align="left">For all outcomes, present simple summary data for each
-intervention group and effect estimates.</td>
-<td align="left">Contrast dataset with reported HRs, 95% CIs, sample
-sizes, and standard errors</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="odd">
-<td align="left"><em>Network Geometry</em></td>
-<td align="center"><strong>S4</strong></td>
-<td align="left">Present network graph of the evidence base with summary
-of characteristics.</td>
-<td align="left"><strong>Figure 1</strong> (Network Geometry with
-weighted nodes and comparison edges)</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="even">
-<td align="left"><em>Synthesis of Results</em></td>
-<td align="center"><strong>21</strong></td>
-<td align="left">Present results of each meta-analysis done, including
-confidence intervals and consistency.</td>
-<td align="left"><strong>Figure 2</strong> (Forest plot vs Chemo) +
-<strong>Figure 3</strong> (P-Score hierarchy) + <strong>Figure
-7</strong> (League Table)</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="odd">
-<td align="left"><em>Exploration for Inconsistency</em></td>
-<td align="center"><strong>S5</strong></td>
-<td align="left">Present results of testing for inconsistency (global
-test, loop-specific, or node-splitting).</td>
-<td align="left">Global <span class="math inline">\(Q_{\text{inc}}\)</span> test (<span class="math inline">\(p = 0.8396\)</span>), <strong>Figure 4</strong>
-(Node-splitting), <strong>Figure 5</strong> (Net Heat)</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="even">
-<td align="left"><em>Risk of Bias Across Studies</em></td>
-<td align="center"><strong>22</strong></td>
-<td align="left">Present results of any assessment of risk of bias
-across studies (publication bias).</td>
-<td align="left"><strong>Figure 6</strong> (Comparison-adjusted funnel
-plot, symmetrical, Egger <span class="math inline">\(p &gt;
-0.10\)</span>)</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="odd">
-<td align="left"><em>Confidence in Cumulative Evidence</em></td>
-<td align="center"><strong>S6</strong></td>
-<td align="left">Present results of evaluation of confidence/certainty
-in cumulative evidence (GRADE/CINeMA).</td>
-<td align="left"><strong>Figure 10</strong> (CINeMA Traffic Light
-Matrix) + Formatted HTML &amp; CSV tables</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="even">
-<td align="left"><strong>DISCUSSION</strong></td>
-<td align="center"></td>
-<td align="left"></td>
-<td align="left"></td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td align="left"><em>Summary of Evidence</em></td>
-<td align="center"><strong>24</strong></td>
-<td align="left">Summarize main findings including the strength of
-evidence for each main outcome.</td>
-<td align="left">Comprehensive efficacy hierarchy: IO combos superior to
-monotherapy and chemo</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="even">
-<td align="left"><em>Limitations</em></td>
-<td align="center"><strong>25</strong></td>
-<td align="left">Discuss limitations at study and outcome level, and at
-review level (imprecision, transitivity).</td>
-<td align="left">Addressed open-label designs (RoB 2 D2) and biomarker
-population indirectness</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="odd">
-<td align="left"><em>Conclusions</em></td>
-<td align="center"><strong>26</strong></td>
-<td align="left">Provide general interpretation of results in context of
-other evidence and implications.</td>
-<td align="left">Clear guidance for first-line oncology regimens based
-on certainty and survival benefit</td>
-<td align="center"><strong>Fully Met</strong></td>
-</tr>
-<tr class="even">
-<td align="left"><strong>FUNDING</strong></td>
-<td align="center"><strong>27</strong></td>
-<td align="left">Describe sources of funding for the systematic review
-and other support.</td>
-<td align="left">Independent biostatistics and evidence synthesis
-research portfolio</td>
-<td align="center"><strong>Fully Met</strong></td>
+<td align="left"><strong>26</strong></td>
+<td align="left">Conclusions</td>
+<td align="center"><span class="badge-custom" style="background-color: #059669; padding: 3px 8px; font-size: 0.8em;">Completed</span></td>
+<td align="left">Clinical interpretation for first-line oncology regimens based on certainty and survival benefit</td>
 </tr>
 </tbody>
 </table>

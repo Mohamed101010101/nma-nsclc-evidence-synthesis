@@ -309,12 +309,13 @@ knitr::kable(df_cin_disp, caption = "Table: Comprehensive CINeMA Methodological 
 
 | Item | PRISMA-NMA Section | Status | Verification in this Portfolio |
 |:-----|:-------------------|:------:|:--------------------------------|
-| **1** | Title | Completed | Explicitly identifies network meta-analysis |
-| **2** | Abstract | Completed | Structured summary with P-scores and key HRs |
-| **3** | Rationale | Completed | Explains why indirect comparisons are required |
-| **6** | Eligibility Criteria | Completed | Phase II/III RCTs in advanced NSCLC |
+| **1** | Title | Completed | Explicitly identifies network meta-analysis in advanced NSCLC |
+| **2** | Abstract | Completed | Structured executive summary with P-scores and key HRs |
+| **3** | Rationale | Completed | Methodological rationale explaining why indirect comparisons are required |
+| **4** | Objectives | Completed | Clinical Scope: First-line advanced NSCLC, 6 regimens, OS primary endpoint |
+| **6** | Eligibility Criteria | Completed | Phase II/III RCTs in advanced NSCLC without actionable driver mutations |
 | **8** | Geometry of Network | Completed | Figure 1 (weighted nodes and edges) |
-| **12** | Synthesis of Results | Completed | Graph-theoretical frequentist NMA (`netmeta`) |
+| **12** | Synthesis of Results | Completed | Graph-theoretical frequentist NMA (`netmeta` Laplacian pseudoinverse) |
 | **14** | Exploration for Inconsistency | Completed | Global $Q$ test + Node-splitting (`netsplit`) + Net Heat (Figure 5) |
 | **15** | Risk of Bias within Studies | Completed | Cochrane RoB 2 Traffic Light (Figure 8) + Summary Bar (Figure 9) |
 | **16** | Risk of Bias Across Studies | Completed | Comparison-adjusted funnel plot (Figure 6) |
@@ -322,6 +323,7 @@ knitr::kable(df_cin_disp, caption = "Table: Comprehensive CINeMA Methodological 
 | **23** | Network Meta-Analysis Results | Completed | Reference forest plot + Dual-model League table (Figure 7) |
 | **24** | Confidence in Cumulative Evidence | Completed | Full CINeMA evaluation matrix (Figure 10 + HTML table) |
 | **25** | Limitations | Completed | Evaluated heterogeneity ($\tau^2$) and design structure |
+| **26** | Conclusions | Completed | Clinical guidance for first-line oncology regimens based on certainty and survival benefit |
 
 ---
 

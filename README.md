@@ -277,8 +277,7 @@ c:/Users/Computech4/Desktop/R code/
 │   │   └── fig07_league_table_matrix.R    # Design: Figure 7 Publication League Table Graphic
 │   ├── 01_quickstart_5lines.R             # 5-line pedagogical quickstart script
 │   ├── 02_generate_data.R                 # Reproducible clinical data generator (exact additivity)
-│   ├── run_all_pipeline.R                 # Master Orchestrator: Runs analyses/ then designs/
-│   └── 03_nma_full_pipeline.R             # Monolithic legacy pipeline (All-in-one script)
+│   └── run_all_pipeline.R                 # Master Orchestrator: Runs analyses/ then designs/
 ├── outputs/
 │   ├── figures/
 │   │   ├── 01_network_geometry.png        # 300 DPI Publication Network Geometry

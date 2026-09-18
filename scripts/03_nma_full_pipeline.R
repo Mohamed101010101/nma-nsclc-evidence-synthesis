@@ -188,7 +188,7 @@ colors_nodes <- c(
 # --- FIGURE 1: Publication Network Geometry Plot ---
 cat("\n[RENDERING FIGURE 1: Network Geometry Graph (300 DPI)]\n")
 png("outputs/figures/01_network_geometry.png", width = 3000, height = 2600, res = 300)
-par(mar = c(4.6, 2.5, 3.8, 2.5))
+par(mar = c(5.2, 2.5, 3.8, 2.5))
 
 # Compute total sample size per node for scaled prominent point size
 pts_size <- sapply(nma$trts, function(t) {
@@ -226,7 +226,7 @@ legend("bottom",
        bg = "#FFFFFFEE",
        title = "Direct Evidence Base (Line Thickness)", 
        cex = 0.95,
-       inset = c(0, -0.01),
+       inset = c(0, -0.045),
        xpd = TRUE)
 dev.off()
 

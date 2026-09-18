@@ -1684,108 +1684,116 @@ Portfolio</h4>
 
 
 <style>
-body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 16px; color: #2d3748; }
-h1, h2, h3 { color: #1a365d; font-weight: 700; }
-.badge-custom { background-color: #2b6cb0; color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.85em; font-weight: 600; display: inline-block; margin-right: 5px; }
-.summary-box { background-color: #ebf8ff; border-left: 5px solid #3182ce; padding: 18px 22px; border-radius: 6px; margin: 25px 0; }
-.arabic-box { direction: rtl; text-align: right; background-color: #f7fafc; border-right: 5px solid #48bb78; padding: 18px 22px; border-radius: 6px; margin: 25px 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 16px; color: #1e293b; line-height: 1.6; }
+h1, h2, h3 { color: #0f172a; font-weight: 700; letter-spacing: -0.02em; }
+.badge-custom { background-color: #1e3a8a; color: white; padding: 5px 12px; border-radius: 14px; font-size: 0.85em; font-weight: 600; display: inline-block; margin-right: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); }
+.summary-box { background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%); border-left: 5px solid #2563eb; padding: 20px 24px; border-radius: 8px; margin: 25px 0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+.highlight-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-left: 5px solid #059669; padding: 20px 24px; border-radius: 8px; margin: 25px 0; }
 table { width: 100%; margin: 20px 0; border-collapse: collapse; }
-th { background-color: #2b6cb0; color: white; text-align: center; padding: 10px; }
-td { padding: 8px 12px; border: 1px solid #e2e8f0; text-align: center; }
+th { background-color: #1e3a8a; color: white; text-align: center; padding: 12px; font-weight: 600; }
+td { padding: 10px 14px; border: 1px solid #e2e8f0; text-align: center; }
 </style>
 <div style="margin-bottom: 25px;">
-<p><span class="badge-custom">R 4.6.1</span> <span class="badge-custom">netmeta v3.6</span> <span class="badge-custom">PRISMA-NMA Compliant</span> <span class="badge-custom">High-Impact Medical Standard</span></p>
+<p><span class="badge-custom">R 4.6.1</span> <span class="badge-custom">netmeta v3.6-1</span> <span class="badge-custom">PRISMA-NMA Compliant</span> <span class="badge-custom">Publication Standard: Lancet | JAMA |
+BMJ</span></p>
 </div>
 <hr />
-<div id="executive-summary-philosophical-hook" class="section level1" number="1">
+<div id="executive-summary-methodological-rationale" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Executive Summary &amp;
-Philosophical Hook</h1>
-<div id="english-executive-summary" class="section level2" number="1.1">
-<h2><span class="header-section-number">1.1</span> English Executive
-Summary</h2>
+Methodological Rationale</h1>
 <div class="summary-box">
-<h3>
-Why Start with Frequentist Network Meta-Analysis?
+<h3 style="margin-top: 0; color: #1e40af;">
+Why Start with Frequentist Graph-Theoretical NMA?
 </h3>
-<p>Because within <strong>5 lines of R code</strong>, an investigator
-can build a complete evidence network, execute indirect treatment
-comparisons, and generate a publication-ready League Table. This allows
-researchers and clinicians to grasp the fundamental mechanics of
-<em>indirect evidence synthesis</em> and <em>transitivity</em> before
-confronting the computational overhead and prior sensitivity of Bayesian
-MCMC modeling.</p>
+<p>Within <strong>5 lines of executable R code</strong>, an investigator
+can build a complete evidence network, execute direct and indirect
+treatment comparisons simultaneously, and generate a publication-grade
+League Table. This analytical architecture allows researchers and
+clinical oncologists to master the foundational principles of
+<em>indirect comparison geometry</em> and <em>transitivity</em> before
+grappling with the computational burdens, convergence diagnostics, and
+prior sensitivity of Bayesian Markov Chain Monte Carlo (MCMC)
+models.</p>
 </div>
 <p>This report presents a comprehensive, publication-grade Network
 Meta-Analysis (NMA) adhering to the <strong>PRISMA-NMA</strong>
 reporting guidelines and formatted to meet the editorial standards of
-high-impact medical journals (<em>The Lancet</em>, <em>BMJ</em>,
-<em>JAMA</em>, <em>NEJM</em>).</p>
-<div id="clinical-scope" class="section level3" number="1.1.1">
-<h3><span class="header-section-number">1.1.1</span> Clinical Scope</h3>
+high-impact medical journals (<em>The Lancet</em>, <em>The New England
+Journal of Medicine</em>, <em>BMJ</em>, <em>JAMA Oncology</em>).</p>
+<div id="clinical-scope-oncology-dataset" class="section level3" number="1.0.1">
+<h3><span class="header-section-number">1.0.1</span> Clinical Scope
+&amp; Oncology Dataset</h3>
 <ul>
-<li><strong>Indication:</strong> First-line systemic therapy for
-advanced Non-Small Cell Lung Cancer (NSCLC).</li>
+<li><strong>Clinical Indication:</strong> First-Line Systemic Therapy
+for Advanced Non-Small Cell Lung Cancer (NSCLC) without actionable
+driver mutations (EGFR/ALK wild-type).</li>
 <li><strong>Primary Endpoint:</strong> Overall Survival (OS) quantified
 as Hazard Ratios (<span class="math inline">\(\text{HR}\)</span>) with
 <span class="math inline">\(95\%\)</span> Confidence Intervals.</li>
-<li><strong>Evidence Base:</strong> 24 Randomized Controlled Trials
-(15,753 patients), including 20 two-arm trials and 4 three-arm
-multi-center Phase III trials.</li>
-<li><strong>Regimens Evaluated:</strong>
+<li><strong>Evidence Base:</strong> 24 landmark Phase II/III Randomized
+Controlled Trials synthesizing <strong>15,753 patients</strong>,
+including 20 two-arm trials and 4 multi-center three-arm trials.</li>
+<li><strong>Competing Systemic Regimens:</strong>
 <ol style="list-style-type: decimal">
 <li><code>Chemo</code>: Platinum-doublet Chemotherapy (Historical
-Standard Reference).</li>
-<li><code>IO_Mono</code>: Anti-PD-(L)1 Monotherapy (e.g., Pembrolizumab,
-Atezolizumab).</li>
+Standard Reference / Anchor Comparator).</li>
+<li><code>IO_Mono</code>: Anti-PD-(L)1 Monotherapy (Pembrolizumab,
+Atezolizumab, Cemiplimab).</li>
 <li><code>IO_Chemo</code>: Immune Checkpoint Inhibitor + Platinum
-Chemotherapy.</li>
-<li><code>Dual_IO</code>: Dual Checkpoint Blockade (Anti-PD-1 +
+Chemotherapy Combination.</li>
+<li><code>Dual_IO</code>: Dual Immune Checkpoint Blockade (Anti-PD-1 +
 Anti-CTLA-4).</li>
 <li><code>TKI</code>: Targeted Tyrosine Kinase Inhibitor Monotherapy
-(EGFR/ALK).</li>
+(EGFR/ALK-targeted control).</li>
 <li><code>TKI_Chemo</code>: Targeted Therapy + Platinum Chemotherapy
-combination.</li>
+Combination.</li>
 </ol></li>
 </ul>
 <hr />
 </div>
-</div>
-<div id="الملخص-التنفيذي-بالعربية" class="section level2" number="1.2">
-<h2><span class="header-section-number">1.2</span> الملخص التنفيذي
-بالعربية</h2>
-<div class="arabic-box">
-<h3>
-لماذا تبدأ بالتحليل التلوي الشبكي التكراري (Frequentist NMA)؟
+<div id="core-methodological-highlights-demonstrated-in-this-portfolio" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Core Methodological
+Highlights Demonstrated in this Portfolio</h2>
+<div class="highlight-box">
+<h3 style="margin-top: 0; color: #065f46;">
+Methodological Mastery &amp; Key Takeaways:
 </h3>
-<p>لأنك تستطيع كتابة <strong>5 أسطر برمجية فقط في R</strong> والحصول
-فوراً على شبكة متكاملة وجداول مقارنة ثنائية (League Tables)، وتفهم منها
-المعنى الرياضي والسريري الحقيقي لـ <strong>“المقارنة غير المباشرة”
-(Indirect Comparison)</strong> دون الغوص أولاً في تعقيدات الرياضيات
-البايزية ومحاكاة سلاسل ماركوف مونت كارلو (MCMC).</p>
-<h4>
-أهم ما يبرزه هذا التقرير:
-</h4>
-<ol>
+<ol style="margin-bottom: 0; padding-left: 20px; line-height: 1.7;">
 <li>
-<strong>تنظيم بيانات البقاء المقارنة:</strong> تحويل قيم معدل الخطر
-(<span class="math inline">\(\text{HR}\)</span>) وفترات الثقة إلى
-لوغاريتم معدل الخطر <span class="math inline">\(\ln(\text{HR})\)</span>
-والخطأ المعياري <span class="math inline">\(\text{seTE}\)</span>.
+<strong>Precise Survival Contrast Transformation:</strong> Robust
+mathematical conversion of trial-reported Hazard Ratios (<span class="math inline">\(\text{HR}\)</span>) and 95% Confidence Intervals
+into symmetric Gaussian log-hazard contrasts (<span class="math inline">\(\text{TE} = \ln(\text{HR})\)</span>) and standard
+errors (<span class="math inline">\(\text{seTE}\)</span>).
 </li>
 <li>
-<strong>المعالجة الرياضية الدقيقة للدراسات متعددة الأذرع (Multi-arm
-trials):</strong> الحفاظ على التباين المشترك الموجب (Positive-definite
-covariance matrix) واتساق التباينات.
+<strong>Multi-Arm Trial Geometry &amp; Correlation Handling:</strong>
+Strict preservation of linear contrast additivity (<span class="math inline">\(\text{TE}_{BC} = \text{TE}_{AC} -
+\text{TE}_{AB}\)</span>) and positive-definite covariance structure
+satisfying the rigorous constraints of
+<code>netmeta::chkmultiarm()</code>.
 </li>
 <li>
-<strong>ترتيب الفاعلية عبر مقياس P-score:</strong> المعادل التكراري لـ
-SUCRA البايزي لتقييم احتمالية تفوق كل علاج.
+<strong>Deterministic Graph-Theoretical Inversion:</strong>
+Implementation of electrical network theory (Rücker 2012) via the
+Laplacian matrix pseudoinverse (<span class="math inline">\(L^+\)</span>), guaranteeing exact analytical
+solutions for common and random-effects models.
 </li>
 <li>
-<strong>فحص فرضية الاتساق (Inconsistency Evaluation):</strong> تفكيك
-إحصائية <span class="math inline">\(Q\)</span> العالمية لشرح التباين
-داخل وخارج التصاميم، واختبار شطر العقد المحلي (Node-splitting) للكشف عن
-أي خلاف بين الأدلة المباشرة وغير المباشرة.
+<strong>Efficacy Ranking via Frequentist P-Scores:</strong> Computation
+of deterministic P-scores (mathematically equivalent to Bayesian SUCRA)
+to rank treatment regimens without MCMC stochastic error.
+</li>
+<li>
+<strong>Comprehensive Transitivity &amp; Inconsistency Suite:</strong>
+Orthogonal decomposition of global variance (<span class="math inline">\(Q = Q_{\text{het}} + Q_{\text{inc}}\)</span>),
+local node-splitting analysis (<code>netsplit</code>) across all closed
+evidence loops, and Net Heat matrix evaluation to isolate inconsistency
+hotspots.
+</li>
+<li>
+<strong>Publication-Grade Visual Assets:</strong> 7 standalone 300 DPI
+high-resolution figures designed specifically to meet the aesthetic and
+typographic requirements of Tier-1 medical journals.
 </li>
 </ol>
 </div>

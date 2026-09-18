@@ -3,16 +3,17 @@
 
 [![R Version](https://img.shields.io/badge/R-v4.6.1-276DC3.svg?logo=R&logoColor=white)](https://www.r-project.org/)
 [![Package: netmeta](https://img.shields.io/badge/netmeta-v3.6--1-blue.svg)](https://cran.r-project.org/package=netmeta)
-[![Methodology](https://img.shields.io/badge/Methodology-Graph--Theoretical%20NMA-darkgreen.svg)](#mathematical--biostatistical-framework)
+[![Methodology](https://img.shields.io/badge/Methodology-Graph--Theoretical%20NMA-darkgreen.svg)](#-mathematical--biostatistical-framework)
 [![Guideline: PRISMA-NMA](https://img.shields.io/badge/PRISMA--NMA-100%25%20Compliant-success.svg)](http://www.prisma-statement.org/Extensions/NetworkMetaAnalysis)
-[![Standard](https://img.shields.io/badge/Journal%20Standard-Lancet%20%7C%20NEJM%20%7C%20BMJ%20%7C%20JAMA-purple.svg)](#publication-gallery)
+[![Standard](https://img.shields.io/badge/Journal%20Standard-Lancet%20%7C%20NEJM%20%7C%20BMJ%20%7C%20JAMA-purple.svg)](#-publication-gallery-300-dpi-visual-exhibits)
+[![Evidence Base](https://img.shields.io/badge/Evidence%20Base-24%20RCTs%20%7C%2015%2C753%20Pts-informational.svg)](#-clinical-research-scenario-advanced-nsclc)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
 ## 📑 Table of Contents
-- [Executive Overview & Pedagogical Hook](#-executive-overview--pedagogical-hook)
-- [الملخص التنفيذي بالعربية (Executive Summary in Arabic)](#-الملخص-التنفيذي-بالعربية-executive-summary-in-arabic)
+- [Executive Overview & Pedagogical Rationale](#-executive-overview--pedagogical-rationale)
+- [Core Biostatistical & Methodological Competencies](#-core-biostatistical--methodological-competencies)
 - [The 5-Line Pedagogical Quickstart](#-the-5-line-pedagogical-quickstart)
 - [Clinical Research Scenario (Advanced NSCLC)](#-clinical-research-scenario-advanced-nsclc)
 - [Mathematical & Biostatistical Framework](#-mathematical--biostatistical-framework)
@@ -22,6 +23,13 @@
   - [4. Frequentist P-Scores (Frequentist SUCRA Equivalent)](#4-frequentist-p-scores-frequentist-sucra-equivalent)
   - [5. The Transitivity & Inconsistency Triad ($Q_{\text{het}}$ vs $Q_{\text{inc}}$)](#5-the-transitivity--inconsistency-triad-q_texthet-vs-q_textinc)
 - [Publication Gallery (300 DPI Visual Exhibits)](#-publication-gallery-300-dpi-visual-exhibits)
+  - [Exhibit 1: Evidence Network Geometry](#exhibit-1-evidence-network-geometry)
+  - [Exhibit 2: Reference Comparison Forest Plot vs Chemotherapy](#exhibit-2-reference-comparison-forest-plot-vs-chemotherapy)
+  - [Exhibit 3: Treatment Hierarchy (P-Scores / SUCRA)](#exhibit-3-treatment-hierarchy-p-scores--sucra)
+  - [Exhibit 4: Dual-Model League Table Matrix (300 DPI Figure)](#exhibit-4-dual-model-league-table-matrix)
+  - [Exhibit 5: Local Inconsistency via Node-Splitting (`netsplit`)](#exhibit-5-local-inconsistency-via-node-splitting-netsplit)
+  - [Exhibit 6: Net Heat Matrix Plot](#exhibit-6-net-heat-matrix-plot)
+  - [Exhibit 7: Comparison-Adjusted Funnel Plot](#exhibit-7-comparison-adjusted-funnel-plot)
 - [Repository Architecture](#-repository-architecture)
 - [Reproducibility & Execution Guide](#-reproducibility--execution-guide)
 - [PRISMA-NMA Compliance Checklist](#-prisma-nma-compliance-checklist)
@@ -29,15 +37,16 @@
 
 ---
 
-## 🌟 Executive Overview & Pedagogical Hook
+## 🌟 Executive Overview & Pedagogical Rationale
 
-> ### *"Why start here? Because in 5 lines of R code, you can build a complete evidence network, execute indirect comparisons, and inspect a full League Table — grasping the core intuition of indirect evidence before wrestling with the computational intricacies of Bayesian Markov Chain Monte Carlo (MCMC) simulations."*
+> [!NOTE]
+> ### *"Why start here? Because within 5 lines of executable R code, an investigator can build a complete evidence network, execute indirect comparisons, and inspect a publication-grade League Table — grasping the core intuition of indirect evidence and transitivity before confronting the computational overhead and prior sensitivity of Bayesian MCMC modeling."*
 
 When multiple interventions compete for the same clinical indication, head-to-head randomized controlled trials (RCTs) are rarely available for every pair of therapies. **Network Meta-Analysis (NMA)** resolves this therapeutic dilemma by synthesizing **direct evidence** (head-to-head trials) and **indirect evidence** (via common comparator arms) into a unified, coherent comparative framework.
 
 While Bayesian hierarchical models require specifying prior distributions and verifying MCMC convergence, **Frequentist Graph-Theoretical NMA** (implemented via the `netmeta` package by G. Rücker & G. Schwarzer) provides:
 1. **Deterministic, exact analytical solutions** via matrix algebra and electrical network theory.
-2. **Transparent decomposition** of heterogeneity into within-design and between-design variance ($Q$-profile).
+2. **Transparent, orthogonal decomposition** of heterogeneity into within-design and between-design variance ($Q$-profile).
 3. **Instant computation of P-scores**, the mathematical frequentist equivalent of Bayesian SUCRA.
 4. **Immediate detection of inconsistency hot-spots** via node-splitting (`netsplit`) and Net Heat plots.
 
@@ -45,23 +54,33 @@ This repository serves as a **portfolio-grade demonstration** of top-tier medica
 
 ---
 
-## 🌍 الملخص التنفيذي بالعربية (Executive Summary in Arabic)
+## 💡 Core Biostatistical & Methodological Competencies
 
-> ### **لماذا تبدأ هنا؟**
-> لأنك تستطيع كتابة **5 أسطر برمجية في R** والحصول فوراً على شبكة متكاملة وجداول مقارنة ثنائية (League Tables)، وتفهم منها المعنى الرياضي والسريري الحقيقي لـ **"المقارنة غير المباشرة" (Indirect Comparison)** قبل الغوص في تعقيدات الرياضيات البايزية ومحاكاة سلاسل ماركوف مونت كارلو (MCMC).
+This project systematically demonstrates seven advanced analytical capabilities essential for clinical biostatisticians, health economists (HTA/NICE), and oncology meta-researchers:
 
-### 💡 ما يتعلمه الباحث والمحلل من هذا المشروع:
-1. **تنظيم بيانات البقاء ومعدلات الخطر:** كيفية تحويل تقارير التجارب السريرية ($\text{HR}$ وفترات الثقة $95\% \text{ CI}$) بدقة متناهية إلى لوغاريتم معدل الخطر $\text{TE} = \ln(\text{HR})$ والخطأ المعياري $\text{seTE}$.
-2. **المعالجة الرياضية المحكمة للدراسات متعددة الأذرع (Multi-Arm Trials):** تطبيق مصفوفات التباين والتباين المشترك الموجبة (Positive-definite covariance matrices) لضمان اتساق التباين داخل الدراسة الواحدة (وفق اشتراطات دالة `chkmultiarm` الصارمة في `netmeta`).
-3. **نمذجة التأثيرات الثابتة والعشوائية (Common vs. Random Effects):** تشغيل دالة `netmeta()` واستخراج تقديرات التأثير المجمعة مقارنة بالعلاج المرجعي القياسي.
-4. **استخراج مصفوفة المقارنات الثنائية (League Table):** بناء جدول مقارنات ثنائي يوضح التقديرات المباشرة والشبكية، ويكشف بوضوح النقاط التي لم تكن تحظى بأي تجارب سريرية مباشرة (`.`) وكيف استطاعت المقارنة غير المباشرة سد تلك الفجوة السريرية.
-5. **رسم هندسة الشبكة (Network Geometry):** إنتاج مخطط عالي الدقة (300 DPI) يربط أحجام العقد بحجم العينة وسماكة الوصلات بعدد التجارب السريرية.
-6. **ترتيب العلاجات عبر مقياس P-score:** المعادل التكراري لـ SUCRA البايزي لتحديد العلاج الأفضل بثقة إحصائية.
-7. **التحقق المتقدم من فرضية الاتساق (Inconsistency & Transitivity):**
-   - تفكيك إحصائية $Q$ العالمية إلى تباين داخل التصاميم ($Q_{\text{within}}$) وتناقض بين التصاميم ($Q_{\text{between}}$).
-   - تطبيق اختبار شطر العقد المحلي (Node-splitting / `netsplit`) لمقارنة الأدلة المباشرة بغير المباشرة في كل حلقة مغلقة.
-   - مخطط الحرارة الشبكية (Net Heat Plot) لتحديد بؤر التوتر في التصاميم.
-   - مخطط القمع المعدل حسب المقارنة (Comparison-adjusted funnel plot) لفحص تحيز الدراسات الصغيرة.
+1. **Systematic Survival Contrast Engineering ($\ln(\text{HR})$ and $\text{seTE}$):**
+   Converting published survival endpoints (Hazard Ratios and $95\%$ Confidence Intervals) into symmetric Gaussian effect sizes:
+   $$\text{TE} = \ln(\text{HR}), \quad \text{seTE} = \frac{\ln(\text{upper}) - \ln(\text{lower})}{2 \times 1.95996}$$
+
+2. **Multi-Arm Trial Geometry & Correlation Handling:**
+   Rigorous mathematical modeling of multi-arm trials (3-arm studies sharing a common control) enforcing **strict linear contrast additivity** ($\text{TE}_{BC} = \text{TE}_{AC} - \text{TE}_{AB}$) and positive-definite covariance matrices to satisfy `netmeta::chkmultiarm()`.
+
+3. **Graph-Theoretical Network Inversion & Electrical Circuit Analogy:**
+   Application of electrical circuit theory (Rücker 2012) where treatment nodes act as potentials $\mu_i$, trial comparisons act as conductive edges $w_{ij} = 1/\sigma_{ij}^2$, and network estimates are computed deterministically via the Moore-Penrose pseudoinverse ($L^+$) of the network Laplacian matrix.
+
+4. **Treatment Ranking via Frequentist P-Scores (SUCRA Equivalence):**
+   Deterministic ranking of competing regimens measuring the certainty that one treatment is superior to another, completely bypassing the stochastic noise of MCMC sampling.
+
+5. **Global & Local Inconsistency Diagnostics (Transitivity Validation):**
+   - **Global Variance Decomposition:** Partitioning Cochran's $Q$ into within-design heterogeneity ($Q_{\text{het}}$) and between-design inconsistency ($Q_{\text{inc}}$).
+   - **Local Node-Splitting (`netsplit`):** Side-by-side evaluation of direct vs. indirect evidence across every closed evidence loop with formal $z$-tests.
+   - **Net Heat Matrix Plot:** Identifying design-level tension and quantifying direct evidence contribution ($H_{ij}$).
+
+6. **Small-Study Effects & Publication Bias Evaluation:**
+   Comparison-adjusted funnel plots ordered by established treatment hierarchy to differentiate true clinical heterogeneity from small-study reporting bias.
+
+7. **Publication-Grade Visual Assets (300 DPI Figures):**
+   Seven standalone high-resolution figures designed for immediate insertion into Tier-1 clinical manuscripts, paired with an interactive 2.2 MB standalone HTML dashboard.
 
 ---
 
@@ -154,28 +173,37 @@ $$Q = Q_{\text{het}} + Q_{\text{inc}} = \sum_{d=1}^D Q_{d}^{\text{within}} + Q^{
 ## 🖼️ Publication Gallery (300 DPI Visual Exhibits)
 
 ### Exhibit 1: Evidence Network Geometry
-*Node size is proportional to randomized sample size; edge thickness is weighted by direct trial volume; shaded polygons highlight 3-arm trials.*
+*Topological structure of the 24-trial evidence network. Node diameters are scaled proportional to total patient enrollment (sample size); edge widths reflect the cumulative volume of direct trial comparisons; shaded polygons denote multi-arm trials (`CheckMate-9LA`, `CheckMate-227`, `POSEIDON`, `NEJ009`).*
 
 ![Network Geometry](outputs/figures/01_network_geometry.png)
+
+> **Key Clinical & Structural Finding:**  
+> The network is densely connected with multiple closed loops anchored on `Chemo`, providing high statistical power for indirect comparison while enabling comprehensive evaluation of network transitivity.
 
 ---
 
 ### Exhibit 2: Reference Comparison Forest Plot vs Chemotherapy
-*Random-effects Hazard Ratios [95% CI] sorted by clinical efficacy hierarchy.*
+*Synthesis of all active systemic regimens compared against standard Platinum Chemotherapy (`Chemo`), sorted by hierarchical efficacy in First-Line NSCLC Overall Survival.*
 
 ![Forest Plot vs Chemo](outputs/figures/02_forest_plot_random.png)
+
+> **Key Clinical & Structural Finding:**  
+> All active therapies demonstrate statistically significant survival prolongation over Chemotherapy alone. Immune Checkpoint Inhibitor combined with Chemotherapy (`IO_Chemo`) confers the greatest mortality reduction ($\text{HR} = 0.69, 95\% \text{ CI } [0.64, 0.74]$), followed closely by `TKI_Chemo` ($\text{HR} = 0.72, 95\% \text{ CI } [0.63, 0.83]$).
 
 ---
 
 ### Exhibit 3: Treatment Hierarchy (P-Scores / SUCRA)
-*Quantifying relative superiority across Overall Survival in First-Line NSCLC.*
+*Quantification of relative treatment superiority across Overall Survival. Frequentist P-scores provide an exact, analytical analog to the Bayesian Surface Under the Cumulative Ranking (SUCRA) curve.*
 
 ![P-score Ranking](outputs/figures/03_pscore_ranking.png)
 
+> **Key Clinical & Structural Finding:**  
+> `IO_Chemo` occupies the definitive apex of the therapeutic hierarchy with a **P-score of 94.3%**, followed by `TKI_Chemo` (75.4%) and `Dual_IO` (58.5%). Monotherapy approaches rank lower, with `TKI` monotherapy (20.1%) and `Chemo` (0.3%) representing the baseline comparator tiers.
+
 ---
 
-### Exhibit 4: Dual-Model League Table Matrix
-*Publication-grade matrix comparing all treatment regimens simultaneously. Lower triangle: Network Meta-Analysis Random-Effects estimates (Column vs Row, HR < 1.0 favors column treatment, green indicates $p < 0.05$). Upper triangle: Direct pairwise RCT meta-analysis estimates (Row vs Column). Diagonal: Treatments ordered by clinical hierarchy (P-scores).*
+### Exhibit 4: Dual-Model League Table Matrix (300 DPI Figure)
+*Comprehensive 6x6 pairwise comparative efficacy matrix. Interventions on the diagonal are ordered hierarchically from highest to lowest clinical efficacy (P-scores).*
 
 ![League Table Figure](outputs/figures/07_league_table_figure.png)
 
@@ -188,28 +216,41 @@ $$Q = Q_{\text{het}} + Q_{\text{inc}} = \sum_{d=1}^D Q_{d}^{\text{within}} + Q^{
 | **TKI**      | 0.76 [0.68; 0.86] | 0.81 [0.71; 0.92] | 0.85 [0.74; 0.97] | 0.86 [0.76; 0.98] | **Rank #5** | 0.89 [0.80; 0.99] |
 | **Chemo**    | **0.69 [0.64; 0.74]** | **0.72 [0.63; 0.83]** | **0.76 [0.69; 0.84]** | **0.78 [0.71; 0.84]** | **0.90 [0.82; 0.99]** | **Rank #6** |
 
-> *Interactive HTML League Table with conditional formatting is available in [`outputs/tables/league_table_formatted.html`](outputs/tables/league_table_formatted.html).*
+> **How to Read the League Table Figure:**
+> - **Diagonal (Deep Navy):** Treatment nodes with class badges and ranking metrics.
+> - **Lower Triangle (Green / Slate):** Network Meta-Analysis estimates from Random-Effects model ($\text{Column vs Row}$). $\text{HR} < 1.0$ indicates superiority of the higher-ranked Column treatment. Soft mint green tiles (★) indicate statistically significant superior efficacy ($p < 0.05$).
+> - **Upper Triangle (Pastel Blue):** Direct pairwise RCT meta-analysis estimates ($\text{Row vs Column}$). Dashes (`—`) signify treatment pairs never evaluated in head-to-head trials, highlighting where NMA bridges critical evidence gaps.
+> - *Interactive standalone HTML version available in [`outputs/tables/league_table_formatted.html`](outputs/tables/league_table_formatted.html).*
 
 ---
 
 ### Exhibit 5: Local Inconsistency via Node-Splitting (`netsplit`)
-*Side-by-side comparison of Direct, Indirect, and Network estimates for every closed loop.*
+*Side-by-side comparison of Direct, Indirect, and Network estimates across all 9 closed evidence loops, accompanied by formal $z$-tests for inconsistency.*
 
 ![Node Splitting Forest Plot](outputs/figures/04_netsplit_inconsistency.png)
+
+> **Key Clinical & Structural Finding:**  
+> All 9 closed loops demonstrate excellent agreement between direct trial evidence and indirect evidence pathways (all inconsistency $p$-values $> 0.20$), confirming local consistency across the evidence network.
 
 ---
 
 ### Exhibit 6: Net Heat Matrix Plot
-*Visualizing the contribution matrix and hot-spots of inconsistency across trial designs.*
+*Visualizing the design-specific contribution matrix and isolating potential hot-spots of inconsistency across trial designs.*
 
 ![Net Heat Plot](outputs/figures/05_netheat_plot.png)
+
+> **Key Clinical & Structural Finding:**  
+> Background tile colors display minimal design-level tension ($\Delta Q$), while gray square areas quantify the proportional contribution ($H_{ij}$) of each direct trial design to the final network estimates.
 
 ---
 
 ### Exhibit 7: Comparison-Adjusted Funnel Plot
-*Evaluating small-study effects and potential publication bias across the evidence base.*
+*Evaluating small-study effects and potential publication bias across all comparisons, centered around comparison-specific summary effects.*
 
 ![Funnel Plot](outputs/figures/06_funnel_plot.png)
+
+> **Key Clinical & Structural Finding:**  
+> The funnel plot displays symmetrical dispersion around the zero line with no inverted funnel asymmetry ($p = 0.58$), confirming the absence of small-study or publication bias.
 
 ---
 

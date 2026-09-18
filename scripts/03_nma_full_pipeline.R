@@ -75,22 +75,36 @@ rk <- netrank(nma, small.values = "good")
 pscores_rand <- rk$ranking.random
 trt_order <- names(sort(pscores_rand, decreasing = TRUE))
 
+trt_labels_map <- c(
+  "IO_Chemo"  = "IO + Chemo",
+  "TKI_Chemo" = "TKI + Chemo",
+  "Dual_IO"   = "Dual IO",
+  "IO_Mono"   = "IO Monotherapy",
+  "TKI"       = "TKI Monotherapy",
+  "Chemo"     = "Chemotherapy"
+)
+
 df_rankings <- data.frame(
-  Treatment = trt_order,
+  Treatment = trt_labels_map[trt_order],
+  Code = trt_order,
   Rank = 1:length(trt_order),
   Pscore_Random = round(pscores_rand[trt_order], 4),
   Pscore_Common = round(rk$ranking.common[trt_order], 4),
-  HR_vs_Chemo_Random = sprintf("%.2f [%.2f; %.2f]", 
-                               exp(nma$TE.random[trt_order, "Chemo"]),
-                               exp(nma$lower.random[trt_order, "Chemo"]),
-                               exp(nma$upper.random[trt_order, "Chemo"])),
-  Pval_vs_Chemo = sprintf("%.4f", nma$pval.random[trt_order, "Chemo"]),
+  HR_vs_Chemo_Random = ifelse(trt_order == "Chemo", "1.00 (Reference)",
+                              sprintf("%.2f [%.2f; %.2f]", 
+                                      exp(nma$TE.random[trt_order, "Chemo"]),
+                                      exp(nma$lower.random[trt_order, "Chemo"]),
+                                      exp(nma$upper.random[trt_order, "Chemo"]))),
+  Pval_vs_Chemo = ifelse(trt_order == "Chemo", "—",
+                         ifelse(nma$pval.random[trt_order, "Chemo"] < 0.0001, "< 0.0001",
+                                sprintf("%.4f", nma$pval.random[trt_order, "Chemo"]))),
   stringsAsFactors = FALSE
 )
 
-write.csv(df_rankings, "outputs/tables/treatment_rankings.csv", row.names = FALSE)
+write.csv(df_rankings[, c("Treatment", "Rank", "Pscore_Random", "Pscore_Common", "HR_vs_Chemo_Random", "Pval_vs_Chemo")], 
+          "outputs/tables/treatment_rankings.csv", row.names = FALSE)
 cat("\n[TREATMENT RANKING MATRIX EXPORTED]\n")
-print(df_rankings)
+print(df_rankings[, c("Treatment", "Rank", "Pscore_Random", "HR_vs_Chemo_Random", "Pval_vs_Chemo")])
 
 # ------------------------------------------------------------------------------
 # 4. League Table Construction (The Dual-Model Matrix)
@@ -257,13 +271,22 @@ dev.off()
 # --- FIGURE 3: Treatment Ranking (P-Score Hierarchy) Bar Chart ---
 cat("[RENDERING FIGURE 3: P-Score Ranking Hierarchy (300 DPI)]\n")
 df_plot_rank <- df_rankings
-df_plot_rank$Treatment <- factor(df_plot_rank$Treatment, levels = rev(trt_order))
+df_plot_rank$Treatment <- factor(df_plot_rank$Treatment, levels = rev(df_rankings$Treatment))
+
+colors_by_trt <- c(
+  "Chemotherapy"    = "#718096",
+  "IO Monotherapy"  = "#3182CE",
+  "IO + Chemo"      = "#2B6CB0",
+  "Dual IO"         = "#805AD5",
+  "TKI Monotherapy" = "#D69E2E",
+  "TKI + Chemo"     = "#DD6B20"
+)
 
 p_rank <- ggplot(df_plot_rank, aes(x = Pscore_Random, y = Treatment, fill = Treatment)) +
   geom_col(width = 0.65, alpha = 0.9, color = "#2D3748", linewidth = 0.4) +
   geom_text(aes(label = sprintf("Rank #%d | P-score: %.1f%%", Rank, Pscore_Random * 100)),
             hjust = -0.08, size = 4.2, fontface = "bold", color = "#1A202C") +
-  scale_fill_manual(values = colors_nodes) +
+  scale_fill_manual(values = colors_by_trt) +
   scale_x_continuous(limits = c(0, 1.25), breaks = seq(0, 1, 0.2), 
                      labels = scales::percent_format(accuracy = 1)) +
   labs(

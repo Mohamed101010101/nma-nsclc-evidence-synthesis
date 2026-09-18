@@ -14,11 +14,18 @@ cat("\n======================================================================\n"
 cat(" [DESIGN 3/7] FIGURE 3: TREATMENT RANKING (P-SCORE HIERARCHY)\n")
 cat("======================================================================\n")
 
-# 1. Load Cached Rankings Object (Auto-fit if missing)
+# 1. Load Cached Rankings Object (Auto-fit if missing or data changed)
 ranking_path <- "outputs/models/nma_rankings.rds"
-if (!file.exists(ranking_path)) {
-  cat(" - Cached rankings not detected. Running scripts/analyses/01_fit_nma_model.R ...\n")
-  source("scripts/analyses/01_fit_nma_model.R", local = new.env())
+data_path    <- "data/nsclc_trial_contrasts.csv"
+
+needs_refit <- !file.exists(ranking_path) ||
+               (file.exists(data_path) && file.mtime(data_path) > file.mtime(ranking_path))
+
+if (needs_refit) {
+  cat(" - Dataset updated or cached rankings missing. Re-fitting model via 01_fit_nma_model.R ...\n")
+  refit_env <- new.env(parent = globalenv())
+  refit_env$force_refit <- TRUE
+  source("scripts/analyses/01_fit_nma_model.R", local = refit_env)
 }
 
 rk <- readRDS(ranking_path)

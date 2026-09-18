@@ -15,11 +15,18 @@ cat("\n======================================================================\n"
 cat(" [DESIGN 5/7] FIGURE 5: NET HEAT INCONSISTENCY MATRIX PLOT\n")
 cat("======================================================================\n")
 
-# 1. Load Cached Model (Auto-fit if missing)
+# 1. Load Cached Model (Auto-fit if missing or data changed)
 model_path <- "outputs/models/nma_model.rds"
-if (!file.exists(model_path)) {
-  cat(" - Cached model not detected. Running scripts/analyses/01_fit_nma_model.R ...\n")
-  source("scripts/analyses/01_fit_nma_model.R", local = new.env())
+data_path  <- "data/nsclc_trial_contrasts.csv"
+
+needs_refit <- !file.exists(model_path) ||
+               (file.exists(data_path) && file.mtime(data_path) > file.mtime(model_path))
+
+if (needs_refit) {
+  cat(" - Dataset updated or cached model missing. Re-fitting model via 01_fit_nma_model.R ...\n")
+  refit_env <- new.env(parent = globalenv())
+  refit_env$force_refit <- TRUE
+  source("scripts/analyses/01_fit_nma_model.R", local = refit_env)
 }
 
 nma <- readRDS(model_path)

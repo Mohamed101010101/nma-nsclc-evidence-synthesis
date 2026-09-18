@@ -95,7 +95,7 @@ df_rankings <- data.frame(
                                       exp(nma$TE.random[trt_order, "Chemo"]),
                                       exp(nma$lower.random[trt_order, "Chemo"]),
                                       exp(nma$upper.random[trt_order, "Chemo"]))),
-  Pval_vs_Chemo = ifelse(trt_order == "Chemo", "—",
+  Pval_vs_Chemo = ifelse(trt_order == "Chemo", "Reference",
                          ifelse(nma$pval.random[trt_order, "Chemo"] < 0.0001, "< 0.0001",
                                 sprintf("%.4f", nma$pval.random[trt_order, "Chemo"]))),
   stringsAsFactors = FALSE

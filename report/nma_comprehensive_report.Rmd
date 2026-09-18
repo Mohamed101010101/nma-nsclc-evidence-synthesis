@@ -146,7 +146,7 @@ knitr::include_graphics("../outputs/figures/03_pscore_ranking.png")
 ### Numerical Ranking Summary Table
 
 ```{r table_rankings, echo=FALSE}
-df_rank <- read.csv("../outputs/tables/treatment_rankings.csv")
+df_rank <- read.csv("../outputs/tables/treatment_rankings.csv", encoding = "UTF-8", check.names = FALSE)
 knitr::kable(df_rank, col.names = c("Treatment Regimen", "Rank", "P-Score (Random)", "P-Score (Common)", "HR vs Chemo [95% CI]", "p-value"),
              caption = "Table: Hierarchical Ranking of Systemic Regimens in First-Line NSCLC")
 ```

@@ -14,7 +14,6 @@
 ## 📑 Table of Contents
 - [Executive Overview & Pedagogical Rationale](#-executive-overview--pedagogical-rationale)
 - [Core Biostatistical & Methodological Competencies](#-core-biostatistical--methodological-competencies)
-- [The 5-Line Pedagogical Quickstart](#-the-5-line-pedagogical-quickstart)
 - [Clinical Research Scenario (Advanced NSCLC)](#-clinical-research-scenario-advanced-nsclc)
 - [Mathematical & Biostatistical Framework](#-mathematical--biostatistical-framework)
   - [1. Survival Contrast Representation ($\ln(\text{HR})$, $\text{SE}$)](#1-survival-contrast-representation-lnhr-textse)
@@ -81,29 +80,6 @@ This project systematically demonstrates seven advanced analytical capabilities 
 
 7. **Publication-Grade Visual Assets (300 DPI Figures):**
    Seven standalone high-resolution figures designed for immediate insertion into Tier-1 clinical manuscripts, paired with an interactive 2.2 MB standalone HTML dashboard.
-
----
-
-## ⚡ The 5-Line Pedagogical Quickstart
-
-In just 5 lines of executable R code, you can ingest survival contrast data, execute the network meta-analysis, render the network geometry, and generate the pairwise league table:
-
-```r
-# Line 1: Load frequentist network meta-analysis engine
-library(netmeta)
-
-# Line 2: Read contrast-level trial data (ln(HR) and seTE)
-dat <- read.csv("data/nsclc_trial_contrasts.csv")
-
-# Line 3: Fit the full NMA model (Random & Common Effects)
-nma <- netmeta(TE, seTE, treat1, treat2, studlab, data = dat, sm = "HR", ref = "Chemo")
-
-# Line 4: Visualize evidence network geometry
-netgraph(nma, points = TRUE, cex = 1.5, col = "#1f77b4", plastic = FALSE, thickness = "number.of.studies")
-
-# Line 5: Print pairwise League Table (Random-Effects)
-print(netleague(nma, digits = 2)$random)
-```
 
 ---
 
@@ -276,7 +252,6 @@ c:/Users/Computech4/Desktop/R code/
 │   │   ├── fig05_netheat_plot.R           # Design: Figure 5 Net Heat Inconsistency Matrix
 │   │   ├── fig06_funnel_plot.R            # Design: Figure 6 Comparison-Adjusted Funnel Plot
 │   │   └── fig07_league_table_matrix.R    # Design: Figure 7 Publication League Table Graphic
-│   ├── 01_quickstart_5lines.R             # 5-line pedagogical quickstart script
 │   ├── 02_generate_data.R                 # Reproducible clinical data generator (exact additivity)
 │   └── run_all_pipeline.R                 # Master Orchestrator: Runs analyses/ then designs/
 ├── outputs/

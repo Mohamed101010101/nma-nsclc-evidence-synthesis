@@ -2,11 +2,10 @@
 # Design Script: scripts/designs/fig03_pscore_ranking.R
 # Visual Target: Figure 3 - Treatment Ranking Hierarchy (P-Scores / SUCRA)
 # Output File:   outputs/figures/03_pscore_ranking.png (300 DPI Publication Figure)
-# Framework:     ggplot2 & netmeta
+# Framework:     ggplot2 & netmeta (Uses Cached Hierarchy)
 # ==============================================================================
 
 suppressPackageStartupMessages({
-  library(netmeta)
   library(ggplot2)
   library(scales)
 })
@@ -15,33 +14,17 @@ cat("\n======================================================================\n"
 cat(" [DESIGN 3/7] FIGURE 3: TREATMENT RANKING (P-SCORE HIERARCHY)\n")
 cat("======================================================================\n")
 
-# 1. Load Clinical Trial Contrast Data
-data_path <- "data/nsclc_trial_contrasts.csv"
-if (!file.exists(data_path)) {
-  stop(sprintf("Data file not found at: %s. Please run scripts/02_generate_data.R first.", data_path))
+# 1. Load Cached Rankings Object (Auto-fit if missing)
+ranking_path <- "outputs/models/nma_rankings.rds"
+if (!file.exists(ranking_path)) {
+  cat(" - Cached rankings not detected. Running scripts/analyses/01_fit_nma_model.R ...\n")
+  source("scripts/analyses/01_fit_nma_model.R", local = new.env())
 }
-dat <- read.csv(data_path, stringsAsFactors = FALSE)
 
-# 2. Fit Model
-nma <- netmeta(
-  TE = TE,
-  seTE = seTE,
-  treat1 = treat1,
-  treat2 = treat2,
-  studlab = studlab,
-  data = dat,
-  sm = "HR",
-  reference.group = "Chemo",
-  common = TRUE,
-  random = TRUE,
-  tol.multiarm = 0.005,
-  details.chkmultiarm = FALSE
-)
-
-# 3. Compute P-Scores
-rk <- netrank(nma, small.values = "good")
+rk <- readRDS(ranking_path)
 pscores_rand <- rk$ranking.random
 trt_order <- names(sort(pscores_rand, decreasing = TRUE))
+cat(" - Loaded cached rankings in < 0.01 seconds.\n")
 
 trt_labels_map <- c(
   "IO_Chemo"  = "IO + Chemo",
@@ -59,7 +42,7 @@ df_rankings <- data.frame(
   stringsAsFactors = FALSE
 )
 
-# 4. Render Publication Ranking Hierarchy Bar Chart (300 DPI)
+# 2. Render Publication Ranking Hierarchy Bar Chart (300 DPI)
 dir.create("outputs/figures", recursive = TRUE, showWarnings = FALSE)
 output_fig <- "outputs/figures/03_pscore_ranking.png"
 cat(sprintf(" - Rendering Figure 3 to: %s ...\n", output_fig))

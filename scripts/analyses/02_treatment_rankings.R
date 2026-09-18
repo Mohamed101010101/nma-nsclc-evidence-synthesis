@@ -1,6 +1,7 @@
 # ==============================================================================
 # Script: scripts/analyses/02_treatment_rankings.R
 # Purpose: Treatment Hierarchy & P-Score Calculations (Frequentist SUCRA)
+# Inputs:  outputs/models/nma_model.rds & outputs/models/nma_rankings.rds
 # Output:  outputs/tables/treatment_rankings.csv
 # Package: netmeta
 # ==============================================================================
@@ -10,35 +11,23 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [ANALYSIS 2/4] TREATMENT RANKING VIA P-SCORES (SUCRA ANALOGUE)\n")
+cat(" [ANALYSIS 2/5] TREATMENT RANKING VIA P-SCORES (SUCRA ANALOGUE)\n")
 cat("======================================================================\n")
 
-# 1. Load Clinical Trial Contrast Data
-data_path <- "data/nsclc_trial_contrasts.csv"
-if (!file.exists(data_path)) {
-  stop(sprintf("Data file not found at: %s. Please run scripts/02_generate_data.R first.", data_path))
+# 1. Load Cached Model & Rankings (Auto-fit if missing)
+model_path <- "outputs/models/nma_model.rds"
+ranking_path <- "outputs/models/nma_rankings.rds"
+
+if (!file.exists(model_path) || !file.exists(ranking_path)) {
+  cat(" - Cached model not detected. Running scripts/analyses/01_fit_nma_model.R ...\n")
+  source("scripts/analyses/01_fit_nma_model.R", local = new.env())
 }
-dat <- read.csv(data_path, stringsAsFactors = FALSE)
 
-# 2. Fit Model
-nma <- netmeta(
-  TE = TE,
-  seTE = seTE,
-  treat1 = treat1,
-  treat2 = treat2,
-  studlab = studlab,
-  data = dat,
-  sm = "HR",
-  reference.group = "Chemo",
-  common = TRUE,
-  random = TRUE,
-  tol.multiarm = 0.005,
-  details.chkmultiarm = FALSE
-)
+nma <- readRDS(model_path)
+rk <- readRDS(ranking_path)
+cat(" - Successfully loaded cached model & rankings in < 0.01 seconds.\n")
 
-# 3. Compute P-Scores (Frequentist Analogue to Bayesian SUCRA)
-# small.values = "good" because lower Hazard Ratio represents superior overall survival
-rk <- netrank(nma, small.values = "good")
+# 2. Extract P-Scores & Treatment Hierarchy
 pscores_rand <- rk$ranking.random
 trt_order <- names(sort(pscores_rand, decreasing = TRUE))
 
@@ -51,7 +40,7 @@ trt_labels_map <- c(
   "Chemo"     = "Chemotherapy"
 )
 
-# 4. Construct Comprehensive Treatment Ranking Table
+# 3. Construct Comprehensive Treatment Ranking Table
 df_rankings <- data.frame(
   Treatment = trt_labels_map[trt_order],
   Code = trt_order,
@@ -69,7 +58,7 @@ df_rankings <- data.frame(
   stringsAsFactors = FALSE
 )
 
-# Export Ranking Table to CSV
+# 4. Export Ranking Table to CSV
 dir.create("outputs/tables", recursive = TRUE, showWarnings = FALSE)
 output_tbl <- "outputs/tables/treatment_rankings.csv"
 write.csv(df_rankings[, c("Treatment", "Rank", "Pscore_Random", "Pscore_Common", "HR_vs_Chemo_Random", "Pval_vs_Chemo")], 

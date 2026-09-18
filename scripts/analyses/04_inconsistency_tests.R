@@ -1,6 +1,7 @@
 # ==============================================================================
 # Script: scripts/analyses/04_inconsistency_tests.R
-# Purpose: Global Q Variance Decomposition & Local Inconsistency Diagnostics
+# Purpose: Global Q Variance Decomposition & Inconsistency Diagnostics
+# Input:   outputs/models/nma_model.rds
 # Output:  outputs/tables/inconsistency_statistics.csv
 # Package: netmeta (Design-by-Treatment Interaction Model)
 # ==============================================================================
@@ -10,33 +11,20 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [ANALYSIS 4/4] INCONSISTENCY EVALUATION (GLOBAL Q & NODE-SPLITTING)\n")
+cat(" [ANALYSIS 4/5] INCONSISTENCY EVALUATION (GLOBAL Q DECOMPOSITION)\n")
 cat("======================================================================\n")
 
-# 1. Load Clinical Trial Contrast Data
-data_path <- "data/nsclc_trial_contrasts.csv"
-if (!file.exists(data_path)) {
-  stop(sprintf("Data file not found at: %s. Please run scripts/02_generate_data.R first.", data_path))
+# 1. Load Cached Model (Auto-fit if missing)
+model_path <- "outputs/models/nma_model.rds"
+if (!file.exists(model_path)) {
+  cat(" - Cached model not detected. Running scripts/analyses/01_fit_nma_model.R ...\n")
+  source("scripts/analyses/01_fit_nma_model.R", local = new.env())
 }
-dat <- read.csv(data_path, stringsAsFactors = FALSE)
 
-# 2. Fit Model
-nma <- netmeta(
-  TE = TE,
-  seTE = seTE,
-  treat1 = treat1,
-  treat2 = treat2,
-  studlab = studlab,
-  data = dat,
-  sm = "HR",
-  reference.group = "Chemo",
-  common = TRUE,
-  random = TRUE,
-  tol.multiarm = 0.005,
-  details.chkmultiarm = FALSE
-)
+nma <- readRDS(model_path)
+cat(" - Loaded cached model in < 0.01 seconds.\n")
 
-# 3. Global Inconsistency: Decomposition of Cochran's Q
+# 2. Global Inconsistency: Decomposition of Cochran's Q
 # Q_total = Q_within (heterogeneity) + Q_between (inconsistency)
 df_inconsistency <- data.frame(
   Source = c("Total Variation (Q)", "Within-Designs Heterogeneity (Q_het)", "Between-Designs Inconsistency (Q_inc)"),

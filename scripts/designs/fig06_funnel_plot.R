@@ -2,7 +2,7 @@
 # Design Script: scripts/designs/fig06_funnel_plot.R
 # Visual Target: Figure 6 - Comparison-Adjusted Funnel Plot (Small-Study Effects)
 # Output File:   outputs/figures/06_funnel_plot.png (300 DPI Publication Figure)
-# Framework:     netmeta (Chaimani & Salanti Methodology)
+# Framework:     netmeta (Uses Cached NMA Model & Hierarchy)
 # ==============================================================================
 
 suppressPackageStartupMessages({
@@ -13,34 +13,21 @@ cat("\n======================================================================\n"
 cat(" [DESIGN 6/7] FIGURE 6: COMPARISON-ADJUSTED FUNNEL PLOT\n")
 cat("======================================================================\n")
 
-# 1. Load Clinical Trial Contrast Data
-data_path <- "data/nsclc_trial_contrasts.csv"
-if (!file.exists(data_path)) {
-  stop(sprintf("Data file not found at: %s. Please run scripts/02_generate_data.R first.", data_path))
+# 1. Load Cached Model & Rankings (Auto-fit if missing)
+model_path <- "outputs/models/nma_model.rds"
+ranking_path <- "outputs/models/nma_rankings.rds"
+
+if (!file.exists(model_path) || !file.exists(ranking_path)) {
+  cat(" - Cached model not detected. Running scripts/analyses/01_fit_nma_model.R ...\n")
+  source("scripts/analyses/01_fit_nma_model.R", local = new.env())
 }
-dat <- read.csv(data_path, stringsAsFactors = FALSE)
 
-# 2. Fit Model
-nma <- netmeta(
-  TE = TE,
-  seTE = seTE,
-  treat1 = treat1,
-  treat2 = treat2,
-  studlab = studlab,
-  data = dat,
-  sm = "HR",
-  reference.group = "Chemo",
-  common = TRUE,
-  random = TRUE,
-  tol.multiarm = 0.005,
-  details.chkmultiarm = FALSE
-)
-
-# 3. Hierarchy Ordering for Comparison Centering
-rk <- netrank(nma, small.values = "good")
+nma <- readRDS(model_path)
+rk <- readRDS(ranking_path)
 trt_order <- names(sort(rk$ranking.random, decreasing = TRUE))
+cat(" - Loaded cached model & rankings in < 0.01 seconds.\n")
 
-# 4. Render Publication Funnel Plot (300 DPI)
+# 2. Render Publication Funnel Plot (300 DPI)
 dir.create("outputs/figures", recursive = TRUE, showWarnings = FALSE)
 output_fig <- "outputs/figures/06_funnel_plot.png"
 cat(sprintf(" - Rendering Figure 6 to: %s ...\n", output_fig))

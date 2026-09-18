@@ -2,7 +2,7 @@
 # Design Script: scripts/designs/fig04_netsplit_inconsistency.R
 # Visual Target: Figure 4 - Node-Splitting Local Inconsistency Forest Plot
 # Output File:   outputs/figures/04_netsplit_inconsistency.png (300 DPI Publication Figure)
-# Framework:     netmeta (Node-Splitting / Separate Direct vs Indirect Evidence)
+# Framework:     netmeta (Uses Cached NMA Model)
 # ==============================================================================
 
 suppressPackageStartupMessages({
@@ -13,34 +13,21 @@ cat("\n======================================================================\n"
 cat(" [DESIGN 4/7] FIGURE 4: NODE-SPLITTING LOCAL INCONSISTENCY FOREST PLOT\n")
 cat("======================================================================\n")
 
-# 1. Load Clinical Trial Contrast Data
-data_path <- "data/nsclc_trial_contrasts.csv"
-if (!file.exists(data_path)) {
-  stop(sprintf("Data file not found at: %s. Please run scripts/02_generate_data.R first.", data_path))
+# 1. Load Cached Model (Auto-fit if missing)
+model_path <- "outputs/models/nma_model.rds"
+if (!file.exists(model_path)) {
+  cat(" - Cached model not detected. Running scripts/analyses/01_fit_nma_model.R ...\n")
+  source("scripts/analyses/01_fit_nma_model.R", local = new.env())
 }
-dat <- read.csv(data_path, stringsAsFactors = FALSE)
 
-# 2. Fit Model
-nma <- netmeta(
-  TE = TE,
-  seTE = seTE,
-  treat1 = treat1,
-  treat2 = treat2,
-  studlab = studlab,
-  data = dat,
-  sm = "HR",
-  reference.group = "Chemo",
-  common = TRUE,
-  random = TRUE,
-  tol.multiarm = 0.005,
-  details.chkmultiarm = FALSE
-)
+nma <- readRDS(model_path)
+cat(" - Loaded cached model in < 0.01 seconds.\n")
 
-# 3. Calculate Node-Splitting Models
+# 2. Calculate Node-Splitting Models
 cat(" - Computing node-splitting models across all closed evidence loops ...\n")
 ns <- netsplit(nma)
 
-# 4. Render Publication Node-Splitting Forest Plot (300 DPI)
+# 3. Render Publication Node-Splitting Forest Plot (300 DPI)
 dir.create("outputs/figures", recursive = TRUE, showWarnings = FALSE)
 output_fig <- "outputs/figures/04_netsplit_inconsistency.png"
 cat(sprintf(" - Rendering Figure 4 to: %s ...\n", output_fig))

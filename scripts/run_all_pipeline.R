@@ -79,7 +79,7 @@ for (idx in seq_along(design_modules)) {
 total_elapsed <- as.numeric(difftime(Sys.time(), start_time, units = "secs"))
 
 cat("\n==============================================================================\n")
-cat(sprintf(" [PIPELINE SUCCESS] All 4 analyses and 7 figure designs generated in %.2f seconds!\n", 
+cat(sprintf(" [PIPELINE SUCCESS] All 5 analyses and 7 figure designs generated in %.2f seconds!\n", 
             total_elapsed))
 cat(" Outputs Directory Audit:\n")
 cat("  - Figures: outputs/figures/ (7 publication-grade 300 DPI figures, Fig 01 to 07)\n")

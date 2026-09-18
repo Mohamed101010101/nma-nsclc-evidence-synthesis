@@ -2,7 +2,7 @@
 # Design Script: scripts/designs/fig01_network_geometry.R
 # Visual Target: Figure 1 - Evidence Network Geometry (Network Topology)
 # Output File:   outputs/figures/01_network_geometry.png (300 DPI Publication Figure)
-# Framework:     netmeta (Frequentist Graph-Theoretical Framework)
+# Framework:     netmeta (Uses Cached NMA Model)
 # ==============================================================================
 
 suppressPackageStartupMessages({
@@ -13,30 +13,17 @@ cat("\n======================================================================\n"
 cat(" [DESIGN 1/7] FIGURE 1: EVIDENCE NETWORK GEOMETRY\n")
 cat("======================================================================\n")
 
-# 1. Load Clinical Trial Contrast Data
-data_path <- "data/nsclc_trial_contrasts.csv"
-if (!file.exists(data_path)) {
-  stop(sprintf("Data file not found at: %s. Please run scripts/02_generate_data.R first.", data_path))
+# 1. Load Cached Model (Auto-fit if missing)
+model_path <- "outputs/models/nma_model.rds"
+if (!file.exists(model_path)) {
+  cat(" - Cached model not detected. Running scripts/analyses/01_fit_nma_model.R ...\n")
+  source("scripts/analyses/01_fit_nma_model.R", local = new.env())
 }
-dat <- read.csv(data_path, stringsAsFactors = FALSE)
+nma <- readRDS(model_path)
+dat <- nma$data
+cat(sprintf(" - Loaded model with %d treatments and %d comparisons.\n", nma$n, nma$m))
 
-# 2. Fit Model
-nma <- netmeta(
-  TE = TE,
-  seTE = seTE,
-  treat1 = treat1,
-  treat2 = treat2,
-  studlab = studlab,
-  data = dat,
-  sm = "HR",
-  reference.group = "Chemo",
-  common = TRUE,
-  random = TRUE,
-  tol.multiarm = 0.005,
-  details.chkmultiarm = FALSE
-)
-
-# 3. Node & Palette Configuration
+# 2. Node & Palette Configuration
 colors_nodes <- c(
   "Chemo"     = "#718096", # Slate Grey (Standard Reference)
   "IO_Mono"   = "#3182CE", # Classic Blue (Active Monotherapy)
@@ -52,7 +39,7 @@ pts_size <- sapply(nma$trts, function(t) {
 })
 pts_cex <- 6.5 + (pts_size / max(pts_size)) * 4.5
 
-# 4. Render Publication Network Geometry (300 DPI)
+# 3. Render Publication Network Geometry (300 DPI)
 dir.create("outputs/figures", recursive = TRUE, showWarnings = FALSE)
 output_fig <- "outputs/figures/01_network_geometry.png"
 cat(sprintf(" - Rendering Figure 1 to: %s ...\n", output_fig))

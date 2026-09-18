@@ -1,8 +1,10 @@
 # ==============================================================================
 # Script: scripts/analyses/01_fit_nma_model.R
 # Purpose: Core Frequentist Graph-Theoretical Network Meta-Analysis Model Fitting
+# Single Source of Truth for Model Hyperparameters & Serialization (.rds)
 # Package: netmeta (Rücker 2012 Electrical Network Analogy)
-# Output:  Model summary, heterogeneity diagnostics (tau2, I2)
+# Outputs: outputs/models/nma_model.rds
+#          outputs/models/nma_rankings.rds
 # ==============================================================================
 
 suppressPackageStartupMessages({
@@ -10,13 +12,14 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [ANALYSIS 1/4] MODEL ESTIMATION & HETEROGENEITY ASSESSMENT\n")
+cat(" [ANALYSIS 1/5] MODEL ESTIMATION & CACHING (SINGLE SOURCE OF TRUTH)\n")
 cat("======================================================================\n")
 
-# 1. Load Clinical Trial Contrast Data
+# 1. Load Clinical Trial Contrast Data (Auto-generate if missing)
 data_path <- "data/nsclc_trial_contrasts.csv"
 if (!file.exists(data_path)) {
-  stop(sprintf("Data file not found at: %s. Please run scripts/02_generate_data.R first.", data_path))
+  cat(" - Data file not found. Generating synthetic trial data ...\n")
+  source("scripts/02_generate_data.R", local = new.env())
 }
 dat <- read.csv(data_path, stringsAsFactors = FALSE)
 cat(sprintf(" - Loaded contrast dataset: %d comparisons across %d trials\n",
@@ -24,7 +27,7 @@ cat(sprintf(" - Loaded contrast dataset: %d comparisons across %d trials\n",
 cat(sprintf(" - Total patients evaluated: %s\n", 
             format(sum(dat$n_total[!duplicated(dat$studlab)]), big.mark = ",")))
 
-# 2. Fit Frequentist Graph-Theoretical Model
+# 2. Fit Frequentist Graph-Theoretical Model (Single Definition)
 nma <- netmeta(
   TE = TE,
   seTE = seTE,
@@ -40,6 +43,20 @@ nma <- netmeta(
   details.chkmultiarm = FALSE
 )
 
+# 3. Compute Core Hierarchy Ranking (P-scores)
+rk <- netrank(nma, small.values = "good")
+
+# 4. Serialize Model & Rankings for Lightning-Fast Downstream Reuse (.rds)
+dir.create("outputs/models", recursive = TRUE, showWarnings = FALSE)
+model_file <- "outputs/models/nma_model.rds"
+ranking_file <- "outputs/models/nma_rankings.rds"
+
+saveRDS(nma, model_file)
+saveRDS(rk, ranking_file)
+
+cat(sprintf(" - Cached fitted model: %s (Size: %.1f KB)\n", model_file, file.info(model_file)$size / 1024))
+cat(sprintf(" - Cached rankings object: %s\n", ranking_file))
+
 cat("\n [MODEL SUMMARY]\n")
 cat(sprintf(" - Treatments (n): %d\n", nma$n))
 cat(sprintf(" - Pairwise comparisons (m): %d\n", nma$m))
@@ -48,4 +65,4 @@ cat(sprintf(" - Between-study heterogeneity (tau^2): %.4f (tau = %.4f)\n", nma$t
 cat(sprintf(" - Inconsistency/Heterogeneity index (I^2): %.1f%%\n", nma$I2 * 100))
 cat(sprintf(" - Total Cochran's Q: %.2f (df = %d, p = %.4f)\n", nma$Q, nma$df.Q, nma$pval.Q))
 
-cat("\n [SUCCESS] Network Meta-Analysis model fitted successfully.\n\n")
+cat("\n [SUCCESS] Network Meta-Analysis model fitted and serialized successfully.\n\n")

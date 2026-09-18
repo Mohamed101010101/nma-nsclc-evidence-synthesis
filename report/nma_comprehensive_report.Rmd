@@ -219,10 +219,12 @@ Node-splitting separates direct evidence from indirect evidence for every closed
 knitr::include_graphics("../outputs/figures/04_netsplit_inconsistency.png")
 ```
 
-## Net Heat Plot (Inconsistency Hot-Spots)
-The Net Heat plot identifies which specific trial designs drive instability or introduce tension into the network estimates.
+## Net Heat Plot (Inconsistency Hot-Spots & Direct Evidence Contribution)
+The Net Heat plot evaluates both the **inconsistency contribution** ($\Delta Q$) across designs and the **direct evidence weight** (Hat matrix $H_{ij}$) simultaneously:
+- **Background Tiles ($\Delta Q$):** Diverging scale where warm red tones identify designs driving network tension/inconsistency, whereas cool blue tones indicate stabilizing designs.
+- **Inner Slate Squares ($H_{ij}$):** Area corresponds to the statistical weight of direct trial evidence in estimating each comparison.
 
-```{r fig_netheat, echo=FALSE, out.width="90%"}
+```{r fig_netheat, echo=FALSE, out.width="100%", fig.align='center'}
 knitr::include_graphics("../outputs/figures/05_netheat_plot.png")
 ```
 

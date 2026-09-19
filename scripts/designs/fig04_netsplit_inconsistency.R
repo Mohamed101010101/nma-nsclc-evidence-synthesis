@@ -37,6 +37,25 @@ cat(sprintf(" - Loaded cached model in %.3f seconds.\n", load_time_taken))
 cat(" - Computing node-splitting models across all closed evidence loops ...\n")
 ns <- netsplit(nma)
 
+trt_labels_map <- c(
+  "IO_Chemo"  = "IO + Chemo",
+  "TKI_Chemo" = "TKI + Chemo",
+  "Dual_IO"   = "Dual IO",
+  "IO_Mono"   = "IO Monotherapy",
+  "TKI"       = "TKI Monotherapy",
+  "Chemo"     = "Chemotherapy"
+)
+
+clean_comps <- function(comps, map) {
+  sapply(comps, function(comp) {
+    parts <- strsplit(comp, ":")[[1]]
+    p1 <- ifelse(parts[1] %in% names(map), map[parts[1]], parts[1])
+    p2 <- ifelse(parts[2] %in% names(map), map[parts[2]], parts[2])
+    paste(p1, "vs", p2)
+  })
+}
+ns$comparison <- clean_comps(ns$comparison, trt_labels_map)
+
 # 3. Render Publication Node-Splitting Forest Plot (300 DPI)
 dir.create("outputs/figures", recursive = TRUE, showWarnings = FALSE)
 output_fig <- "outputs/figures/04_netsplit_inconsistency.png"

@@ -35,6 +35,15 @@ load_end_time <- Sys.time()
 load_time_taken <- round(as.numeric(difftime(load_end_time, load_start_time, units="secs")), 3)
 cat(sprintf(" - Loaded cached model & rankings in %.3f seconds.\n", load_time_taken))
 
+trt_labels_map <- c(
+  "IO_Chemo"  = "IO + Chemo",
+  "TKI_Chemo" = "TKI + Chemo",
+  "Dual_IO"   = "Dual IO",
+  "IO_Mono"   = "IO Monotherapy",
+  "TKI"       = "TKI Monotherapy",
+  "Chemo"     = "Chemotherapy"
+)
+
 # 2. Render Publication Forest Plot (300 DPI)
 dir.create("outputs/figures", recursive = TRUE, showWarnings = FALSE)
 output_fig <- "outputs/figures/02_forest_plot_random.png"
@@ -44,6 +53,7 @@ png(output_fig, width = 3200, height = 1800, res = 300)
 
 forest(
   nma,
+  labels = trt_labels_map[nma$trts],
   reference.group = "Chemo",
   pooled = "random",
   sortvar = -rk$ranking.random,

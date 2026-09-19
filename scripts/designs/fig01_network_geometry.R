@@ -40,6 +40,15 @@ colors_nodes <- c(
   "TKI_Chemo" = "#DD6B20"  # Rust Orange (Targeted Combo)
 )
 
+trt_labels_map <- c(
+  "IO_Chemo"  = "IO + Chemo",
+  "TKI_Chemo" = "TKI + Chemo",
+  "Dual_IO"   = "Dual IO",
+  "IO_Mono"   = "IO Monotherapy",
+  "TKI"       = "TKI Monotherapy",
+  "Chemo"     = "Chemotherapy"
+)
+
 # Compute cumulative patient sample size per treatment node
 pts_size <- sapply(nma$trts, function(t) {
   sum(dat$n_treat1[dat$treat1 == t], dat$n_treat2[dat$treat2 == t], na.rm = TRUE)
@@ -56,6 +65,7 @@ par(mar = c(5.2, 2.5, 3.8, 2.5))
 
 netgraph(
   nma,
+  labels = trt_labels_map[nma$trts],
   points = TRUE,
   cex.points = pts_cex,
   col.points = colors_nodes[nma$trts],

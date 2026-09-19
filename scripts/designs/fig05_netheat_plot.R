@@ -69,8 +69,20 @@ if (length(wi_idx) > 0) {
 }
 
 # 3. Multi-Arm Design Labeling
+trt_labels_map <- c(
+  "IO_Chemo"  = "IO + Chemo",
+  "TKI_Chemo" = "TKI + Chemo",
+  "Dual_IO"   = "Dual IO",
+  "IO_Mono"   = "IO Monotherapy",
+  "TKI"       = "TKI Monotherapy",
+  "Chemo"     = "Chemotherapy"
+)
+
 clean_comp_label <- function(comp, design_str, narms) {
-  c_clean <- gsub(":", " vs ", comp)
+  parts <- strsplit(comp, ":")[[1]]
+  p1 <- ifelse(parts[1] %in% names(trt_labels_map), trt_labels_map[parts[1]], parts[1])
+  p2 <- ifelse(parts[2] %in% names(trt_labels_map), trt_labels_map[parts[2]], parts[2])
+  c_clean <- paste(p1, "vs", p2)
   if (narms > 2) {
     if (grepl("Dual_IO.*IO_Chemo", design_str)) {
       return(paste0(c_clean, " (3-arm A)"))
@@ -161,8 +173,8 @@ p_netheat <- ggplot(netheat_df) +
       "  Warm red = drives network inconsistency; cool blue = stabilizes the network.\n",
       "• Inner Grey Squares: Area proportional to direct evidence contribution (Hat matrix H_ij).\n",
       "  Larger squares signify higher statistical weight of direct data in estimating each comparison.\n",
-      "• Multi-Arm Trial Designs: (3-arm A) Chemo/Dual_IO/IO_Chemo [CheckMate-9LA];\n",
-      "  (3-arm B) Chemo/Dual_IO/IO_Mono [KEYNOTE-598]; (3-arm C) Chemo/TKI/TKI_Chemo [NEJ026]."
+      "• Multi-Arm Trial Designs: (3-arm A) Chemo / Dual IO / IO + Chemo [CheckMate-9LA];\n",
+      "  (3-arm B) Chemo / Dual IO / IO Monotherapy [KEYNOTE-598]; (3-arm C) Chemo / TKI Monotherapy / TKI + Chemo [NEJ026]."
     )
   ) +
   theme_minimal(base_size = 11) +

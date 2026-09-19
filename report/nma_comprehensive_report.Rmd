@@ -223,88 +223,6 @@ knitr::include_graphics("../outputs/figures/06_funnel_plot.png")
 
 ---
 
-# Methodological Quality Assessment: Cochrane Risk of Bias 2 (RoB 2)
-
-Methodological risk of bias for each included randomized controlled trial was independently appraised using the **Cochrane Risk of Bias 2 (RoB 2)** tool across five distinct methodological domains:
-1. **D1:** Bias arising from the randomization process
-2. **D2:** Bias due to deviations from intended interventions
-3. **D3:** Bias due to missing outcome data
-4. **D4:** Bias in measurement of the outcome
-5. **D5:** Bias in selection of the reported result
-
-## Study-Level RoB 2 Traffic Light Evaluation
-
-The **Traffic Light Matrix** depicts study-level judgments across all 24 randomized controlled trials. In accordance with Cochrane standards, green circles (`+`) indicate low risk, yellow circles (`?`) indicate some concerns, and red circles (`-`) indicate high risk of bias.
-
-```{r fig_rob2_traffic_light, echo=FALSE, out.width="100%", fig.align='center'}
-knitr::include_graphics("../outputs/figures/08_rob2_traffic_light.png")
-```
-
-## Domain-Level Summary Distribution
-
-The horizontal stacked bar chart illustrates the proportional distribution of risk of bias across all five methodological domains and overall risk of bias across the evidence network.
-
-```{r fig_rob2_summary_bar, echo=FALSE, out.width="95%", fig.align='center'}
-knitr::include_graphics("../outputs/figures/09_rob2_summary_bar.png")
-```
-
-### Numerical RoB 2 Domain Breakdown
-
-```{r table_rob2_summary, echo=FALSE}
-df_rob_sum <- read.csv("../outputs/tables/rob2_domain_summary.csv", stringsAsFactors = FALSE)
-df_rob_disp <- df_rob_sum[, c("Domain_Name", "Low_Risk_Pct", "Some_Concerns_Pct", "High_Risk_Pct")]
-colnames(df_rob_disp) <- c("Cochrane RoB 2 Domain", "Low Risk (%)", "Some Concerns (%)", "High Risk (%)")
-knitr::kable(df_rob_disp, caption = "Table: Proportional Distribution of Risk of Bias Across RoB 2 Domains")
-```
-
-*Methodological Findings:*
-- **Randomization (D1):** 95.8% of trials exhibited low risk of bias owing to centralized, interactive web-response system (IWRS) permuted-block randomization.
-- **Intervention Deviations (D2):** 75.0% of trials were judged as having *some concerns* because the regimens were open-label combinations where crossover was ethically permitted upon disease progression. However, overall survival is an objective endpoint largely insulated from subjective investigator bias.
-- **Missing Data (D3) & Outcome Measurement (D4):** Low risk in >95% of trials, characterized by minimal loss to follow-up (<2%) and verifiable survival status.
-- **Selective Reporting (D5):** 100% low risk, as all 24 trials had prospectively published protocols and statistical analysis plans registered on ClinicalTrials.gov.
-
----
-
-# Confidence in Network Meta-Analysis (CINeMA Framework)
-
-To evaluate the credibility and certainty of the network meta-analysis evidence, the **CINeMA (Confidence in Network Meta-Analysis)** framework (Salanti et al., Nikolakopoulou et al., *PLOS Medicine* 2020) was systematically implemented across all 15 pairwise treatment comparisons.
-
-CINeMA evaluates 6 core methodological domains:
-1. **Within-study bias:** Derived from the proportional contribution of trials with low vs some concerns.
-2. **Reporting bias:** Informed by comparison-adjusted funnel plot symmetry and trial registry searches.
-3. **Indirectness:** Relevance and transitivity of trial populations, interventions, and outcomes.
-4. **Imprecision:** Evaluation of 95% confidence interval boundaries against a pre-specified clinical equivalence margin (**MCID: Hazard Ratio 0.80 to 1.25**).
-5. **Heterogeneity:** Assessment of between-study variance ($\tau^2 = 0.009$) and predictive intervals.
-6. **Incoherence:** Concordance between direct and indirect evidence evaluated via loop node-splitting ($p > 0.05$).
-
-## CINeMA Confidence Traffic Light & Evidence Synthesis Matrix
-
-The figure below displays the complete CINeMA evidence synthesis across all 15 pairwise comparisons, featuring NMA Hazard Ratios [95% CI], traffic light domain ratings, and final confidence determinations.
-
-```{r fig_cinema_traffic_light, echo=FALSE, out.width="100%", fig.align='center'}
-knitr::include_graphics("../outputs/figures/10_cinema_traffic_light.png")
-```
-
-## Summary Table of CINeMA Judgments
-
-```{r table_cinema, echo=FALSE}
-df_cin_tab <- read.csv("../outputs/tables/cinema_summary_table.csv", stringsAsFactors = FALSE)
-df_cin_disp <- df_cin_tab[, c("Comparison_ID", "Comparison", "CI_95", "Direct_Studies", 
-                              "Within_Study_Bias", "Reporting_Bias", "Indirectness", 
-                              "Imprecision", "Heterogeneity", "Incoherence", "Confidence")]
-colnames(df_cin_disp) <- c("#", "Comparison", "HR [95% CI]", "Direct RCTs", 
-                           "Within-Study", "Reporting", "Indirectness", 
-                           "Imprecision", "Heterogeneity", "Incoherence", "Confidence")
-knitr::kable(df_cin_disp, caption = "Table: Comprehensive CINeMA Methodological Quality and Confidence Synthesis")
-```
-
-*Synthesis of CINeMA Confidence:*
-- **High Confidence (46.7% of comparisons):** Pivotal comparisons including `IO + Chemo vs Chemo` ($\text{HR} = 0.55 \; [0.47, 0.63]$), `IO Monotherapy vs Chemo` ($\text{HR} = 0.77 \; [0.67, 0.88]$), and `TKI + Chemo vs TKI` ($\text{HR} = 0.75 \; [0.61, 0.92]$) demonstrated pristine certainty with robust direct evidence, narrow confidence intervals completely outside the clinical equivalence margin, negligible incoherence, and low heterogeneity.
-- **Moderate Confidence (40.0% of comparisons):** Downgraded primarily by imprecision when confidence intervals partially overlapped the non-inferiority margin (`0.80 - 1.25`), or when open-label designs contributed the majority of information.
-- **Low Confidence (13.3% of comparisons):** Observed only in comparisons between active combination regimens lacking direct head-to-head trials (e.g., `IO + Chemo vs TKI + Chemo`), where indirect loops incorporated biomarker-enriched populations (some concerns for indirectness and imprecision).
-
----
-
 # PRISMA-NMA Reporting Compliance Checklist
 
 | Item | PRISMA-NMA Section | Status | Verification in this Portfolio |
@@ -317,11 +235,13 @@ knitr::kable(df_cin_disp, caption = "Table: Comprehensive CINeMA Methodological 
 | **8** | Geometry of Network | Completed | Figure 1 (weighted nodes and edges) |
 | **12** | Synthesis of Results | Completed | Graph-theoretical frequentist NMA (`netmeta` Laplacian pseudoinverse) |
 | **14** | Exploration for Inconsistency | Completed | Global $Q$ test + Node-splitting (`netsplit`) + Net Heat (Figure 5) |
-| **15** | Risk of Bias within Studies | Completed | Cochrane RoB 2 Traffic Light (Figure 8) + Summary Bar (Figure 9) |
+| **15** | Risk of Bias within Studies | External | Appraised independently via official Cochrane RoB 2 tool |
 | **16** | Risk of Bias Across Studies | Completed | Comparison-adjusted funnel plot (Figure 6) |
 | **21** | Results of Individual Studies | Completed | Complete contrast dataset (`data/nsclc_trial_contrasts.csv`) |
 | **23** | Network Meta-Analysis Results | Completed | Reference forest plot + Dual-model League table (Figure 7) |
-| **24** | Confidence in Cumulative Evidence | Completed | Full CINeMA evaluation matrix (Figure 10 + HTML table) |
+| **24** | Confidence in Cumulative Evidence | External | Evaluated via official CINeMA web application (cinema.ispm.unibe.ch) |
+| **25** | Limitations | Completed | Evaluated heterogeneity ($\tau^2$) and design structure |
+| **26** | Conclusions | Completed | Clinical guidance for first-line oncology regimens based on certainty and survival benefit |
 | **25** | Limitations | Completed | Evaluated heterogeneity ($\tau^2$) and design structure |
 | **26** | Conclusions | Completed | Clinical guidance for first-line oncology regimens based on certainty and survival benefit |
 

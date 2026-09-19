@@ -1,7 +1,0 @@
-"Domain_Code","Domain_Name","Low_Risk_N","Low_Risk_Pct","Some_Concerns_N","Some_Concerns_Pct","High_Risk_N","High_Risk_Pct","Total_Studies"
-"D1","D1: Randomisation process",23,95.8,1,4.2,0,0,24
-"D2","D2: Deviations from intended interventions",6,25,18,75,0,0,24
-"D3","D3: Missing outcome data",23,95.8,1,4.2,0,0,24
-"D4","D4: Measurement of the outcome",24,100,0,0,0,0,24
-"D5","D5: Selection of the reported result",24,100,0,0,0,0,24
-"Overall","Overall Risk of Bias",6,25,18,75,0,0,24

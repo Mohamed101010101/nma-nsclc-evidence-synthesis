@@ -64,8 +64,24 @@ ns_df <- data.frame(
 
 # 3. Systematically Evaluate All 15 Pairwise Comparisons
 comparisons_list <- list()
+# ------------------------------------------------------------------------------
+# MCID / Equivalence Margin Benchmarks (for Imprecision domain evaluation):
+# ------------------------------------------------------------------------------
+# [Benchmark 1 - Active Default]: Standard CINeMA / Bioequivalence (20% RRR)
+# Nikolakopoulou et al. (PLOS Med 2020) & Papakonstantinou et al. (2020)
 mcid_lower <- 0.80
 mcid_upper <- 1.25
+
+# [Benchmark 2 - Oncology Specific]: ASCO 2014 & ESMO-MCBS v1.1 (25% RRR)
+# Clinically meaningful OS gain >= 2.5-3.3 months in 1L NSCLC (Ellis et al. JCO 2014)
+# mcid_lower <- 0.75
+# mcid_upper <- 1.33 # round(1 / 0.75, 2)
+
+# [Benchmark 3 - Conservative / Non-Inferiority]: Narrow safety margin (15% RRR)
+# Common in de-escalation / toxicity-sparing trials (e.g., IO Mono vs Chemo)
+# mcid_lower <- 0.85
+# mcid_upper <- 1.18 # round(1 / 0.85, 2)
+# ------------------------------------------------------------------------------
 
 pair_idx <- 0
 for (i in 1:(length(trt_order) - 1)) {

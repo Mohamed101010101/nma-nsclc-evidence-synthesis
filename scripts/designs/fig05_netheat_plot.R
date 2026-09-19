@@ -29,8 +29,11 @@ if (needs_refit) {
   source("scripts/analyses/01_fit_nma_model.R", local = refit_env)
 }
 
+load_start_time <- Sys.time()
 nma <- readRDS(model_path)
-cat(" - Loaded cached model in < 0.01 seconds.\n")
+load_end_time <- Sys.time()
+load_time_taken <- round(as.numeric(difftime(load_end_time, load_start_time, units="secs")), 3)
+cat(sprintf(" - Loaded cached model in %.3f seconds.\n", load_time_taken))
 
 # 2. Extract Krahn Decomposition and Hat Matrix
 cat(" - Computing Krahn design decomposition and Hat matrix weights ...\n")

@@ -29,9 +29,12 @@ if (needs_refit) {
   source("scripts/analyses/01_fit_nma_model.R", local = refit_env)
 }
 
+load_start_time <- Sys.time()
 nma <- readRDS(model_path)
 rk <- readRDS(ranking_path)
-cat(" - Successfully loaded cached model & rankings in < 0.01 seconds.\n")
+load_end_time <- Sys.time()
+load_time_taken <- round(as.numeric(difftime(load_end_time, load_start_time, units="secs")), 3)
+cat(sprintf(" - Successfully loaded cached model & rankings in %.3f seconds.\n", load_time_taken))
 
 # 2. Extract P-Scores & Treatment Hierarchy
 pscores_rand <- rk$ranking.random

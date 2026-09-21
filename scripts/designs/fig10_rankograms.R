@@ -21,7 +21,7 @@ if (!file.exists(rank_data_file)) {
   source("scripts/analyses/08_rank_probabilities.R")
 }
 
-rank_data <- readRDS(rank_data_file)
+rank_data  <- readRDS(rank_data_file)
 df_summary <- rank_data$summary_table
 rank_mat   <- rank_data$rank_prob_mat
 cum_mat    <- rank_data$cum_prob_mat
@@ -82,32 +82,45 @@ facet_labels <- setNames(
   df_summary$Treatment
 )
 
+# Separate labels into internal (inside tall bars) and external (above short bars)
+df_plot <- df_plot %>%
+  mutate(
+    Label_Text = ifelse(Probability >= 0.02, sprintf("%.1f%%", Probability * 100), ""),
+    Is_Tall    = Probability >= 0.08,
+    # For tall bars, place label in center of bar (safe from the cumulative curve above)
+    Y_Pos      = ifelse(Is_Tall, Probability * 0.45, Probability + 0.04),
+    Text_Color = ifelse(Is_Tall, "#FFFFFF", "#263238")
+  )
+
 p <- ggplot(df_plot, aes(x = Rank)) +
+  # Background subtle shading for ideal ranks (Rank 1-2)
+  annotate("rect", xmin = 0.5, xmax = 2.5, ymin = 0, ymax = 1.05, 
+           fill = "#F0F4F8", alpha = 0.45) +
   # Bar chart for discrete rank probabilities
-  geom_col(aes(y = Probability, fill = Treatment), width = 0.65, alpha = 0.85, color = "#263238", linewidth = 0.3) +
+  geom_col(aes(y = Probability, fill = Treatment), width = 0.68, alpha = 0.88, color = "#263238", linewidth = 0.3) +
   # Cumulative ranking line and points
-  geom_line(aes(y = Cum_Probability), color = "#263238", linewidth = 1.0, linetype = "solid") +
-  geom_point(aes(y = Cum_Probability), color = "#D32F2F", fill = "#FFFFFF", shape = 21, size = 2.4, stroke = 1.2) +
-  # Percentage text labels above bars (only if > 2%)
-  geom_text(aes(y = Probability + 0.035, 
-                label = ifelse(Probability >= 0.02, sprintf("%.1f%%", Probability * 100), "")),
-            size = 3.1, fontface = "bold", color = "#263238") +
+  geom_line(aes(y = Cum_Probability), color = "#37474F", linewidth = 1.1, linetype = "solid") +
+  geom_point(aes(y = Cum_Probability), color = "#B71C1C", fill = "#FFFFFF", shape = 21, size = 2.8, stroke = 1.5) +
+  # Text labels placed intelligently inside tall bars or just above short bars
+  geom_text(aes(y = Y_Pos, label = Label_Text, color = Text_Color),
+            size = 3.2, fontface = "bold") +
+  scale_color_identity() +
   # Faceting
   facet_wrap(~ Treatment, ncol = 3, labeller = as_labeller(facet_labels)) +
   scale_fill_manual(values = palette_regimens, guide = "none") +
   scale_x_continuous(breaks = 1:6, labels = paste0("Rank ", 1:6)) +
   scale_y_continuous(
-    limits = c(0, 1.08),
+    limits = c(0, 1.10),
     breaks = seq(0, 1, 0.25),
     labels = c("0%", "25%", "50%", "75%", "100%"),
-    expand = expansion(mult = c(0, 0.05))
+    expand = expansion(mult = c(0, 0.02))
   ) +
   labs(
     title = "Probabilistic Treatment Hierarchy & Full Rankograms (10,000 Monte Carlo Draws)",
-    subtitle = "Discrete Rank Probabilities (Bars) & Cumulative Ranking Curves (Black Lines with Red Points)\nRank 1 corresponds to superior overall survival; SUCRA measures percentage of efficacy achieved relative to an imaginary ideal regimen.",
-    x = "Treatment Rank in Hierarchy (1 = Most Effective Regimen, 6 = Least Effective)",
+    subtitle = "Discrete Probability of Occupying Each Rank (Filled Bars) with Cumulative Ranking Curves (Black Line & Red Circles)\nRank 1 indicates most favorable overall survival; SUCRA measures overall hierarchy percentage across all competing regimens.",
+    x = "Treatment Hierarchy Rank (Rank 1 = Most Effective, Rank 6 = Least Effective)",
     y = "Probability / Cumulative Probability",
-    caption = "Derived from 10,000 multivariate normal draws parameterized by network point estimates and random-effects covariance (Salanti et al., 2011).\nSUCRA: Surface Under the Cumulative RAnking curve. P(Best) = Probability of occupying Rank 1."
+    caption = "Derived from 10,000 multivariate normal draws parameterized by network point estimates and random-effects covariance (Salanti et al., 2011).\nFilled Bars: P(Rank = r). Line & Points: Cumulative SUCRA Curve. SUCRA: Surface Under the Cumulative RAnking curve. P(Best) = Probability of occupying Rank 1."
   ) +
   theme_minimal(base_size = 12) +
   theme(

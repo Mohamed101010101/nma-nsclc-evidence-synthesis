@@ -95,7 +95,7 @@ if (cache_valid) {
     HR_String      = sprintf("%.2f (%.2f-%.2f)", comp_hr, comp_lower, comp_upper),
     Z_Score        = round(comp_z, 2),
     P_Value        = comp_p,
-    P_Value_String = ifelse(comp_p < 0.0001, "<0.0001", sprintf("%.4f", comp_p)),
+    P_Value_String = ifelse(comp_p < 0.0001, "< 0.0001", sprintf("= %.4f", comp_p)),
     stringsAsFactors = FALSE
   )
 
@@ -117,7 +117,7 @@ if (cache_valid) {
     HR_String      = sprintf("%.2f (%.2f-%.2f)", exp(te_comb), exp(low_comb), exp(upp_comb)),
     Z_Score        = round((te_comb) / nc$seTE.random[comb_trts, "Chemo"], 2),
     P_Value        = p_comb,
-    P_Value_String = ifelse(p_comb < 0.0001, "<0.0001", sprintf("%.4f", p_comb)),
+    P_Value_String = ifelse(p_comb < 0.0001, "< 0.0001", sprintf("= %.4f", p_comb)),
     stringsAsFactors = FALSE
   )
 
@@ -150,25 +150,31 @@ if (cache_valid) {
 
   cat(sprintf(" - Saved Component NMA table : %s (%d rows)\n", table_file, nrow(df_cnma_summary)))
   cat(sprintf(" - Serialized CNMA object     : %s\n", model_file))
-
-  cat("\n [COMPONENT NMA SCIENTIFIC AUDIT]\n")
-  cat(sprintf(" - Anti-PD-(L)1 (IO)    iHR : %.3f (95%% CI: %.3f - %.3f, p %s)\n",
-              df_components$iHR[df_components$Item == "IO"],
-              df_components$CI_Lower[df_components$Item == "IO"],
-              df_components$CI_Upper[df_components$Item == "IO"],
-              df_components$P_Value_String[df_components$Item == "IO"]))
-  cat(sprintf(" - Tyrosine Kinase (TKI) iHR : %.3f (95%% CI: %.3f - %.3f, p %s)\n",
-              df_components$iHR[df_components$Item == "TKI"],
-              df_components$CI_Lower[df_components$Item == "TKI"],
-              df_components$CI_Upper[df_components$Item == "TKI"],
-              df_components$P_Value_String[df_components$Item == "TKI"]))
-  cat(sprintf(" - Anti-CTLA-4 (CTLA4)  iHR : %.3f (95%% CI: %.3f - %.3f, p %s)\n",
-              df_components$iHR[df_components$Item == "CTLA4"],
-              df_components$CI_Lower[df_components$Item == "CTLA4"],
-              df_components$CI_Upper[df_components$Item == "CTLA4"],
-              df_components$P_Value_String[df_components$Item == "CTLA4"]))
-  cat(sprintf(" - Additivity vs Synergy Q_diff : %.2f (df = %d, p = %.4f)\n",
-              nc$Q.diff, nc$df.Q.diff, nc$pval.Q.diff))
 }
 
-cat(" [SUCCESS] Component NMA completed cleanly.\n")
+# If loaded from cache, extract variables needed for the audit
+if (cache_valid) {
+  df_components <- cnma_data$components_df
+  nc            <- cnma_data$netcomb_obj
+}
+
+cat("\n [COMPONENT NMA SCIENTIFIC AUDIT]\n")
+cat(sprintf(" - Anti-PD-(L)1 (IO)    iHR : %.3f (95%% CI: %.3f - %.3f, p %s)\n",
+            df_components$iHR[df_components$Item == "IO"],
+            df_components$CI_Lower[df_components$Item == "IO"],
+            df_components$CI_Upper[df_components$Item == "IO"],
+            df_components$P_Value_String[df_components$Item == "IO"]))
+cat(sprintf(" - Tyrosine Kinase (TKI) iHR : %.3f (95%% CI: %.3f - %.3f, p %s)\n",
+            df_components$iHR[df_components$Item == "TKI"],
+            df_components$CI_Lower[df_components$Item == "TKI"],
+            df_components$CI_Upper[df_components$Item == "TKI"],
+            df_components$P_Value_String[df_components$Item == "TKI"]))
+cat(sprintf(" - Anti-CTLA-4 (CTLA4)  iHR : %.3f (95%% CI: %.3f - %.3f, p %s)\n",
+            df_components$iHR[df_components$Item == "CTLA4"],
+            df_components$CI_Lower[df_components$Item == "CTLA4"],
+            df_components$CI_Upper[df_components$Item == "CTLA4"],
+            df_components$P_Value_String[df_components$Item == "CTLA4"]))
+cat(sprintf(" - Additivity vs Synergy Q_diff : %.2f (df = %d, p = %.4f)\n",
+            nc$Q.diff, nc$df.Q.diff, nc$pval.Q.diff))
+
+cat("\n [SUCCESS] Component NMA completed cleanly.\n")

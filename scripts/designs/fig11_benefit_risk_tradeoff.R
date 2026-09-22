@@ -148,7 +148,7 @@ p <- ggplot(df_br, aes(x = OR_Tox, y = HR_OS)) +
   geom_point(aes(size = Net_Benefit_Score), color = "#263238", fill = df_br$Color, 
              shape = 21, stroke = 1.5, alpha = 0.95) +
   scale_size_continuous(
-    name = "Net Clinical Benefit Index\n(SUCRA Ratio: Efficacy / Toxicity)",
+    name = "Net Clinical Benefit Index\n(Composite SUCRA: Efficacy + Safety)",
     range = c(5.5, 10.5),
     breaks = c(0.6, 0.9, 1.2),
     labels = c("0.60 (Unfavorable)", "0.90 (Moderate)", "1.20 (Favorable)"),

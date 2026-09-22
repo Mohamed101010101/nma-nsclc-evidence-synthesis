@@ -10,7 +10,7 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [DESIGN 6/7] FIGURE 6: COMPARISON-ADJUSTED FUNNEL PLOT\n")
+cat(" [DESIGN 06/12] FIGURE 06: COMPARISON-ADJUSTED FUNNEL PLOT\n")
 cat("======================================================================\n")
 
 # 1. Load Cached Model & Rankings (Auto-fit if missing or data changed)

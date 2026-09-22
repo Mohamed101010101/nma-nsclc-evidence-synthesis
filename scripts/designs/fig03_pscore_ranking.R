@@ -11,7 +11,7 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [DESIGN 3/7] FIGURE 3: TREATMENT RANKING (P-SCORE HIERARCHY)\n")
+cat(" [DESIGN 03/12] FIGURE 03: TREATMENT RANKING (P-SCORE HIERARCHY)\n")
 cat("======================================================================\n")
 
 # 1. Load Cached Rankings Object (Auto-fit if missing or data changed)

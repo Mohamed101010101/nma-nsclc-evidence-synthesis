@@ -11,7 +11,7 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [ANALYSIS 2/5] TREATMENT RANKING VIA P-SCORES (SUCRA ANALOGUE)\n")
+cat(" [ANALYSIS 2/10] TREATMENT RANKING VIA P-SCORES (SUCRA ANALOGUE)\n")
 cat("======================================================================\n")
 
 # 1. Load Cached Model & Rankings (Auto-fit if missing or data changed)

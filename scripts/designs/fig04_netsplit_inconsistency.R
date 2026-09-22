@@ -10,7 +10,7 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [DESIGN 4/7] FIGURE 4: NODE-SPLITTING LOCAL INCONSISTENCY FOREST PLOT\n")
+cat(" [DESIGN 04/12] FIGURE 04: NODE-SPLITTING LOCAL INCONSISTENCY FOREST PLOT\n")
 cat("======================================================================\n")
 
 # 1. Load Cached Model (Auto-fit if missing or data changed)

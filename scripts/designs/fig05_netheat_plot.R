@@ -12,7 +12,7 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [DESIGN 5/7] FIGURE 5: NET HEAT INCONSISTENCY MATRIX PLOT\n")
+cat(" [DESIGN 05/12] FIGURE 05: NET HEAT INCONSISTENCY MATRIX PLOT\n")
 cat("======================================================================\n")
 
 # 1. Load Cached Model (Auto-fit if missing or data changed)

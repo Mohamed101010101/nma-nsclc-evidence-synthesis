@@ -11,7 +11,7 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [ANALYSIS 3/5] LEAGUE TABLE GENERATION (CSV MATRIX)\n")
+cat(" [ANALYSIS 3/10] LEAGUE TABLE GENERATION (CSV MATRIX)\n")
 cat("======================================================================\n")
 
 # 1. Load Cached Model & Rankings (Auto-fit if missing or data changed)

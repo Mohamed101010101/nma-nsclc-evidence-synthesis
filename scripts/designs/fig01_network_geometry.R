@@ -10,7 +10,7 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [DESIGN 1/7] FIGURE 1: EVIDENCE NETWORK GEOMETRY\n")
+cat(" [DESIGN 01/12] FIGURE 01: EVIDENCE NETWORK GEOMETRY\n")
 cat("======================================================================\n")
 
 # 1. Load Cached Model (Auto-fit if missing or data changed)

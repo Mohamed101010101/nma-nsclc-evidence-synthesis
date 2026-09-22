@@ -11,7 +11,7 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [DESIGN 7/7] FIGURE 7: PUBLICATION LEAGUE TABLE MATRIX FIGURE\n")
+cat(" [DESIGN 07/12] FIGURE 07: PUBLICATION LEAGUE TABLE MATRIX FIGURE\n")
 cat("======================================================================\n")
 
 # 1. Load Cached Model & Rankings (Auto-fit if missing or data changed)

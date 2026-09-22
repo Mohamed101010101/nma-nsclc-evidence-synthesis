@@ -14,6 +14,9 @@ suppressPackageStartupMessages({
   library(netmeta)
 })
 
+# Prevent scientific notation (e.g., display 0.0003 instead of 3e-04)
+options(scipen = 10)
+
 cat("\n======================================================================\n")
 cat(" [ANALYSIS 10/10] NETWORK META-REGRESSION & TRANSITIVITY AUDIT\n")
 cat("======================================================================\n")

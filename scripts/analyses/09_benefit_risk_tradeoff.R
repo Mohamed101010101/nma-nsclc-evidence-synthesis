@@ -14,20 +14,25 @@ cat("\n======================================================================\n"
 cat(" [ANALYSIS 9/10] BI-DIMENSIONAL BENEFIT-RISK TRADE-OFF MATRIX\n")
 cat("======================================================================\n")
 
+data_path    <- "data/nsclc_toxicity_events.csv"
 model_file   <- "outputs/models/benefit_risk_data.rds"
 table_file   <- "outputs/tables/benefit_risk_tradeoff.csv"
 nma_os_file  <- "outputs/models/nma_model.rds"
 rank_file    <- "outputs/models/rank_probabilities_data.rds"
 script_file  <- "scripts/analyses/09_benefit_risk_tradeoff.R"
 
+if (!file.exists(data_path)) {
+  stop(sprintf("Error: Toxicity event dataset not found at '%s'.", data_path))
+}
 if (!file.exists(nma_os_file)) {
   stop(sprintf("Error: Baseline OS NMA model not found at '%s'.", nma_os_file))
 }
 
 force_refit <- (exists("force_refit") && isTRUE(force_refit))
+data_mod    <- file.exists(model_file) && (file.mtime(data_path) > file.mtime(model_file))
 os_mod      <- file.exists(model_file) && (file.mtime(nma_os_file) > file.mtime(model_file))
 script_mod  <- file.exists(model_file) && (file.mtime(script_file) > file.mtime(model_file))
-cache_valid <- !force_refit && file.exists(model_file) && file.exists(table_file) && !os_mod && !script_mod
+cache_valid <- !force_refit && file.exists(model_file) && file.exists(table_file) && !data_mod && !os_mod && !script_mod
 
 if (cache_valid) {
   cat(sprintf(" - Existing Benefit-Risk cache is up-to-date (Last modified: %s).\n", 
@@ -35,95 +40,10 @@ if (cache_valid) {
   cat(" - Skipping redundant estimation. To force refit, set force_refit <- TRUE\n")
   br_data <- readRDS(model_file)
 } else {
-  cat(" - Compiling trial-level Grade 3-5 severe toxicity event counts across all 24 trials ...\n")
-  
-  df_tox <- data.frame(
-    studlab = c(
-      "KEYNOTE-024 (2016)", "KEYNOTE-042 (2019)", "EMPOWER-Lung1 (2021)", "IMpower110 (2020)",
-      "KEYNOTE-189 (2018)", "KEYNOTE-407 (2018)", "IMpower130 (2019)", "CameL (2021)",
-      "RATIONALE-307 (2021)", "ORIENT-11 (2021)", "IMpower150 (2018)",
-      "CheckMate-9LA (2020)", "CheckMate-9LA (2020)", "CheckMate-9LA (2020)",
-      "CheckMate-227 (2019)", "CheckMate-227 (2019)", "CheckMate-227 (2019)",
-      "POSEIDON (2022)", "POSEIDON (2022)", "POSEIDON (2022)",
-      "IPASS (2009)", "EURTAC (2012)", "OPTIMAL (2011)", "WJTOG3405 (2010)",
-      "FLAURA2 (2023)", "ARTEMIS (2022)",
-      "NEJ009 (2020)", "NEJ009 (2020)", "NEJ009 (2020)",
-      "KEYNOTE-598 (2021)", "MARIPOSA-2 (2023)", "INSPIRE (2021)"
-    ),
-    treat1 = c(
-      "IO_Mono", "IO_Mono", "IO_Mono", "IO_Mono",
-      "IO_Chemo", "IO_Chemo", "IO_Chemo", "IO_Chemo",
-      "IO_Chemo", "IO_Chemo", "IO_Chemo",
-      "IO_Chemo", "Dual_IO", "Dual_IO",
-      "IO_Mono", "Dual_IO", "Dual_IO",
-      "IO_Chemo", "Dual_IO", "Dual_IO",
-      "TKI", "TKI", "TKI", "TKI",
-      "TKI_Chemo", "TKI_Chemo",
-      "TKI", "TKI_Chemo", "TKI_Chemo",
-      "Dual_IO", "TKI_Chemo", "IO_Chemo"
-    ),
-    treat2 = c(
-      "Chemo", "Chemo", "Chemo", "Chemo",
-      "Chemo", "Chemo", "Chemo", "Chemo",
-      "Chemo", "Chemo", "Chemo",
-      "Chemo", "Chemo", "IO_Chemo",
-      "Chemo", "Chemo", "IO_Mono",
-      "Chemo", "Chemo", "IO_Chemo",
-      "Chemo", "Chemo", "Chemo", "Chemo",
-      "TKI", "TKI",
-      "Chemo", "Chemo", "TKI",
-      "IO_Mono", "Chemo", "IO_Mono"
-    ),
-    event1 = c(
-      41, 113, 56, 43,
-      276, 194, 330, 142,
-      172, 164, 224,
-      220, 190, 190,
-      75, 130, 130,
-      176, 180, 180,
-      174, 39, 14, 23,
-      179, 78,
-      27, 111, 111,
-      99, 94, 86
-    ),
-    n1 = c(
-      154, 637, 356, 286,
-      410, 278, 451, 205,
-      243, 266, 392,
-      361, 361, 361,
-      396, 396, 396,
-      338, 338, 338,
-      609, 86, 82, 86,
-      279, 120,
-      85, 170, 170,
-      284, 131, 144
-    ),
-    event2 = c(
-      80, 261, 139, 105,
-      130, 192, 138, 114,
-      79, 67, 226,
-      172, 172, 220,
-      143, 143, 75,
-      150, 150, 176,
-      372, 58, 46, 53,
-      75, 32,
-      48, 48, 27,
-      56, 126, 28
-    ),
-    n2 = c(
-      151, 637, 354, 286,
-      206, 281, 228, 207,
-      121, 131, 394,
-      358, 358, 361,
-      397, 397, 396,
-      337, 337, 338,
-      608, 87, 72, 86,
-      278, 120,
-      85, 85, 85,
-      284, 263, 142
-    ),
-    stringsAsFactors = FALSE
-  )
+  cat(sprintf(" - Loading Grade 3-5 toxicity events from '%s' ...\n", data_path))
+  df_tox <- read.csv(data_path, stringsAsFactors = FALSE)
+  cat(sprintf(" - Loaded %d pairwise toxicity contrasts across %d trials.\n",
+              nrow(df_tox), length(unique(df_tox$studlab))))
   
   # Calculate pairwise odds ratios
   pw_tox <- pairwise(

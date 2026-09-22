@@ -15,9 +15,14 @@ cat("\n======================================================================\n"
 cat(" [DESIGN 11/12] FIGURE 11: BI-DIMENSIONAL BENEFIT-RISK TRADE-OFF MATRIX\n")
 cat("======================================================================\n")
 
+data_path    <- "data/nsclc_toxicity_events.csv"
 br_data_file <- "outputs/models/benefit_risk_data.rds"
-if (!file.exists(br_data_file)) {
-  cat(" - Benefit-risk data cache missing. Running 09_benefit_risk_tradeoff.R ...\n")
+
+needs_rerun  <- !file.exists(br_data_file) ||
+                (file.exists(data_path) && file.mtime(data_path) > file.mtime(br_data_file))
+
+if (needs_rerun) {
+  cat(" - Toxicity data updated or cached model missing. Re-fitting via 09_benefit_risk_tradeoff.R ...\n")
   source("scripts/analyses/09_benefit_risk_tradeoff.R")
 }
 

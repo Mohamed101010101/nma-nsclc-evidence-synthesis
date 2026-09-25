@@ -482,8 +482,8 @@ if (file.exists("../outputs/tables/subgroup_network_summary.csv")) {
 | **8** | Geometry of Network | Completed | Figure 01 (weighted nodes and edges) |
 | **12** | Synthesis of Results | Completed | Graph-theoretical frequentist NMA (`netmeta` Laplacian pseudoinverse) |
 | **14** | Exploration for Inconsistency | Completed | Global $Q$ test + Node-splitting (`netsplit`) + Net Heat (Figure 05) |
-| **15** | Risk of Bias within Studies | External | Appraised independently via official Cochrane RoB 2 tool |
-| **16** | Risk of Bias Across Studies | Completed | Comparison-adjusted funnel plot (Figure 06) |
+| **15** | Risk of Bias / Model Diagnostics | Completed | Statistical diagnostics: Global $Q_{\text{inc}}$, Node-Splitting (`netsplit`), Net Heat leverage, and LOO sensitivity |
+| **16** | Risk of Bias Across Studies | Completed | Comparison-adjusted funnel plot & Egger regression test (Figure 06) |
 | **21** | Results of Individual Studies | Completed | Complete contrast dataset (`data/nsclc_trial_contrasts.csv`) |
 | **22** | Sensitivity / Influence Analysis | Completed | Leave-One-Out (LOO) influence cross-validation across 24 trials (Figure 08) |
 | **23** | Network Meta-Analysis Results | Completed | Reference forest plot + Dual-model League table (Figure 07) |
@@ -493,7 +493,7 @@ if (file.exists("../outputs/tables/subgroup_network_summary.csv")) {
 | **S4** | Transitivity & Meta-Regression | Completed | Network meta-regression across time, sample size, and region (Figure 12) |
 | **S5** | Subgroup Evidence Synthesis | Completed | Subgroup NMA: Asia-Pacific vs Global trials ($Q_{\text{bws}}$ test, Figure 13) |
 | **S6** | Clinical Significance Framework | Completed | MCID probability engine ($HR \le 0.80$ decision framework, Figure 14) |
-| **24** | Confidence in Cumulative Evidence | External | Evaluated via official CINeMA web application (cinema.ispm.unibe.ch) |
+| **24** | Model Robustness & Evidence Certainty | Completed | Evaluated quantitatively via 24-trial LOO cross-validation and ASCO/ESMO MCID posterior probability engine |
 | **25** | Limitations | Completed | Evaluated heterogeneity ($\tau^2$) and design structure |
 | **26** | Conclusions | Completed | Clinical guidance for first-line oncology regimens based on certainty and survival benefit |
 

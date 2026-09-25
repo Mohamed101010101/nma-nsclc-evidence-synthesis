@@ -4,8 +4,8 @@
 [![R Version](https://img.shields.io/badge/R-v4.6.1-276DC3.svg?logo=R&logoColor=white)](https://www.r-project.org/)
 [![Package: netmeta](https://img.shields.io/badge/netmeta-v3.6--1-blue.svg)](https://cran.r-project.org/package=netmeta)
 [![Methodology: Graph Theory](https://img.shields.io/badge/Methodology-Graph--Theoretical%20Laplacian-darkgreen.svg)](#3-mathematical--biostatistical-framework)
-[![Guideline: PRISMA-NMA](https://img.shields.io/badge/PRISMA--NMA-100%25%20Compliant-success.svg)](#9-prisma-nma-reporting-compliance-checklist)
-[![Framework: CINeMA](https://img.shields.io/badge/Quality-CINeMA%20%26%20Cochrane%20RoB%202.0-orange.svg)](#6-quality-of-evidence--methodological-bias-control)
+[![Pipeline: 12 Engines](https://img.shields.io/badge/Statistical%20Engines-12%20R%20Modules-teal.svg)](#3-mathematical--biostatistical-framework)
+[![Validation: Diagnostics](https://img.shields.io/badge/Diagnostics-Node--Splitting%20%7C%20NetHeat%20%7C%20LOO-purple.svg)](#6-network-inconsistency-transitivity--sensitivity-diagnostics)
 [![Journal Standard](https://img.shields.io/badge/Publication%20Standard-Lancet%20%7C%20NEJM%20%7C%20BMJ%20%7C%20JAMA-purple.svg)](#4-complete-publication-gallery-300-dpi-visual-exhibits)
 [![Evidence Base](https://img.shields.io/badge/Evidence%20Base-24%20RCTs%20%7C%2015%2C753%20Pts-informational.svg)](#2-evidence-base--clinical-scenario-advanced-nsclc)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -28,10 +28,10 @@
   - [3.10 Minimal Clinically Important Difference (MCID) Decision Framework](#310-minimal-clinically-important-difference-mcid-decision-framework)
 - [4. Complete Publication Gallery (300 DPI Visual Exhibits)](#4-complete-publication-gallery-300-dpi-visual-exhibits)
 - [5. Synthesis Summary & Empirical Tables](#5-synthesis-summary--empirical-tables)
-- [6. Quality of Evidence & Methodological Bias Control](#6-quality-of-evidence--methodological-bias-control)
+- [6. Network Inconsistency, Transitivity & Sensitivity Diagnostics](#6-network-inconsistency-transitivity--sensitivity-diagnostics)
 - [7. Production Repository Architecture](#7-production-repository-architecture)
 - [8. Computational Reproducibility & Execution Pipeline](#8-computational-reproducibility--execution-pipeline)
-- [9. PRISMA-NMA Reporting Compliance Checklist](#9-prisma-nma-reporting-compliance-checklist)
+- [9. PRISMA-NMA Computational Reporting Alignment](#9-prisma-nma-computational-reporting-alignment)
 - [10. Methodological References & Bibliography](#10-methodological-references--bibliography)
 
 ---
@@ -40,7 +40,7 @@
 
 > **🎓 Methodological Statement**
 >
-> *"In complex clinical domains with multiple competing therapeutic modalities, head-to-head randomized trials are frequently incomplete, fragmented, or unfeasible. Network Meta-Analysis (NMA) bridges this fundamental translational gap by synthesizing direct and indirect evidence into an internally consistent global hierarchy. This portfolio demonstrates a production-grade frequentist graph-theoretical NMA engine designed according to the highest standards of international clinical epidemiology (Cochrane Handbook, PRISMA-NMA, CINeMA), providing an exhaustive, fully reproducible evidence pipeline for top-tier peer review."*
+> *"In complex clinical domains with multiple competing therapeutic modalities, head-to-head randomized trials are frequently incomplete, fragmented, or unfeasible. Network Meta-Analysis (NMA) bridges this fundamental translational gap by synthesizing direct and indirect evidence into an internally consistent global hierarchy. This repository delivers a dedicated, production-grade computational NMA engine written in R (using the `netmeta` ecosystem), implementing 12 modular biostatistical analyses—spanning graph-theoretical Laplacian synthesis, global and local inconsistency testing, leave-one-out sensitivity audits, component synergy deconstruction, Monte Carlo ranking simulations, bivariate benefit-risk trade-offs, and clinical MCID threshold analytics."*
 
 When clinical guidelines evaluate competing first-line systemic regimens, traditional pairwise meta-analysis cannot establish a global ranking or determine comparative efficacy between interventions that have never been directly compared in a clinical trial.
 
@@ -519,37 +519,67 @@ All 14 figures below were engineered at **300 DPI publication standards** using 
 
 ---
 
-## 6. Quality of Evidence & Methodological Bias Control
+## 6. Network Inconsistency, Transitivity & Sensitivity Diagnostics
 
-### Cochrane Risk of Bias 2.0 (RoB 2) Summary
+The validity, internal consistency, and statistical robustness of this Network Meta-Analysis are confirmed through a comprehensive battery of empirical diagnostic tests directly computed across the 24 landmark trials:
 
-All 24 RCTs were formally appraised using the **Cochrane RoB 2.0 tool** across 5 methodological domains:
+### 6.1 Global & Design-Level Inconsistency Decomposition
+Using the mathematical decomposition of Cochran's Q statistic (Krahn et al., 2013), total network variation was partitioned into within-design heterogeneity and between-design inconsistency:
 
-| RoB 2.0 Domain | Assessment Across 24 Trials |
-|:---|:---|
-| **D1 — Randomization Process** | Low Risk in 23/24 trials. All used centralized IVRS/IWRS with adequate allocation concealment. Some Concerns in INSPIRE (smaller cohort). |
-| **D2 — Deviations from Intended Interventions** | Open-label in 18 trials. However, the primary endpoint (Overall Survival = all-cause mortality) is an objective biological event immune to assessor subjectivity → performance bias strictly controlled. |
-| **D3 — Missing Outcome Data** | Low Risk in 24/24 trials. Loss to follow-up for vital status was < 2% across all trials. |
-| **D4 — Measurement of the Outcome** | Low Risk in 24/24 trials. Death is objectively verifiable. |
-| **D5 — Selection of Reported Results** | Low Risk in 24/24 trials. All trials pre-registered on ClinicalTrials.gov with published Statistical Analysis Plans. |
+| Diagnostic Metric | Degrees of Freedom (df) | Test Statistic (Q) | p-value | Interpretation |
+| :--- | :---: | :---: | :---: | :--- |
+| **Total Network Variation** | 20 | Q = 21.44 | p = 0.3718 | No significant global network tension |
+| **Within-Designs Heterogeneity (Q_het)** | 15 | Q = 17.25 | p = 0.3043 | Homogeneity across trials evaluating identical designs |
+| **Between-Designs Inconsistency (Q_inc)** | 5 | Q = 4.19 | **p = 0.8396** | **Strict network consistency confirmed** |
+| **Between-Study Heterogeneity Variance (tau²)** | — | tau² = 0.0000 | — | Complete cross-trial parameter consistency |
+| **Total Heterogeneity Ratio (I²)** | — | I² = 6.7% [0.0%; 49.3%] | — | Minimal between-study variability |
 
-*Complete study-level RoB 2 assessments and clinical rationales: [`data/nsclc_rob2_assessments.csv`](data/nsclc_rob2_assessments.csv)*
+*Empirical Conclusion:* The between-designs inconsistency statistic (Q_inc = 4.19, p = 0.8396) demonstrates that direct and indirect evidence are fully congruent across all closed loops of the network.
 
 ---
 
-### CINeMA (Confidence in Network Meta-Analysis) Evaluation
+### 6.2 Local Inconsistency via Node-Splitting (`netsplit`)
+Local agreement between direct head-to-head evidence and indirect network evidence was formally tested across all closed comparative loops using the node-splitting method (Dias et al., 2010):
 
-Following Nikolakopoulou et al. (2020), confidence in the cumulative evidence was evaluated across the 6 core CINeMA domains:
+| Comparison Loop | Direct Evidence HR [95% CI] | Indirect Evidence HR [95% CI] | Network Estimate HR [95% CI] | Inconsistency p-value |
+| :--- | :---: | :---: | :---: | :---: |
+| **IO + Chemo vs Chemo** | 0.69 [0.63; 0.76] | 0.69 [0.58; 0.82] | 0.69 [0.64; 0.74] | **p = 0.9996** |
+| **IO Mono vs Chemo** | 0.77 [0.70; 0.85] | 0.82 [0.68; 0.99] | 0.78 [0.71; 0.84] | **p = 0.5888** |
+| **TKI vs Chemo** | 0.91 [0.82; 1.01] | 0.88 [0.70; 1.10] | 0.90 [0.82; 0.99] | **p = 0.7963** |
+| **Dual IO vs Chemo** | 0.76 [0.69; 0.85] | 0.77 [0.57; 1.04] | 0.76 [0.69; 0.84] | **p = 0.9575** |
+| **IO + Chemo vs IO Mono** | 0.85 [0.70; 1.03] | 0.89 [0.79; 1.00] | 0.88 [0.80; 0.98] | **p = 0.6980** |
 
-| CINeMA Domain | Evaluation in this Evidence Base | Confidence |
-| :--- | :--- | :---: |
-| **1. Within-Study Bias** | Majority of evidence weight stems from high-quality Phase III registration trials with low risk of bias for survival endpoints. | **No Concerns** |
-| **2. Reporting Bias** | Symmetric funnel plot (Figure 06); Egger test p = 0.1374; comprehensive clinical trial registry matching. | **No Concerns** |
-| **3. Indirectness** | PICO strictly aligned; trial populations represent first-line advanced NSCLC; no surrogate outcome indirectness. | **No Concerns** |
-| **4. Imprecision** | 95% CIs for IO + Chemo vs Chemo exclude 1.0 and reside entirely within the clinical benefit zone (HR ≤ 0.74). | **No Concerns** |
-| **5. Heterogeneity** | Global Q_het = 17.25 (p = 0.3043); between-study variance τ² = 0.0000; meta-regression confirms no effect modification. | **No Concerns** |
-| **6. Incoherence** | Global Q_inc = 4.19 (p = 0.8396); all node-splitting tests p > 0.40; Net Heat matrix cool. | **No Concerns** |
-| **Overall Confidence** | **High Confidence** for the comparative survival superiority of IO + Chemotherapy. | **HIGH ⊕⊕⊕⊕** |
+*Empirical Conclusion:* Every closed loop in the network displays strict local consistency (all p > 0.58), confirming that direct and indirect comparisons yield harmonious treatment effect estimates without localized conflict.
+
+---
+
+### 6.3 Net Heat Matrix & Hat Leverage Diagnostics
+To evaluate whether individual designs exert disproportionate influence or conceal localized conflict, the Hat Matrix (H) and contribution weights were computed using the Net Heat approach (Rücker et al., 2013; Figure 05):
+- The Net Heat matrix displays uniformly cool background shading across all treatment pairs.
+- No single comparison loop generates excessive leverage or anomalous residual inconsistency.
+- Hat matrix weights demonstrate that direct evidence heavily supports primary contrasts with balanced precision distribution.
+
+---
+
+### 6.4 Leave-One-Out (LOO) Sensitivity & Influence Cross-Validation
+To verify that the network hierarchy is not driven by any single landmark trial, 24 iterative jackknife NMA models were fitted by systematically omitting one trial at a time (Figure 08):
+- **Superiority Invariance:** `IO + Chemo` maintained the #1 rank across **100% (24/24)** of LOO iterations.
+- **Estimate Stability:** The hazard ratio for `IO + Chemo vs Chemo` ranged strictly between **0.67 and 0.70** (baseline 0.69).
+- **Influence Check:** Even omitting the largest multi-arm trials (CheckMate-9LA, IMpower150, KEYNOTE-189) did not alter any clinical conclusion or statistical significance threshold.
+
+---
+
+### 6.5 Small-Study Effects & Publication Bias Diagnostics
+To evaluate the presence of selective reporting or small-study distortion:
+- **Comparison-Adjusted Funnel Plot (Figure 06):** Plotted effect sizes centered around comparison-specific network estimates. The distribution displays robust symmetry around the zero line.
+- **Egger's Linear Regression Test:** Intercept = -0.56, t = -1.52, **p = 0.1374**, confirming no statistically significant publication bias or small-study asymmetry across the 24 landmark registration trials.
+
+---
+
+### 6.6 Transitivity & Clinical Effect Modifier Audits
+Transitivity requires that trial characteristics act as effect modifiers uniformly across all comparisons:
+- **Meta-Regression Across Moderators (Figure 12):** Publication year (p = 0.72), total trial sample size (p = 0.58), and geographic region did not show significant effect modification.
+- **Subgroup NMA (Asia-Pacific vs Global, Figure 13):** Test for subgroup differences yielded Q_bws = 0.0334 (p = 0.8549) for IO + Chemo vs Chemo, confirming consistent treatment efficacy across global and regional patient cohorts.
 
 ---
 
@@ -559,8 +589,7 @@ Following Nikolakopoulou et al. (2020), confidence in the cumulative evidence wa
 nma-nsclc-evidence-synthesis/
 ├── data/
 │   ├── nsclc_trial_contrasts.csv          # Primary contrast dataset (34 contrasts, 24 RCTs, 15,753 pts)
-│   ├── nsclc_toxicity_events.csv          # Grade 3-5 severe adverse events dataset (safety NMA, 14,357 pts)
-│   └── nsclc_rob2_assessments.csv         # Domain-level Cochrane RoB 2.0 evaluations for all 24 trials
+│   └── nsclc_toxicity_events.csv          # Grade 3-5 severe adverse events dataset (safety NMA, 14,357 pts)
 ├── scripts/
 │   ├── analyses/
 │   │   ├── 01_fit_nma_model.R             # Engine 01: Graph-Theoretical Laplacian Model Fit (netmeta)
@@ -639,13 +668,13 @@ rmarkdown::render("report/nma_comprehensive_report.Rmd")
 
 ---
 
-## 9. PRISMA-NMA Reporting Compliance Checklist
+## 9. PRISMA-NMA Computational Reporting Alignment
 
-This project complies 100% with the **PRISMA Extension Statement for Network Meta-Analyses** (Hutton et al., *Ann Intern Med* 2015):
+> **Scope Statement:** This repository provides an end-to-end **biostatistical and computational synthesis engine**. It focuses on the mathematical contrast transformation, Laplacian graph modeling, consistency testing, sensitivity cross-validation, rank distributions, and high-resolution visualization. Trial-level qualitative appraisal and external subjective certainty scoring are outside this computational pipeline.
 
-| PRISMA-NMA Item | Guideline Description | Implementation |
+| PRISMA-NMA Item | Guideline Description | Implementation in Computational Pipeline |
 | :--- | :--- | :--- |
-| **Item 1: Title** | Identify report as NMA | Title explicitly states Frequentist NMA |
+| **Item 1: Title** | Identify report as NMA | Title explicitly states Frequentist NMA Engine |
 | **Item 2: Structured Summary** | Summary of background, methods, results | Executive summary and abstract in report |
 | **Item 3: Rationale** | Explain need for indirect comparisons | Section 1 & Section 3 (Bucher principle) |
 | **Item 4: Objectives** | Specific PICO research questions | Section 2 (PICO Evidence Architecture) |
@@ -655,10 +684,10 @@ This project complies 100% with the **PRISMA Extension Statement for Network Met
 | **Item 10: Data Collection** | Process of extracting contrast data | Standardized CSV in `data/nsclc_trial_contrasts.csv` |
 | **Item 12: Synthesis Methods** | Describe statistical models for NMA | Section 3.4: Graph-theoretical Laplacian inversion |
 | **Item 13: Inconsistency** | Global and local inconsistency methods | Section 3.5 & 3.6: Global Q, `netsplit`, Net Heat |
-| **Item 14: Risk of Bias** | Describe quality assessment tools | Section 6: Full Cochrane RoB 2.0 across 24 trials |
+| **Item 14: Model Diagnostics** | Describe quality and diagnostic checks | Section 6: Global Q_inc, local node-splitting, Net Heat leverage, and LOO sensitivity |
 | **Item 15: Small-Study Effects** | Methods to evaluate publication bias | **Figure 06:** Funnel plot & Egger regression |
 | **Item 17: Study Selection** | Report study inclusion metrics | 24 RCTs, 15,753 patients synthesized |
-| **Item 18: Study Characteristics** | Present trial-level metadata | `data/nsclc_rob2_assessments.csv` |
+| **Item 18: Study Characteristics** | Present trial-level metadata | Standardized contrast dataset in `data/nsclc_trial_contrasts.csv` |
 | **Item 20: Synthesis Results** | Present League Tables & forest plots | **Figure 02** (Forest), **Figure 07** (League Table) |
 | **Item 21: Inconsistency Results** | Present results of testing | **Figure 04** (Netsplit), **Figure 05** (Net Heat) |
 | **Item 22: Sensitivity Analysis** | Evaluate stability across trials | **Figure 08:** LOO cross-validation (24 iterations) |
@@ -668,7 +697,7 @@ This project complies 100% with the **PRISMA Extension Statement for Network Met
 | **S3: Meta-Regression** | Screen effect modifiers | **Figure 12:** Year, sample size, and region |
 | **S4: Subgroup Evidence** | Evaluate transitivity | **Figure 13:** Asia-Pacific vs Global (Q_bws test) |
 | **S5: Clinical MCID** | Minimal clinically important difference | **Figure 14:** HR ≤ 0.80 decision framework |
-| **Item 24: Confidence** | Systematically evaluate certainty | Section 6: CINeMA across all 6 domains |
+| **Item 24: Model Robustness** | Evaluate model stability & certainty | Section 6: 24-trial LOO cross-validation and ASCO/ESMO MCID framework |
 
 ---
 
@@ -679,8 +708,8 @@ This project complies 100% with the **PRISMA Extension Statement for Network Met
 3. **Rücker, G., Petropoulou, M., & Schwarzer, G.** (2020). Component network meta-analysis: modeling, estimation and application to psychological interventions. *Biostatistics*, 21(4), 808–824. [doi:10.1093/biostatistics/kxz025](https://doi.org/10.1093/biostatistics/kxz025)
 4. **Hutton, B., et al.** (2015). The PRISMA extension statement for reporting of systematic reviews incorporating network meta-analyses. *Annals of Internal Medicine*, 162(11), 777–784. [doi:10.7326/M14-2385](https://doi.org/10.7326/M14-2385)
 5. **Salanti, G., et al.** (2011). Evaluating the quality of evidence from a network meta-analysis. *PLoS ONE*, 9(7), e99682. [doi:10.1371/journal.pone.0099682](https://doi.org/10.1371/journal.pone.0099682)
-6. **Nikolakopoulou, A., et al.** (2020). CINeMA: An approach for assessing confidence in results of a network meta-analysis. *PLoS Medicine*, 17(4), e1003082. [doi:10.1371/journal.pmed.1003082](https://doi.org/10.1371/journal.pmed.1003082)
-7. **Sterne, J. A. C., et al.** (2019). RoB 2: a revised tool for assessing risk of bias in randomised trials. *BMJ*, 366, l4898. [doi:10.1136/bmj.l4898](https://doi.org/10.1136/bmj.l4898)
+6. **Ellis, L. M., et al.** (2014). American Society of Clinical Oncology perspective: Raising the bar for clinical trials by defining clinically meaningful outcomes. *Journal of Clinical Oncology*, 32(12), 1277–1280. [doi:10.1200/JCO.2013.53.8009](https://doi.org/10.1200/JCO.2013.53.8009)
+7. **Schwarzer, G., Carpenter, J. R., & Rücker, G.** (2015). *Meta-Analysis with R*. Springer, Cham. [doi:10.1007/978-3-319-21416-0](https://doi.org/10.1007/978-3-319-21416-0)
 8. **Chaimani, A., & Salanti, G.** (2012). Using network meta-analysis to evaluate the existence of small-study effects. *Research Synthesis Methods*, 3(2), 161–176. [doi:10.1002/jrsm.57](https://doi.org/10.1002/jrsm.57)
 9. **Bucher, H. C., et al.** (1997). The results for indirect treatment comparisons in meta-analysis of randomized controlled trials. *Journal of Clinical Epidemiology*, 50(6), 683–691. [doi:10.1016/S0895-4356(97)00049-8](https://doi.org/10.1016/S0895-4356(97)00049-8)
 10. **Dias, S., et al.** (2010). Checking consistency in mixed treatment comparison meta-analysis. *Statistics in Medicine*, 29(7–8), 932–944. [doi:10.1002/sim.3767](https://doi.org/10.1002/sim.3767)

@@ -12,8 +12,6 @@
 [![Journal Standard](https://img.shields.io/badge/Publication%20Standard-Lancet%20%7C%20NEJM%20%7C%20BMJ%20%7C%20JAMA-purple.svg)](#4-complete-publication-gallery-300-dpi-visual-exhibits)
 [![Evidence Base](https://img.shields.io/badge/Evidence%20Base-24%20RCTs%20%7C%2015%2C753%20Pts-informational.svg)](#2-evidence-base--clinical-scenario-advanced-nsclc)
 [![Live Interactive Monograph](https://img.shields.io/badge/Live%20Report-Interactive%20Monograph-0071E3.svg?logo=googlechrome&logoColor=white)](https://mohamed101010101.github.io/nma-nsclc-evidence-synthesis/)
-[![ORCID](https://img.shields.io/badge/ORCID-0009--0003--3143--387X-A6CE39.svg?logo=orcid&logoColor=white)](https://orcid.org/0009-0003-3143-387X)
-[![MTI Faculty of Medicine](https://img.shields.io/badge/Affiliation-MTI%20Medicine-161B22.svg?logo=medscape&logoColor=2997FF)](https://www.mti.edu.eg/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 </div>
@@ -634,15 +632,9 @@ rmarkdown::render("report/nma_comprehensive_report.Rmd")
 
 ---
 
-## 👨‍🔬 Principal Investigator & Research Inquiries
+## 📄 Scholarly Citation & Attribution
 
-**Mohamed Said Mohamed Diab** *(Lead Investigator)*  
-Faculty of Medicine, Modern University for Technology and Information (MTI), Cairo, Egypt  
-- **ORCID:** [0009-0003-3143-387X](https://orcid.org/0009-0003-3143-387X)  
-- **Institutional Email:** [Mohamed.98478@Medicine.mti.edu.eg](mailto:Mohamed.98478@Medicine.mti.edu.eg)  
-
-### Citation & Academic Attribution
-To cite this repository, mathematical architecture, or evidence synthesis engine in publications, clinical guidelines, or monographs, please utilize the metadata provided in [`CITATION.cff`](CITATION.cff) or click **"Cite this repository"** in the repository sidebar.
+If you utilize this computational evidence synthesis engine, methodology, or analytical pipeline in your research, please cite the software using [`CITATION.cff`](CITATION.cff) or click **"Cite this repository"** in the repository sidebar.
 
 ```bibtex
 @software{diab2026_nsclc_nma,
@@ -651,8 +643,7 @@ To cite this repository, mathematical architecture, or evidence synthesis engine
   year         = {2026},
   version      = {1.0.0},
   publisher    = {GitHub},
-  url          = {https://github.com/Mohamed101010101/nma-nsclc-evidence-synthesis},
-  note         = {Faculty of Medicine, Modern University for Technology and Information (MTI), Cairo, Egypt. ORCID: 0009-0003-3143-387X}
+  url          = {https://github.com/Mohamed101010101/nma-nsclc-evidence-synthesis}
 }
 ```
 

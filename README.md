@@ -1,5 +1,8 @@
-# 🩺 Clinical Evidence Synthesis & Network Meta-Analysis Engine in R (`netmeta`)
-### *Evidence-Based Comparative Effectiveness & Decision Analytics for Advanced Oncology*
+<div align="center">
+
+<img src="./assets/repo_banner.svg" width="100%" alt="Clinical Evidence Synthesis &amp; Network Meta-Analysis Engine in R" />
+
+<br/>
 
 [![R Version](https://img.shields.io/badge/R-v4.6.1-276DC3.svg?logo=R&logoColor=white)](https://www.r-project.org/)
 [![Package: netmeta](https://img.shields.io/badge/netmeta-v3.6--1-blue.svg)](https://cran.r-project.org/package=netmeta)
@@ -9,6 +12,8 @@
 [![Journal Standard](https://img.shields.io/badge/Publication%20Standard-Lancet%20%7C%20NEJM%20%7C%20BMJ%20%7C%20JAMA-purple.svg)](#4-complete-publication-gallery-300-dpi-visual-exhibits)
 [![Evidence Base](https://img.shields.io/badge/Evidence%20Base-24%20RCTs%20%7C%2015%2C753%20Pts-informational.svg)](#2-evidence-base--clinical-scenario-advanced-nsclc)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+</div>
 
 ---
 

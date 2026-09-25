@@ -1,0 +1,92 @@
+<svg width="900" height="320" viewBox="0 0 900 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGradRepo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0B0E14" />
+      <stop offset="50%" stop-color="#0D1117" />
+      <stop offset="100%" stop-color="#161B22" />
+    </linearGradient>
+
+    <!-- Glowing Accent Gradient -->
+    <radialGradient id="glowRepo" cx="85%" cy="20%" r="65%">
+      <stop offset="0%" stop-color="#0071E3" stop-opacity="0.30" />
+      <stop offset="45%" stop-color="#2997FF" stop-opacity="0.10" />
+      <stop offset="100%" stop-color="#0B0E14" stop-opacity="0" />
+    </radialGradient>
+
+    <!-- Glass Border Gradient -->
+    <linearGradient id="borderGradRepo" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#30363D" />
+      <stop offset="50%" stop-color="#2997FF" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#21262D" />
+    </linearGradient>
+
+    <!-- Pill Gradient -->
+    <linearGradient id="pillBgRepo" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#1C2128" />
+      <stop offset="100%" stop-color="#161B22" />
+    </linearGradient>
+  </defs>
+
+  <!-- Container Box with Rounded Corners -->
+  <rect x="2" y="2" width="896" height="316" rx="16" fill="url(#bgGradRepo)" stroke="url(#borderGradRepo)" stroke-width="1.5" />
+  
+  <!-- Subtle Glow Effect -->
+  <rect x="2" y="2" width="896" height="316" rx="16" fill="url(#glowRepo)" />
+
+  <!-- macOS Window Chrome Dots -->
+  <circle cx="36" cy="32" r="6" fill="#FF5F56" />
+  <circle cx="56" cy="32" r="6" fill="#FFBD2E" />
+  <circle cx="76" cy="32" r="6" fill="#27C93F" />
+
+  <!-- Window Header Label -->
+  <text x="105" y="36" fill="#8B949E" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="500" letter-spacing="0.5">r-netmeta // publication-grade-nma-engine</text>
+
+  <!-- Divider Line -->
+  <line x1="2" y1="56" x2="898" y2="56" stroke="#21262D" stroke-width="1" />
+
+  <!-- Category Tag Badge -->
+  <g transform="translate(40, 80)">
+    <rect width="375" height="24" rx="12" fill="#0D2744" stroke="#1F4C7A" stroke-width="1"/>
+    <circle cx="12" cy="12" r="4" fill="#2997FF"/>
+    <text x="24" y="16" fill="#58A6FF" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif" font-size="11" font-weight="600" letter-spacing="1">EVIDENCE SYNTHESIS &amp; DECISION ANALYTICS IN R</text>
+  </g>
+
+  <!-- Main Headline -->
+  <text x="40" y="152" fill="#F0F6FC" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif" font-size="34" font-weight="700" letter-spacing="-0.8">Clinical Evidence Synthesis Engine</text>
+
+  <!-- Subtitle -->
+  <text x="40" y="186" fill="#8B949E" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif" font-size="15" font-weight="400" letter-spacing="-0.2">Frequentist Network Meta-Analysis &amp; Multi-Criteria Valuation for Advanced Oncology</text>
+
+  <!-- Metric Badges Row (Apple Pills) -->
+  <!-- Pill 1 -->
+  <g transform="translate(40, 230)">
+    <rect width="180" height="42" rx="8" fill="url(#pillBgRepo)" stroke="#30363D" stroke-width="1" />
+    <text x="16" y="26" fill="#2997FF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="600">⚡ 12 Engines</text>
+    <text x="105" y="26" fill="#C9D1D9" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="400">Modular R</text>
+  </g>
+
+  <!-- Pill 2 -->
+  <g transform="translate(232, 230)">
+    <rect width="205" height="42" rx="8" fill="url(#pillBgRepo)" stroke="#30363D" stroke-width="1" />
+    <text x="16" y="26" fill="#2997FF" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="600">📊 24 Landmark RCTs</text>
+    <text x="156" y="26" fill="#C9D1D9" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="400"></text>
+    <text x="16" y="38" fill="#8B949E" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9" font-weight="400">15,753 Synthesized Patients</text>
+  </g>
+
+  <!-- Pill 3 -->
+  <g transform="translate(449, 230)">
+    <rect width="205" height="42" rx="8" fill="url(#pillBgRepo)" stroke="#30363D" stroke-width="1" />
+    <text x="16" y="26" fill="#3FB950" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="600">✓ PRISMA-NMA</text>
+    <text x="125" y="26" fill="#C9D1D9" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="400">Compliant</text>
+    <text x="16" y="38" fill="#8B949E" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9" font-weight="400">Cochrane Handbook v6</text>
+  </g>
+
+  <!-- Pill 4 -->
+  <g transform="translate(666, 230)">
+    <rect width="194" height="42" rx="8" fill="url(#pillBgRepo)" stroke="#30363D" stroke-width="1" />
+    <text x="16" y="26" fill="#A371F7" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="600">🎯 14 Exhibits</text>
+    <text x="108" y="26" fill="#C9D1D9" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="400">300 DPI</text>
+    <text x="16" y="38" fill="#8B949E" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="9" font-weight="400">Vector Publication Grade</text>
+  </g>
+</svg>

@@ -632,13 +632,22 @@ rmarkdown::render("report/nma_comprehensive_report.Rmd")
 
 ---
 
-## 📄 Scholarly Citation & Attribution
+## 👥 Authorship & CRediT Statement
 
-If you utilize this computational evidence synthesis engine, methodology, or analytical pipeline in your research, please cite the software using [`CITATION.cff`](CITATION.cff) or click **"Cite this repository"** in the repository sidebar.
+This evidence synthesis engine was developed by the Investigation Working Group, Faculty of Medicine, Modern University for Technology and Information (MTI), Cairo, Egypt:
+
+- **Mohamed Said Mohamed Diab** *(Lead Investigator)* &mdash; Conceptualization, protocol design, search strategy formulation, Bayesian network meta-analysis modeling, data extraction, manuscript drafting.
+- **Badr Essam Ali** &mdash; Dual-independent study selection, data extraction, cross-auditing and quality checks.
+- **Ali Hassan Hafez** &mdash; Dual-independent study selection, data extraction, tabular synthesis.
+- **Omar Gomaa Mousa** &mdash; Dual-independent study selection, Cochrane RoB 2.0 dual appraisal, verification of numeric inputs.
+- **Mahmoud Hussein Fathy** &mdash; Dual-independent study selection, CINeMA certainty evaluation, supplementary appendix synthesis.
+
+### 📄 Scholarly Citation
+To cite this pipeline in academic manuscripts, clinical practice guidelines, or health technology assessments, please use [`CITATION.cff`](CITATION.cff) or click **"Cite this repository"** in the sidebar:
 
 ```bibtex
 @software{diab2026_nsclc_nma,
-  author       = {Diab, Mohamed Said Mohamed},
+  author       = {Diab, Mohamed Said Mohamed and Ali, Badr Essam and Hafez, Ali Hassan and Mousa, Omar Gomaa and Fathy, Mahmoud Hussein},
   title        = {Publication-Grade Frequentist Network Meta-Analysis Engine for First-Line Advanced NSCLC},
   year         = {2026},
   version      = {1.0.0},

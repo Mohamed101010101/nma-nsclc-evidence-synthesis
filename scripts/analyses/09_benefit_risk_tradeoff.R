@@ -11,7 +11,7 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [ANALYSIS 9/10] BI-DIMENSIONAL BENEFIT-RISK TRADE-OFF MATRIX\n")
+cat(" [ANALYSIS 09/12] BI-DIMENSIONAL BENEFIT-RISK TRADE-OFF MATRIX\n")
 cat("======================================================================\n")
 
 data_path    <- "data/nsclc_toxicity_events.csv"

@@ -17,7 +17,7 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [ANALYSIS 7/10] COMPONENT NETWORK META-ANALYSIS (CNMA)\n")
+cat(" [ANALYSIS 07/12] COMPONENT NETWORK META-ANALYSIS (CNMA)\n")
 cat("======================================================================\n")
 
 data_path   <- "data/nsclc_trial_contrasts.csv"

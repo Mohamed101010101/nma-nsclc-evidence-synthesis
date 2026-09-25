@@ -1,0 +1,2 @@
+"Test","Predictor","Weight","Bias_Intercept","SE_Bias","T_Statistic","Degrees_of_Freedom","P_Value","Small_Study_Effects"
+"Egger Linear Regression Test of Funnel Plot Asymmetry","Standard Error (seTE)","Inverse Variance (1/seTE^2)",-0.799,0.5235,-1.53,30,"0.1374","No evidence of small-study effects (Symmetric)"

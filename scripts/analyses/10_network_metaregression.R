@@ -18,7 +18,7 @@ suppressPackageStartupMessages({
 options(scipen = 10)
 
 cat("\n======================================================================\n")
-cat(" [ANALYSIS 10/10] NETWORK META-REGRESSION & TRANSITIVITY AUDIT\n")
+cat(" [ANALYSIS 10/12] NETWORK META-REGRESSION & TRANSITIVITY AUDIT\n")
 cat("======================================================================\n")
 
 model_file   <- "outputs/models/metaregression_data.rds"

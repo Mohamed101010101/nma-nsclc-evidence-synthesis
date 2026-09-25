@@ -1,16 +1,16 @@
 # ==============================================================================
 # Script: run_all_pipeline.R
-# Purpose: Master Orchestrator for All 10 NMA Analyses & 12 Publication Figure Designs
+# Purpose: Master Orchestrator for All 12 NMA Analyses & 14 Publication Figure Designs
 # Architecture:
-#   - Phase 1: Statistical Analyses & Table Generation (scripts/analyses/ 01 to 10)
-#   - Phase 2: Publication Figure Designs (scripts/designs/ fig01 to fig12)
+#   - Phase 1: Statistical Analyses & Table Generation (scripts/analyses/ 01 to 12)
+#   - Phase 2: Publication Figure Designs (scripts/designs/ fig01 to fig14)
 # Execution: Rscript scripts/run_all_pipeline.R
 # ==============================================================================
 
 cat("\n==============================================================================\n")
 cat("          MASTER NETWORK META-ANALYSIS PRODUCTION PIPELINE                    \n")
 cat("          Advanced Non-Small Cell Lung Cancer (NSCLC) Evidence Synthesis      \n")
-cat("          Tier-1 Oncology Methodology: 10 Analytical Engines | 12 Figures      \n")
+cat("          Tier-1 Oncology Methodology: 12 Analytical Engines | 14 Figures      \n")
 cat("==============================================================================\n")
 
 start_time <- Sys.time()
@@ -24,7 +24,7 @@ if (!file.exists("data/nsclc_toxicity_events.csv")) {
 }
 
 # ------------------------------------------------------------------------------
-# PHASE 1: STATISTICAL ANALYSES & TABLE GENERATION (10 ENGINES)
+# PHASE 1: STATISTICAL ANALYSES & TABLE GENERATION (12 ENGINES)
 # ------------------------------------------------------------------------------
 cat("\n==============================================================================\n")
 cat(" >>> PHASE 1: STATISTICAL ANALYSES & SUMMARY TABLES (scripts/analyses/)        \n")
@@ -40,7 +40,9 @@ analysis_modules <- list(
   list(file = "scripts/analyses/07_component_nma.R",              name = "Additive & Interactive Component NMA (CNMA)"),
   list(file = "scripts/analyses/08_rank_probabilities.R",         name = "10,000 Monte Carlo Probabilistic Hierarchy & SUCRA"),
   list(file = "scripts/analyses/09_benefit_risk_tradeoff.R",      name = "Dual Efficacy vs Grade 3-5 Severe Toxicity NMA"),
-  list(file = "scripts/analyses/10_network_metaregression.R",     name = "Network Meta-Regression & Transitivity Diagnostics")
+  list(file = "scripts/analyses/10_network_metaregression.R",     name = "Network Meta-Regression & Transitivity Diagnostics"),
+  list(file = "scripts/analyses/11_subgroup_analysis.R",          name = "Subgroup NMA: Asia-Pacific vs Global Evidence (Q_bws Interaction)"),
+  list(file = "scripts/analyses/12_mcid_analysis.R",              name = "Minimal Clinically Important Difference (MCID) Decision Framework Engine")
 )
 
 for (idx in seq_along(analysis_modules)) {
@@ -56,7 +58,7 @@ for (idx in seq_along(analysis_modules)) {
 }
 
 # ------------------------------------------------------------------------------
-# PHASE 2: PUBLICATION GRAPHIC DESIGNS (12 FIGURES AT 300 DPI)
+# PHASE 2: PUBLICATION GRAPHIC DESIGNS (14 FIGURES AT 300 DPI)
 # ------------------------------------------------------------------------------
 cat("\n==============================================================================\n")
 cat(" >>> PHASE 2: PUBLICATION GRAPHIC DESIGNS (300 DPI) (scripts/designs/)        \n")
@@ -68,13 +70,15 @@ design_modules <- list(
   list(file = "scripts/designs/fig03_pscore_ranking.R",         name = "Figure 03: P-Score Treatment Ranking Hierarchy"),
   list(file = "scripts/designs/fig04_netsplit_inconsistency.R",   name = "Figure 04: Node-Splitting Local Inconsistency Forest Plot"),
   list(file = "scripts/designs/fig05_netheat_plot.R",           name = "Figure 05: Net Heat Inconsistency Matrix Plot"),
-  list(file = "scripts/designs/fig06_funnel_plot.R",            name = "Figure 06: Comparison-Adjusted Funnel Plot"),
+  list(file = "scripts/designs/fig06_funnel_plot.R",            name = "Figure 06: Comparison-Adjusted Funnel Plot & Egger Test"),
   list(file = "scripts/designs/fig07_league_table_matrix.R",    name = "Figure 07: Publication League Table Graphic Matrix"),
   list(file = "scripts/designs/fig08_leave_one_out_forest.R",   name = "Figure 08: Leave-One-Out Cross-Validation Sensitivity Forest"),
   list(file = "scripts/designs/fig09_component_effects.R",      name = "Figure 09: Component Network Meta-Analysis (CNMA) Forest"),
   list(file = "scripts/designs/fig10_rankograms.R",             name = "Figure 10: Probabilistic Hierarchy & Cumulative Rankograms"),
   list(file = "scripts/designs/fig11_benefit_risk_tradeoff.R",  name = "Figure 11: Bi-dimensional Benefit-Risk Trade-Off Matrix"),
-  list(file = "scripts/designs/fig12_metaregression_bubble.R",  name = "Figure 12: Network Meta-Regression Bubble & Transitivity Plot")
+  list(file = "scripts/designs/fig12_metaregression_bubble.R",  name = "Figure 12: Network Meta-Regression Bubble & Transitivity Plot"),
+  list(file = "scripts/designs/fig13_subgroup_forest.R",        name = "Figure 13: Subgroup Comparative Forest Plot (Asia-Pacific vs Global)"),
+  list(file = "scripts/designs/fig14_mcid_probabilities.R",     name = "Figure 14: MCID Clinical Superiority Decision Framework (HR <= 0.80)")
 )
 
 for (idx in seq_along(design_modules)) {

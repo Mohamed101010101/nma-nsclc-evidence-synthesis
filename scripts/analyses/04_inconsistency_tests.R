@@ -11,7 +11,7 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [ANALYSIS 4/10] INCONSISTENCY EVALUATION (GLOBAL Q DECOMPOSITION)\n")
+cat(" [ANALYSIS 04/12] INCONSISTENCY EVALUATION (GLOBAL Q DECOMPOSITION)\n")
 cat("======================================================================\n")
 
 # 1. Load Cached Model (Auto-fit if missing or data changed)

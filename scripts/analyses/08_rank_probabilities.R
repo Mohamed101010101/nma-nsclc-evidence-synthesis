@@ -13,7 +13,7 @@ suppressPackageStartupMessages({
 })
 
 cat("\n======================================================================\n")
-cat(" [ANALYSIS 8/10] MONTE CARLO PROBABILISTIC TREATMENT HIERARCHY\n")
+cat(" [ANALYSIS 08/12] MONTE CARLO PROBABILISTIC TREATMENT HIERARCHY & SUCRA\n")
 cat("======================================================================\n")
 
 model_file  <- "outputs/models/rank_probabilities_data.rds"
@@ -91,17 +91,19 @@ if (cache_valid) {
   )
   # Sort by SUCRA descending
   df_summary <- df_summary[order(-df_summary$SUCRA), ]
+  rownames(df_summary) <- NULL
   
   # Bundle Serialization Data
   rank_data <- list(
-    B                 = B,
-    trts              = trts_all,
-    rank_prob_mat     = rank_prob_mat,
-    cum_prob_mat      = cum_prob_mat,
-    sucra_scores      = sucra_scores,
-    mean_ranks        = mean_ranks,
-    summary_table     = df_summary,
-    raw_ranks_sample  = ranks[1:500, ] # sample for quick audit
+    B                = B,
+    trts             = trts_all,
+    rank_prob_mat    = rank_prob_mat,
+    cum_prob_mat     = cum_prob_mat,
+    sucra_scores     = sucra_scores,
+    mean_ranks       = mean_ranks,
+    summary_table    = df_summary,
+    raw_ranks_sample = ranks[1:500, ], # sample for quick audit
+    draws_all_sample = draws_all[1:500, ]
   )
   
   dir.create("outputs/models", recursive = TRUE, showWarnings = FALSE)
@@ -114,12 +116,13 @@ if (cache_valid) {
   cat(sprintf(" - Serialized Rank data object   : %s\n", model_file))
   
   cat("\n [TREATMENT HIERARCHY & SUCRA AUDIT]\n")
-  for (i in 1:nrow(df_summary)) {
+  for (i in seq_len(nrow(df_summary))) {
     trt <- df_summary$Treatment[i]
-    cat(sprintf("   %d. %-10s | SUCRA: %.3f | Mean Rank: %.2f | P(Rank 1): %5.1f%% | P(Rank 2): %5.1f%%\n",
-                i, trt, df_summary$SUCRA[i], df_summary$Mean_Rank[i],
-                df_summary$Rank_1[i] * 100, df_summary$Rank_2[i] * 100))
+    cat(sprintf("   %d. %-10s | SUCRA: %.3f | P(Rank 1): %5.1f%% | Mean Rank: %.2f\n",
+                i, trt, df_summary$SUCRA[i], df_summary$Rank_1[i] * 100, df_summary$Mean_Rank[i]))
   }
 }
 
 cat(" [SUCCESS] Rank probabilities & SUCRA calculation completed cleanly.\n")
+
+

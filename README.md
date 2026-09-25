@@ -3,7 +3,7 @@
 
 [![R Version](https://img.shields.io/badge/R-v4.6.1-276DC3.svg?logo=R&logoColor=white)](https://www.r-project.org/)
 [![Package: netmeta](https://img.shields.io/badge/netmeta-v3.6--1-blue.svg)](https://cran.r-project.org/package=netmeta)
-[![Methodology](https://img.shields.io/badge/Methodology-10%20Advanced%20Engines-darkgreen.svg)](#-core-biostatistical--methodological-competencies)
+[![Methodology](https://img.shields.io/badge/Methodology-12%20Advanced%20Engines-darkgreen.svg)](#-core-biostatistical--methodological-competencies)
 [![Guideline: PRISMA-NMA](https://img.shields.io/badge/PRISMA--NMA-100%25%20Compliant-success.svg)](http://www.prisma-statement.org/Extensions/NetworkMetaAnalysis)
 [![Standard](https://img.shields.io/badge/Journal%20Standard-Lancet%20%7C%20NEJM%20%7C%20BMJ%20%7C%20JAMA-purple.svg)](#-publication-gallery-300-dpi-visual-exhibits)
 [![Evidence Base](https://img.shields.io/badge/Evidence%20Base-24%20RCTs%20%7C%2015%2C753%20Pts-informational.svg)](#-clinical-research-scenario-advanced-nsclc)
@@ -22,7 +22,7 @@
   - [4. Frequentist P-Scores & 10,000 Monte Carlo SUCRA](#4-frequentist-p-scores--10000-monte-carlo-sucra)
   - [5. Component Network Meta-Analysis (CNMA Synergy Testing)](#5-component-network-meta-analysis-cnma-synergy-testing)
   - [6. Bi-dimensional Benefit-Risk Trade-Off Synthesis](#6-bi-dimensional-benefit-risk-trade-off-synthesis)
-- [Publication Gallery (300 DPI Visual Exhibits: 12 Figures)](#-publication-gallery-300-dpi-visual-exhibits)
+- [Publication Gallery (300 DPI Visual Exhibits: 14 Figures)](#-publication-gallery-300-dpi-visual-exhibits)
   - [Figure 01: Evidence Network Geometry](#figure-01-evidence-network-geometry)
   - [Figure 02: Reference Forest Plot vs Chemotherapy](#figure-02-reference-forest-plot-vs-chemotherapy)
   - [Figure 03: P-Score Treatment Ranking Hierarchy](#figure-03-p-score-treatment-ranking-hierarchy)
@@ -35,6 +35,8 @@
   - [Figure 10: Probabilistic Hierarchy & Cumulative Rankograms](#figure-10-probabilistic-hierarchy--cumulative-rankograms)
   - [Figure 11: Bi-dimensional Benefit-Risk Trade-Off Matrix](#figure-11-bi-dimensional-benefit-risk-trade-off-matrix)
   - [Figure 12: Network Meta-Regression & Transitivity Bubble Plot](#figure-12-network-meta-regression--transitivity-bubble-plot)
+  - [Figure 13: Subgroup Comparative Forest Plot (Asia-Pacific vs Global)](#figure-13-subgroup-comparative-forest-plot-asia-pacific-vs-global)
+  - [Figure 14: MCID Clinical Superiority Decision Framework](#figure-14-mcid-clinical-superiority-decision-framework)
 - [Repository Architecture](#-repository-architecture)
 - [Reproducibility & Execution Guide](#-reproducibility--execution-guide)
 - [PRISMA-NMA Compliance Checklist](#-prisma-nma-compliance-checklist)
@@ -50,8 +52,8 @@
 When multiple interventions compete for the same clinical indication, head-to-head randomized controlled trials (RCTs) are rarely available for every pair of therapies. **Network Meta-Analysis (NMA)** resolves this therapeutic dilemma by synthesizing **direct evidence** (head-to-head trials) and **indirect evidence** (via common comparator arms) into a unified, coherent comparative framework.
 
 This repository serves as a **portfolio-grade demonstration** of top-tier medical journal standards (*The Lancet*, *The New England Journal of Medicine*, *BMJ*, *JAMA Oncology*) for clinical trial synthesis, integrating:
-1. **10 Production Statistical Analyses** (`scripts/analyses/`) covering estimation, ranking, inconsistency decomposition, influence cross-validation, component deconstruction, Monte Carlo simulation, benefit-risk modeling, and meta-regression.
-2. **12 High-Resolution Figures (300 DPI)** (`scripts/designs/` & `outputs/figures/`) styled to perfection.
+1. **12 Production Statistical Analyses** (`scripts/analyses/`) covering estimation, ranking, inconsistency decomposition, influence cross-validation, component deconstruction, Monte Carlo simulation, benefit-risk modeling, meta-regression, subgroup synthesis, and MCID clinical decision framework.
+2. **14 High-Resolution Figures (300 DPI)** (`scripts/designs/` & `outputs/figures/`) styled to perfection.
 3. **Comprehensive HTML Report Dashboard** (`report/nma_comprehensive_report.html`) with embedded visual assets.
 
 ---
@@ -124,6 +126,8 @@ To ensure clinical relevance, this project synthesizes **First-Line Systemic The
 | **Figure 10** | Probabilistic Hierarchy & Cumulative Rankograms | [`outputs/figures/10_rankograms.png`](outputs/figures/10_rankograms.png) |
 | **Figure 11** | Bi-dimensional Benefit-Risk Trade-Off Matrix (OS vs Tox) | [`outputs/figures/11_benefit_risk_tradeoff.png`](outputs/figures/11_benefit_risk_tradeoff.png) |
 | **Figure 12** | Network Meta-Regression Bubble & Transitivity Plot | [`outputs/figures/12_metaregression_bubble.png`](outputs/figures/12_metaregression_bubble.png) |
+| **Figure 13** | Subgroup Comparative Forest Plot (Asia-Pacific vs Global) | [`outputs/figures/13_subgroup_forest.png`](outputs/figures/13_subgroup_forest.png) |
+| **Figure 14** | MCID Clinical Superiority Decision Framework (HR <= 0.80) | [`outputs/figures/14_mcid_probabilities.png`](outputs/figures/14_mcid_probabilities.png) |
 
 ---
 
@@ -132,8 +136,9 @@ To ensure clinical relevance, this project synthesizes **First-Line Systemic The
 ```
 nma-nsclc-evidence-synthesis/
 ├── data/
-│   ├── nsclc_trial_contrasts.csv          # Clinical contrast dataset (34 contrasts, 24 RCTs)
-│   └── nsclc_rob2_assessments.csv         # Risk of bias 2.0 evaluation data for web tools
+│   ├── nsclc_trial_contrasts.csv          # Clinical contrast dataset (34 contrasts, 24 RCTs, 15,753 pts)
+│   ├── nsclc_toxicity_events.csv          # Grade 3-5 severe adverse events dataset (safety NMA)
+│   └── nsclc_rob2_assessments.csv         # Risk of Bias 2.0 evaluation data across trials
 ├── scripts/
 │   ├── analyses/
 │   │   ├── 01_fit_nma_model.R             # Analysis 01: Model Estimation & Graph Laplacian Fit
@@ -141,32 +146,37 @@ nma-nsclc-evidence-synthesis/
 │   │   ├── 03_league_table.R              # Analysis 03: Dual-Model League Table Generation
 │   │   ├── 04_inconsistency_tests.R       # Analysis 04: Cochran's Q Global Decomposition
 │   │   ├── 05_league_table_html.R         # Analysis 05: Formatted Interactive HTML League Table
-│   │   ├── 06_leave_one_out_sensitivity.R # Analysis 06: Parallelized LOO Influence Cross-Validation
+│   │   ├── 06_leave_one_out_sensitivity.R # Analysis 06: LOO Influence Cross-Validation (24 iterations)
 │   │   ├── 07_component_nma.R             # Analysis 07: Component NMA & Synergy Testing
-│   │   ├── 08_rank_probabilities.R        # Analysis 08: 10,000 Monte Carlo Rank Probabilities & SUCRA
+│   │   ├── 08_rank_probabilities.R        # Analysis 08: 10,000 MC Rank Probabilities & SUCRA
 │   │   ├── 09_benefit_risk_tradeoff.R     # Analysis 09: Dual Efficacy vs Severe Toxicity NMA
-│   │   └── 10_network_metaregression.R    # Analysis 10: Meta-Regression Across Year, Size & Region
+│   │   ├── 10_network_metaregression.R    # Analysis 10: Meta-Regression Across Year, Size & Region
+│   │   ├── 11_subgroup_analysis.R         # Analysis 11: Subgroup NMA (Asia-Pacific vs Global, Q_bws)
+│   │   └── 12_mcid_analysis.R             # Analysis 12: MCID Clinical Superiority Decision Framework
 │   ├── designs/
 │   │   ├── fig01_network_geometry.R       # Design 01: Evidence Network Geometry (Topology)
 │   │   ├── fig02_forest_plot.R            # Design 02: Reference Forest Plot vs Chemotherapy
 │   │   ├── fig03_pscore_ranking.R         # Design 03: P-Score Ranking Bar Chart
 │   │   ├── fig04_netsplit_inconsistency.R # Design 04: Node-Splitting Forest Plot
 │   │   ├── fig05_netheat_plot.R           # Design 05: Net Heat Inconsistency Matrix
-│   │   ├── fig06_funnel_plot.R            # Design 06: Comparison-Adjusted Funnel Plot
+│   │   ├── fig06_funnel_plot.R            # Design 06: Comparison-Adjusted Funnel Plot & Egger Test
 │   │   ├── fig07_league_table_matrix.R    # Design 07: Publication League Table Graphic Matrix
 │   │   ├── fig08_leave_one_out_forest.R   # Design 08: Leave-One-Out Sensitivity Forest Plot
 │   │   ├── fig09_component_effects.R      # Design 09: Component NMA Forest Plot
 │   │   ├── fig10_rankograms.R             # Design 10: Multi-panel Rankograms & Cumulative Curves
 │   │   ├── fig11_benefit_risk_tradeoff.R  # Design 11: 4-Quadrant Benefit-Risk Scatter Matrix
-│   │   └── fig12_metaregression_bubble.R  # Design 12: Meta-Regression Bubble & Moderator Forest
-│   └── run_all_pipeline.R                 # Master Orchestrator (10 Analyses + 12 Figures in ~35s)
+│   │   ├── fig12_metaregression_bubble.R  # Design 12: Meta-Regression Bubble & Moderator Forest
+│   │   ├── fig13_subgroup_forest.R        # Design 13: Subgroup Comparative Forest Plot
+│   │   └── fig14_mcid_probabilities.R     # Design 14: MCID Dual Exhibit (Bar & 6x6 Heatmap)
+│   └── run_all_pipeline.R                 # Master Orchestrator (12 Analyses + 14 Figures)
 ├── outputs/
-│   ├── figures/                           # 12 Publication-Grade 300 DPI PNG Figures
-│   ├── tables/                            # Analysis CSV Tables + HTML League Table
+│   ├── figures/                           # 14 Publication-Grade 300 DPI PNG Figures
+│   ├── tables/                            # Analysis CSV Tables + Formatted HTML League Table
 │   └── models/                            # Serialized RDS Model Caches for Instant Downstream Builds
+├── REPRODUCIBILITY.md                     # Comprehensive computational reproducibility & package manifest
 └── report/
     ├── nma_comprehensive_report.Rmd       # Comprehensive R Markdown source document
-    └── nma_comprehensive_report.html      # Standalone 6.7 MB interactive HTML report
+    └── nma_comprehensive_report.html      # Standalone PRISMA-NMA interactive HTML report
 ```
 
 ---
@@ -222,6 +232,8 @@ rmarkdown::render("report/nma_comprehensive_report.Rmd")
 | **Section S1: Component NMA** | Deconstruct multi-agent combinations | Figure 09: Additive & interactive CNMA via `netcomb` |
 | **Section S2: Benefit-Risk** | Multidimensional efficacy vs toxicity | Figure 11: 4-Quadrant survival vs Grade 3–5 severe toxicity matrix |
 | **Section S3: Meta-Regression** | Screen candidate effect modifiers | Figure 12: Meta-regression across time, sample size, and region |
+| **Section S4: Subgroup NMA** | Evaluate transitivity & ethnic variation | Figure 13: Asia-Pacific vs Global trials with $Q_{\text{bws}}$ interaction test |
+| **Section S5: Clinical MCID** | Minimal Clinically Important Difference | Figure 14: 10,000 MC draws for $\text{HR} \le 0.80$ clinical benefit framework |
 
 ---
 

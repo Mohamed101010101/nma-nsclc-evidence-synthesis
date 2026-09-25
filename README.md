@@ -11,6 +11,7 @@
 [![Validation: Diagnostics](https://img.shields.io/badge/Diagnostics-Consistency%20%7C%20Robustness%20%7C%20Sensitivity-purple.svg)](#6-network-inconsistency-transitivity--sensitivity-diagnostics)
 [![Journal Standard](https://img.shields.io/badge/Publication%20Standard-Lancet%20%7C%20NEJM%20%7C%20BMJ%20%7C%20JAMA-purple.svg)](#4-complete-publication-gallery-300-dpi-visual-exhibits)
 [![Evidence Base](https://img.shields.io/badge/Evidence%20Base-24%20RCTs%20%7C%2015%2C753%20Pts-informational.svg)](#2-evidence-base--clinical-scenario-advanced-nsclc)
+[![Live Interactive Monograph](https://img.shields.io/badge/Live%20Report-Interactive%20Monograph-0071E3.svg?logo=googlechrome&logoColor=white)](https://mohamed101010101.github.io/nma-nsclc-evidence-synthesis/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 </div>

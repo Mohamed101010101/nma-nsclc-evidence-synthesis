@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you utilize this computational engine, methodology, or evidence synthesis pipeline in your research, please cite it as below."
+title: "Publication-Grade Frequentist Network Meta-Analysis Engine for First-Line Advanced NSCLC"
+abstract: "A modular, production-grade computational evidence synthesis engine written in R (netmeta) synthesizing 24 landmark randomized controlled trials encompassing 15,753 patients. Features 12 analytical engines, consistency audits, 10,000-scenario Monte Carlo simulations, bivariate benefit-risk trade-offs, and 14 publication-grade 300 DPI exhibits adhering to PRISMA-NMA and Cochrane standards."
+type: software
+version: 1.0.0
+date-released: 2026-09-25
+license: MIT
+repository-code: "https://github.com/Mohamed101010101/nma-nsclc-evidence-synthesis"
+url: "https://mohamed101010101.github.io/nma-nsclc-evidence-synthesis/"
+authors:
+  - family-names: "Diab"
+    given-names: "Mohamed Said Mohamed"
+    orcid: "https://orcid.org/0009-0003-3143-387X"
+    affiliation: "Faculty of Medicine, Modern University for Technology and Information (MTI), Cairo, Egypt"
+    email: "Mohamed.98478@Medicine.mti.edu.eg"
+keywords:
+  - "network-meta-analysis"
+  - "evidence-synthesis"
+  - "non-small cell lung cancer"
+  - "netmeta"
+  - "biostatistics"
+  - "oncology"
+  - "prisma-nma"
+  - "reproducible-research"
+  - "clinical-trials"

@@ -1,0 +1,24 @@
+{
+  "name": "NMA Evidence Synthesis R Laboratory",
+  "image": "ghcr.io/rocker-org/devcontainer/tidyverse:4",
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "r.rterm.linux": "/usr/local/bin/R",
+        "r.bracketedPaste": true,
+        "r.plot.useHttpgd": true
+      },
+      "extensions": [
+        "REditorSupport.r",
+        "quarto.quarto"
+      ]
+    },
+    "codespaces": {
+      "openFiles": [
+        "README.md",
+        "scripts/run_all_pipeline.R"
+      ]
+    }
+  },
+  "postCreateCommand": "sudo apt-get update -q && sudo apt-get install -y libglpk-dev libxml2-dev && Rscript -e \"if (!requireNamespace('renv', quietly=TRUE)) install.packages('renv'); renv::restore(prompt=FALSE)\""
+}

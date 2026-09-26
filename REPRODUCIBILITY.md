@@ -41,7 +41,17 @@ Compliant with:
 
 ## 3. Step-by-Step Reproduction Instructions
 
-To execute the entire production pipeline and re-estimate all 12 analytical models, 14 summary tables, and 14 high-resolution figures:
+### Option A: One-Click Cloud Reproduction (Zero Installation)
+Launch the fully configured, hermetic computational laboratory directly in your browser:
+
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Mohamed101010101/nma-nsclc-evidence-synthesis?quickstart=1)
+
+Within ~30 seconds, an interactive cloud workspace will initialize with R 4.6.1, `netmeta`, Linux system headers (`libglpk-dev`), and all 86 locked dependencies ready to execute.
+
+---
+
+### Option B: Local Machine Execution
+To execute the entire production pipeline and re-estimate all 12 analytical models, 14 summary tables, and 14 high-resolution figures locally:
 
 1. Open PowerShell, Terminal, or Command Prompt in the repository root directory:
    ```bash

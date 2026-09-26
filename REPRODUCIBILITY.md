@@ -48,12 +48,22 @@ To execute the entire production pipeline and re-estimate all 12 analytical mode
    cd path/to/nma_project
    ```
 
-2. Run the master orchestrator script:
+2. Restore the exact locked R computational environment:
+   ```bash
+   Rscript -e "install.packages('renv'); renv::restore(prompt = FALSE)"
+   ```
+
+3. Run the automated 18-step pipeline integrity and quality verification suite:
+   ```bash
+   Rscript tests/test_pipeline_integrity.R
+   ```
+
+4. Run the master orchestrator script:
    ```powershell
    Rscript scripts/run_all_pipeline.R
    ```
 
-3. To compile the interactive HTML publication report:
+5. To compile the interactive HTML publication report:
    ```powershell
    Rscript -e "rmarkdown::render('report/nma_comprehensive_report.Rmd')"
    ```

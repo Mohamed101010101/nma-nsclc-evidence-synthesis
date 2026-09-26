@@ -4,11 +4,13 @@
 
 <br/>
 
+[![CI Pipeline](https://github.com/Mohamed101010101/nma-nsclc-evidence-synthesis/actions/workflows/ci.yml/badge.svg)](https://github.com/Mohamed101010101/nma-nsclc-evidence-synthesis/actions/workflows/ci.yml)
 [![R Version](https://img.shields.io/badge/R-v4.6.1-276DC3.svg?logo=R&logoColor=white)](https://www.r-project.org/)
+[![renv](https://img.shields.io/badge/renv-v1.2.3%20locked-blue.svg?logo=r&logoColor=white)](https://rstudio.github.io/renv/)
 [![Package: netmeta](https://img.shields.io/badge/netmeta-v3.6--1-blue.svg)](https://cran.r-project.org/package=netmeta)
 [![Methodology: Network Meta-Analysis](https://img.shields.io/badge/Evidence%20Synthesis-Network%20Meta--Analysis-darkgreen.svg)](#3-clinical--methodological-framework)
 [![Pipeline: 12 Engines](https://img.shields.io/badge/Analytical%20Engines-12%20R%20Modules-teal.svg)](#3-clinical--methodological-framework)
-[![Validation: Diagnostics](https://img.shields.io/badge/Diagnostics-Consistency%20%7C%20Robustness%20%7C%20Sensitivity-purple.svg)](#6-network-inconsistency-transitivity--sensitivity-diagnostics)
+[![Validation: Automated Tests](https://img.shields.io/badge/Quality%20Assurance-18%2F18%20Passed-brightgreen.svg)](#8-computational-reproducibility--execution-pipeline)
 [![Journal Standard](https://img.shields.io/badge/Publication%20Standard-Lancet%20%7C%20NEJM%20%7C%20BMJ%20%7C%20JAMA-purple.svg)](#4-complete-publication-gallery-300-dpi-visual-exhibits)
 [![Evidence Base](https://img.shields.io/badge/Evidence%20Base-24%20RCTs%20%7C%2015%2C753%20Pts-informational.svg)](#2-evidence-base--clinical-scenario-advanced-nsclc)
 [![Live Interactive Monograph](https://img.shields.io/badge/Live%20Report-Interactive%20Monograph-0071E3.svg?logo=googlechrome&logoColor=white)](https://mohamed101010101.github.io/nma-nsclc-evidence-synthesis/)
@@ -503,6 +505,9 @@ Transitivity requires that trial characteristics act as effect modifiers uniform
 
 ```
 nma-nsclc-evidence-synthesis/
+├── .github/
+│   └── workflows/
+│       └── ci.yml                         # Automated CI Quality Assurance & Test Matrix
 ├── data/
 │   ├── nsclc_trial_contrasts.csv          # Primary contrast dataset (34 contrasts, 24 RCTs, 15,753 pts)
 │   └── nsclc_toxicity_events.csv          # Grade 3-5 severe adverse events dataset (safety NMA, 14,357 pts)
@@ -536,6 +541,8 @@ nma-nsclc-evidence-synthesis/
 │   │   ├── fig13_subgroup_forest.R        # Design 13: Subgroup Comparative Forest Plot
 │   │   └── fig14_mcid_probabilities.R     # Design 14: MCID Dual Exhibit (Bar & 6×6 Heatmap)
 │   └── run_all_pipeline.R                 # Master Orchestrator (12 Analyses + 14 Figures in ~35 sec)
+├── tests/
+│   └── test_pipeline_integrity.R          # Automated Quality Assurance & Schema Test Suite (18 Tests)
 ├── outputs/
 │   ├── figures/                           # 14 Publication-Grade 300 DPI PNG Exhibits
 │   ├── tables/                            # 16 Analytical CSV Tables + Interactive HTML League Table
@@ -543,7 +550,9 @@ nma-nsclc-evidence-synthesis/
 ├── report/
 │   ├── nma_comprehensive_report.Rmd       # Comprehensive PRISMA-NMA Dynamic Markdown Document
 │   └── nma_comprehensive_report.html      # Standalone Interactive HTML Publication Report
+├── renv.lock                              # Hermetic Package Dependency Lockfile (v1.2.3)
 ├── REPRODUCIBILITY.md                     # Deterministic reproduction protocol & package manifest
+├── CITATION.cff                           # Machine-readable scholarly citation metadata
 └── LICENSE                                # MIT Open Source License
 ```
 
@@ -551,20 +560,19 @@ nma-nsclc-evidence-synthesis/
 
 ## 8. Computational Reproducibility & Execution Pipeline
 
-### R Package Prerequisites
+### Environment Restoration via `renv`
+To restore the exact pinned package versions with deterministic isolation:
 ```r
-install.packages(c(
-  "netmeta",     # Graph-theoretical network meta-analysis (v3.6-1)
-  "meta",        # Pairwise meta-analysis and publication bias tests (v8.5-0)
-  "ggplot2",     # Grammar of graphics publication rendering (v4.0.3)
-  "patchwork",   # Multi-panel composite layout orchestration (v1.3.2)
-  "MASS",        # High-dimensional multivariate normal random variate generation (v7.3-65)
-  "dplyr",       # Data transformation and table structures (v1.2.1)
-  "tidyr",       # Reshaping covariance arrays and rank matrices (v1.3.2)
-  "readr",       # Fast tabular data parsing
-  "knitr",       # Dynamic document chunk execution
-  "rmarkdown"    # Standalone HTML report rendering
-))
+# In R or RStudio:
+install.packages("renv")
+renv::restore()
+```
+
+### Automated Quality Assurance & Integrity Testing
+To run the automated 18-step verification suite across data schemas, script syntax, model convergence, and publication exhibits:
+```bash
+# In Terminal, PowerShell, or Command Prompt:
+Rscript tests/test_pipeline_integrity.R
 ```
 
 ### Deterministic Master Pipeline Execution

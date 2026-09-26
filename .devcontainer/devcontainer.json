@@ -6,7 +6,8 @@
       "settings": {
         "r.rterm.linux": "/usr/local/bin/R",
         "r.bracketedPaste": true,
-        "r.plot.useHttpgd": true
+        "r.plot.useHttpgd": true,
+        "r.lintr.enable": false
       },
       "extensions": [
         "REditorSupport.r",

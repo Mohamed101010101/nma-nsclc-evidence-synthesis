@@ -4,7 +4,7 @@
 
 <br/>
 
-[![CI Pipeline](https://github.com/Mohamed101010101/nma-nsclc-evidence-synthesis/actions/workflows/ci.yml/badge.svg)](https://github.com/Mohamed101010101/nma-nsclc-evidence-synthesis/actions/workflows/ci.yml)
+[![CI Pipeline](https://github.com/Mohamed101010101/nma-nsclc-evidence-synthesis/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Mohamed101010101/nma-nsclc-evidence-synthesis/actions/workflows/ci.yml)
 [![R Version](https://img.shields.io/badge/R-v4.6.1-276DC3.svg?logo=R&logoColor=white)](https://www.r-project.org/)
 [![renv](https://img.shields.io/badge/renv-v1.2.3%20locked-blue.svg?logo=r&logoColor=white)](https://rstudio.github.io/renv/)
 [![Package: netmeta](https://img.shields.io/badge/netmeta-v3.6--1-blue.svg)](https://cran.r-project.org/package=netmeta)
